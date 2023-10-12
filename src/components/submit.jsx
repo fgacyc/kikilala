@@ -55,7 +55,7 @@ export default function Submit() {
                 </div>
                 <SocialMedia position={"left"}/>
             </div>
-            <div className={"w-[600px] h-[100%] bg-white rounded-[12px] p-8"}>
+            <div className={`sm:w-[600px] h-[100%] bg-white rounded-[12px]  sm:p-8 p-4 w-full`}>
                 <Form/>
             </div>
             {/*<SocialMedia position={"bottom"}/>*/}
