@@ -3,6 +3,7 @@ import { Select,Input } from '@arco-design/web-react';
 import {readAllCGLs} from "../api/CGLs.js";
 import {getAllPastoralTeamNames, getAllTeamLeaderNames} from "./data.js";
 import {SendIcon} from "../Icon/SendIcon.jsx";
+import DateModal from "./DateModal.jsx";
 const Option = Select.Option;
 const options = ['Beijing', 'Shanghai', 'Guangzhou', 'Disabled'];
 const TextArea = Input.TextArea;
@@ -66,7 +67,8 @@ function Selects({data,statellite}){
 
     return (
         <div className={"w-full flex flex-row justify-between"}>
-            <Select placeholder='Please select' style={{ width: "40%" }} allowClear showSearch
+            <Select placeholder='Select Pastoral Team'
+                    style={{ width: "45%" }} allowClear showSearch
                 onChange={setCurrentPT}
             >
                 {currentPastoralTeamNames && currentPastoralTeamNames.map((option, index) => (
@@ -75,7 +77,7 @@ function Selects({data,statellite}){
                     </Option>
                 ))}
             </Select>
-            <Select placeholder='Please select' style={{ width: "40%" }} allowClear showSearch>
+            <Select placeholder='Select CGL Name' style={{ width: "45%" }} allowClear showSearch>
                 {currentTeamLeaderNames && currentTeamLeaderNames.map((option, index) => (
                     <Option key={option}  value={option}>
                         {option}
@@ -106,15 +108,33 @@ function InputPIN({name}){
     )
 }
 
+function InputPINs(){
+    return(
+        <div className={"flex flex-row justify-between items-start "}>
+            <InputPIN name={"OM"}/>
+            <InputPIN name={"NB"}/>
+            <InputPIN name={"NF"}/>
+            <InputPIN name={"RNF"}/>
+            <InputPIN name={"ABs"}/>
+        </div>
+    )
+}
+
 export default  function Form(){
     const [allCGLs,setAllCGLs] = useState([])
     const [currentStatellite,setCurrentSatellite] = useState(null)
+    const [visible, setVisible] = useState(false);
+
     useEffect(() => {
         readAllCGLs().then((data) => {
             console.log(data);
             setAllCGLs(data);
         })
     }, []);
+
+    function submitHandler(){
+        setVisible(true)
+    }
 
     return (
         <div>
@@ -123,49 +143,31 @@ export default  function Form(){
             <div className={"font-bold mt-5 mb-3"}>Which Pastoral Team are you belonging to?</div>
             <Selects data={allCGLs} statellite={currentStatellite}/>
             <div>
-                <div className={"font-bold mt-5 mb-1"}>
-                    How many members are there in your Cell Group?
-                </div>
+                <div className={"font-bold mt-5 mb-1"}>How many members are there in your Cell Group?</div>
                 <UIInput type={"number"}/>
             </div>
             <div>
-                <div className={"font-bold mt-5 mb-3"}>
-                    How many members attended your Cell Group activity this week?
-                </div>
-
-                <div className={"flex flex-row justify-between items-start "}>
-                    <InputPIN name={"OM"}/>
-                    <InputPIN name={"NB"}/>
-                    <InputPIN name={"NF"}/>
-                    <InputPIN name={"RNF"}/>
-                    <InputPIN name={"ABs"}/>
-                </div>
+                <div className={"font-bold mt-5 mb-3"}>How many members attended your Cell Group activity this week?</div>
+                <InputPINs />
                 <TextArea placeholder='Please enter absence reasons ...'
-                          className={"w-full resize-none"} />
+                          className={"w-full resize-none mt-2"} />
             </div>
 
             <div>
-                <div className={"font-bold mt-5 mb-3"}>
-                    How many members attended service this week?
-                </div>
-
-
-                <div className={"flex flex-row justify-between items-start "}>
-                    <InputPIN name={"OM"}/>
-                    <InputPIN name={"NB"}/>
-                    <InputPIN name={"NF"}/>
-                    <InputPIN name={"RNF"}/>
-                    <InputPIN name={"ABs"}/>
-                </div>
+                <div className={"font-bold mt-5 mb-3"}>How many members attended service this week?</div>
+                <InputPINs />
                 <TextArea placeholder='Please enter absence reasons ...'
-                          className={"w-full resize-none"} />
+                          className={"w-full resize-none mt-2"} />
             </div>
             <button className={`bg-[#00B05C] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] 
-                mt-4
-            flex flex-row justify-center w-[200px]`}>
+                mt-8
+                flex flex-row justify-center w-[200px]`}>
                 <SendIcon className={"scale-50"}/>
-                <span className={"ml-3"}>Submit attendance</span>
+                <span className={"ml-3"}
+                        onClick={submitHandler}
+                >Submit Attendance</span>
             </button>
+            <DateModal setVisible={setVisible} visible={visible}/>
         </div>
     )
 }
