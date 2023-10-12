@@ -1,0 +1,17 @@
+body{
+    background-color: #00D97C;
+}
+
+.arco-textarea:focus{
+    border-color: #00B05C !important;
+}
+
+.arco-modal-simple{
+    width: 95% !important;
+}
+
+@media (min-width: 768px){
+    .arco-modal-simple{
+        width: 468px !important;
+    }
+}

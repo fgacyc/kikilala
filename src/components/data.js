@@ -1,3 +1,5 @@
+import {Message} from "@arco-design/web-react";
+
 export function  getAllPastoralTeamNames(satellite,data){
     let teamNames = [];
     for (let item in data){
@@ -49,7 +51,51 @@ export  function getWeekDatesArray(num){
     let dateArray = [];
 
     for (let i = 0; i < num; i++) {
-        dateArray.push(getWeekDates(i));
+        dateArray.push(getWeekDates(i * -1));
     }
+    dateArray.reverse();
     return dateArray;
+}
+
+export function validate(data) {
+    if (
+        data.satellite === "" ||
+        data.pastoral_team === "" ||
+        data.cgl_name === "" ||
+        data.date === ""
+    ){
+        Message.warning("Please fill in all the fields!")
+        return false;
+    }
+
+    if (data.total_members_num === 0){
+        Message.warning("Total members number cannot be 0!")
+        return false;
+    }
+
+    if (data.cg_om_num < 0 ||
+        data.cg_nb_num < 0 ||
+        data.cg_nf_num < 0 ||
+        data.cg_rnf_num < 0 ||
+        data.cg_abs_num < 0 ||
+        data.service_om_num < 0 ||
+        data.service_nb_num < 0 ||
+        data.service_nf_num < 0 ||
+        data.service_rnf_num < 0 ||
+        data.service_abs_num < 0
+    ){
+        Message.warning("The number of members cannot be negative!")
+        return false;
+    }
+
+    if (data.cg_abs_num >0 && data.cg_absence_reason === ""){
+        Message.warning("Please fill in the absence reason!")
+        return false;
+    }
+
+    if (data.service_abs_num >0 && data.service_absence_reason === ""){
+        Message.warning("Please fill in the absence reason!")
+        return false;
+    }
+    return true;
 }

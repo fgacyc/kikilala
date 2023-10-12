@@ -1,11 +1,15 @@
-import { Modal, Button } from '@arco-design/web-react';
+import {Modal, Button, Message} from '@arco-design/web-react';
 import {IconClose} from "@arco-design/web-react/icon";
-import {getWeekDates, getWeekDatesArray} from "./data.js";
+import {getWeekDatesArray, validate} from "./data.js";
 import {useEffect, useState} from "react";
+import {useFormStore} from "../store/formStore.js";
+import {addCGL} from "../api/CGLs.js";
+import {addAttend} from "../api/attendance.js";
 
 function ButtonsGroup(){
     const [active,setActive] = useState(-1)
     const [dateArray,setDateArray] = useState([])
+    const setDate = useFormStore(state => state.setDate)
     const buttonsNumber = 4
 
     useEffect(() => {
@@ -14,6 +18,7 @@ function ButtonsGroup(){
 
     function handleClick(index){
         setActive(index)
+        setDate(dateArray[index])
     }
 
     return (
@@ -38,6 +43,21 @@ function ButtonsGroup(){
 }
 
 function DateModal({visible, setVisible}) {
+    const getFormData = useFormStore(state => state.getFormData);
+
+    function submit() {
+        const data = getFormData();
+        if(validate(data) === false) return;
+        setVisible(false);
+        addAttend(data).then((res) => {
+            if (res!==false){
+                Message.success("Submitted successfully!")
+            }else{
+                Message.error("Submitted failed!")
+            }
+        })
+    }
+
     return (
         <div>
             <Modal
@@ -52,6 +72,8 @@ function DateModal({visible, setVisible}) {
                     margin: 0,
                     padding: 0,
                 }}
+                className={"sm:text-right text-center"}
+
             >
                 <div className={"relative flex flex-row justify-center p-2.5"}>
                     <div className={"text-base"}>Which week are you submitting for?</div>
@@ -71,7 +93,9 @@ function DateModal({visible, setVisible}) {
                     <Button type='secondary' className={"mr-3"}
                             onClick={() => setVisible(false)}
                     >Cancel</Button>
-                    <Button  type='primary' status='success'>Submit</Button>
+                    <Button  type='primary' status='success'
+                        onClick={submit}
+                    >Submit</Button>
                 </div>
             </Modal>
         </div>
