@@ -21,8 +21,7 @@ import {
   query,
   orderBy,
   arrayUnion,
-  arrayRemove,
-  fromDate,
+  arrayRemove
 } from "firebase/firestore";
 
 export class FBStore {
