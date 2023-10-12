@@ -183,14 +183,14 @@ function InputPINs({type}) {
                     <InputPIN name={"NB"} setter={setCGNBNum}/>
                     <InputPIN name={"NF"}  setter={setCGNFNum}/>
                     <InputPIN name={"RNF"}  setter={setCGRNFNum}/>
-                    <InputPIN name={"ABs"}  setter={setCGNBSNum}/>
+                    <InputPIN name={"ABS"}  setter={setCGNBSNum}/>
                 </div>
                 :<div className={"flex flex-row justify-between items-start "}>
                     <InputPIN name={"OM"}  setter={setServiceOMNum}/>
                     <InputPIN name={"NB"}  setter={setServiceNBNum}/>
                     <InputPIN name={"NF"}  setter={setServiceNFNum}/>
                     <InputPIN name={"RNF"} setter={setServiceRNFNum}/>
-                    <InputPIN name={"ABs"} setter={setServiceNBSNum}/>
+                    <InputPIN name={"ABS"} setter={setServiceNBSNum}/>
                 </div>
             }
         </div>
