@@ -1,15 +1,19 @@
-import {useEffect, useState} from "react";
-import { Select,Input } from '@arco-design/web-react';
+import React, {useEffect, useState} from "react";
+import {Select, Input, Notification, Icon} from '@arco-design/web-react';
 import {readAllCGLs} from "../api/CGLs.js";
 import {getAllPastoralTeamNames, getAllTeamLeaderNames} from "./data.js";
 import {SendIcon} from "../Icon/SendIcon.jsx";
 import DateModal from "./DateModal.jsx";
+const IconFont = Icon.addFromIconFontCn({
+    src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
+});
+
 const Option = Select.Option;
 const options = ['Beijing', 'Shanghai', 'Guangzhou', 'Disabled'];
 const TextArea = Input.TextArea;
 
-function ButtonGroup({setCurrentSatellite}){
-    const [active,setActive] = useState(-1)
+function ButtonGroup({setCurrentSatellite}) {
+    const [active, setActive] = useState(-1)
     const satellites = [
         'Kuchai YW',
         'Kuchai WK',
@@ -23,7 +27,7 @@ function ButtonGroup({setCurrentSatellite}){
         'Seremban'
     ]
 
-    function handleClick(index){
+    function handleClick(index) {
         setActive(index)
         setCurrentSatellite(satellites[index])
     }
@@ -31,16 +35,16 @@ function ButtonGroup({setCurrentSatellite}){
     return (
         <div>
             {
-                satellites.map((satellite,index) => {
+                satellites.map((satellite, index) => {
                     return (
                         <button key={index}
-                            className={`hover:bg-[#00B05C] hover:text-white 
+                                className={`hover:bg-[#00B05C] hover:text-white 
                         border-2 font-bold hover:border-[#00B05C] 
                         ${active === index ? 'bg-[#00B05C] border-[#00B05C] text-white'
-                            : 'bg-white border-[#2E024930] text-[#2E024930]'
-                            }
+                                    : 'bg-white border-[#2E024930] text-[#2E024930]'
+                                }
                         rounded-[8px] px-[10px] py-[10px] my-[10px] mr-[10px] `}
-                            onClick={() => handleClick(index)}
+                                onClick={() => handleClick(index)}
                         >{satellite}</button>
                     )
                 })
@@ -49,27 +53,36 @@ function ButtonGroup({setCurrentSatellite}){
     )
 }
 
-function Selects({data,statellite}){
-    const [currentPastoralTeamNames,setCurrentPastoralTeamNames] = useState([])
-    const [currentPT,setCurrentPT] = useState(null)
-    const  [currentTeamLeaderNames,setCurrentTeamLeaderNames] = useState([])
-    const [filteredCGLs,setFilteredCGLs] = useState([])
+function Selects({data, statellite}) {
+    const [currentPastoralTeamNames, setCurrentPastoralTeamNames] = useState([])
+    const [currentPT, setCurrentPT] = useState(null)
+    const [currentTeamLeaderNames, setCurrentTeamLeaderNames] = useState([])
+    const [filteredCGLs, setFilteredCGLs] = useState([])
     useEffect(() => {
         if (!statellite) return;
-        setCurrentPastoralTeamNames(getAllPastoralTeamNames(statellite,data));
-    },[statellite])
+        setCurrentPastoralTeamNames(getAllPastoralTeamNames(statellite, data));
+    }, [statellite])
 
     useEffect(() => {
         if (!currentPT) return;
-        setCurrentTeamLeaderNames(getAllTeamLeaderNames(statellite,currentPT,data))
-    },[currentPT])
+        setCurrentTeamLeaderNames(getAllTeamLeaderNames(statellite, currentPT, data))
+    }, [currentPT])
 
 
     return (
         <div className={"w-full flex flex-row justify-between"}>
             <Select placeholder='Select Pastoral Team'
-                    style={{ width: "45%" }} allowClear showSearch
-                onChange={setCurrentPT}
+                    style={{width: "45%"}} allowClear showSearch
+                    onChange={setCurrentPT}
+                    onFocus={() => {
+                        if (!statellite) {
+                            Notification.warning({
+                                content: 'Please select Satellite first!',
+                                icon: <IconFont type='icon-warning' />,
+                                position: 'topLeft',
+                            });
+                        }
+                    }}
             >
                 {currentPastoralTeamNames && currentPastoralTeamNames.map((option, index) => (
                     <Option key={option} value={option}>
@@ -77,9 +90,20 @@ function Selects({data,statellite}){
                     </Option>
                 ))}
             </Select>
-            <Select placeholder='Select CGL Name' style={{ width: "45%" }} allowClear showSearch>
+            <Select placeholder='Select CGL Name' style={{width: "45%"}}
+                    allowClear showSearch
+                    onFocus={() => {
+                        if (!statellite) {
+                            Notification.warning({
+                                content: 'Please select Satellite and Pastoral Team first!',
+                                icon: <IconFont type='icon-warning' />,
+                                position: 'topLeft',
+                            });
+                        }
+                    }}
+            >
                 {currentTeamLeaderNames && currentTeamLeaderNames.map((option, index) => (
-                    <Option key={option}  value={option}>
+                    <Option key={option} value={option}>
                         {option}
                     </Option>
                 ))}
@@ -88,14 +112,14 @@ function Selects({data,statellite}){
     );
 }
 
-function UIInput({type}){
+function UIInput({type}) {
     return (
         <input type={type}
-               className={"w-full  border-b-2 border-[#2E024930] h-[30px] my-0"} />
+               className={"w-full  border-b-2 border-[#2E024930] h-[30px] my-0"}/>
     )
 }
 
-function InputPIN({name}){
+function InputPIN({name}) {
     return (
         <div className={"flex flex-col justify-center w-[64px]"}>
             <input type="number"
@@ -108,8 +132,8 @@ function InputPIN({name}){
     )
 }
 
-function InputPINs(){
-    return(
+function InputPINs() {
+    return (
         <div className={"flex flex-row justify-between items-start "}>
             <InputPIN name={"OM"}/>
             <InputPIN name={"NB"}/>
@@ -120,9 +144,9 @@ function InputPINs(){
     )
 }
 
-export default  function Form(){
-    const [allCGLs,setAllCGLs] = useState([])
-    const [currentStatellite,setCurrentSatellite] = useState(null)
+export default function Form() {
+    const [allCGLs, setAllCGLs] = useState([])
+    const [currentStatellite, setCurrentSatellite] = useState(null)
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -132,7 +156,7 @@ export default  function Form(){
         })
     }, []);
 
-    function submitHandler(){
+    function submitHandler() {
         setVisible(true)
     }
 
@@ -147,24 +171,25 @@ export default  function Form(){
                 <UIInput type={"number"}/>
             </div>
             <div>
-                <div className={"font-bold mt-5 mb-3"}>How many members attended your Cell Group activity this week?</div>
-                <InputPINs />
+                <div className={"font-bold mt-5 mb-3"}>How many members attended your Cell Group activity this week?
+                </div>
+                <InputPINs/>
                 <TextArea placeholder='Please enter absence reasons ...'
-                          className={"w-full resize-none mt-2"} />
+                          className={"w-full resize-none mt-2"}/>
             </div>
 
             <div>
                 <div className={"font-bold mt-5 mb-3"}>How many members attended service this week?</div>
-                <InputPINs />
+                <InputPINs/>
                 <TextArea placeholder='Please enter absence reasons ...'
-                          className={"w-full resize-none mt-2"} />
+                          className={"w-full resize-none mt-2"}/>
             </div>
             <button className={`bg-[#00B05C] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] 
-                mt-8
-                flex flex-row justify-center w-[200px]`}>
+                    mt-8 flex flex-row justify-center w-[200px]`}
+                    onClick={submitHandler}
+            >
                 <SendIcon className={"scale-50"}/>
                 <span className={"ml-3"}
-                        onClick={submitHandler}
                 >Submit Attendance</span>
             </button>
             <DateModal setVisible={setVisible} visible={visible}/>

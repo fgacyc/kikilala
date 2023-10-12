@@ -15,7 +15,7 @@ export  default  function  Submit()  {
     }
 
     return (
-        <div className={"w-screen h-screen bg-[#00D97C] rounded-bl flex flex-row flex-wrap justify-between p-[50px]"}>
+        <div className={"w-screen h-screen bg-[#00D97C] rounded-bl flex flex-row flex-wrap-reverse justify-between p-[50px]"}>
             <div className={"relative flex flex-col justify-center"}>
                 <div className={"text-white text-5xl h-[400px]"}>
                     <div className={"my-8"}>Let's Achieve</div>

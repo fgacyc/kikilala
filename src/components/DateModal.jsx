@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 function ButtonsGroup(){
     const [active,setActive] = useState(-1)
     const [dateArray,setDateArray] = useState([])
-    const buttonsNumber = 3
+    const buttonsNumber = 4
 
     useEffect(() => {
         setDateArray(getWeekDatesArray(buttonsNumber));
