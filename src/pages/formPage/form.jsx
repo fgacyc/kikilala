@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Select, Input, Notification, Icon} from '@arco-design/web-react';
-import {readAllCGLs} from "../api/CGLs.js";
+import {readAllCGLs} from "../../api/CGLs.js";
 import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGInfo, ifExpire} from "./data.js";
-import {SendIcon} from "../Icon/SendIcon.jsx";
+import {SendIcon} from "../../Icon/SendIcon.jsx";
 import DateModal from "./DateModal.jsx";
-import {useFormStore} from "../store/formStore.js";
+import {useFormStore} from "../../store/formStore.js";
 import {get} from "idb-keyval";
 const IconFont = Icon.addFromIconFontCn({
     src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',

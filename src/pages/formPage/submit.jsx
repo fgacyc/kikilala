@@ -1,9 +1,9 @@
-import {readAllCGLs} from "../api/CGLs.js";
+import {readAllCGLs} from "../../api/CGLs.js";
 import Form from "./form.jsx";
-import {InstagramIcon} from "../Icon/InstagramIcon.jsx";
-import {ThreadsIcon} from "../Icon/ThreadsIcon.jsx";
-import {YoutubeIcon} from "../Icon/YoutubeIcon.jsx";
-import {FacebookIcon} from "../Icon/FacebookIcon.jsx";
+import {InstagramIcon} from "../../Icon/InstagramIcon.jsx";
+import {ThreadsIcon} from "../../Icon/ThreadsIcon.jsx";
+import {YoutubeIcon} from "../../Icon/YoutubeIcon.jsx";
+import {FacebookIcon} from "../../Icon/FacebookIcon.jsx";
 
 function SocialMedia({position}) {
     function goToSocialMedia(type) {

@@ -2,8 +2,9 @@ import {useState} from 'react'
 import './App.css'
 import {readAllCGLs} from "./api/CGLs.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Submit from "./components/submit.jsx";
+import Submit from "./pages/formPage/submit.jsx";
 import "@arco-design/web-react/dist/css/arco.css";
+import CGLsManagement from "./pages/adminPage/CGLsManagement.jsx";
 
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
             <Routes>
                 {/*<Route path="/login" element={<Login/>}/>*/}
                 <Route path="/" element={<Submit/>}/>
-                <Route path="*" element={<div>404</div>}/>
+                <Route path="ki-admin" element={<CGLsManagement/>}/>
             </Routes>
         </Router>
     )

@@ -118,3 +118,14 @@ export async function getCGInfo(key){
     const  data = await get("CGInfo");
     return data[key];
 }
+
+export function convertCGLTableData(data){
+    let CGsList =[]
+    for (let key in data){
+        const item = data[key];
+        item.key = key;
+        CGsList.push(item);
+    }
+    return CGsList;
+}
+

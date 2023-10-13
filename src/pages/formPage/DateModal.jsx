@@ -2,9 +2,9 @@ import {Modal, Button, Message} from '@arco-design/web-react';
 import {IconClose} from "@arco-design/web-react/icon";
 import {getWeekDatesArray, validate} from "./data.js";
 import {useEffect, useState} from "react";
-import {useFormStore} from "../store/formStore.js";
-import {addCGL} from "../api/CGLs.js";
-import {addAttend} from "../api/attendance.js";
+import {useFormStore} from "../../store/formStore.js";
+import {addCGL} from "../../api/CGLs.js";
+import {addAttend} from "../../api/attendance.js";
 import {set} from "idb-keyval";
 
 function ButtonsGroup(){
