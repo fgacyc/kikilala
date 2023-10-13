@@ -112,3 +112,9 @@ export async function ifExpire(){
     let days = Math.floor(diff / (24 * 3600 * 1000));
     return days > 7;
 }
+
+
+export async function getCGInfo(key){
+    const  data = await get("CGInfo");
+    return data[key];
+}

@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {useFormStore} from "../store/formStore.js";
 import {addCGL} from "../api/CGLs.js";
 import {addAttend} from "../api/attendance.js";
+import {set} from "idb-keyval";
 
 function ButtonsGroup(){
     const [active,setActive] = useState(-1)
@@ -52,9 +53,20 @@ function DateModal({visible, setVisible}) {
         addAttend(data).then((res) => {
             if (res!==false){
                 Message.success("Submitted successfully!")
+                saveCGInfoToLocal();
             }else{
                 Message.error("Submitted failed!")
             }
+        })
+    }
+
+    async function saveCGInfoToLocal(){
+        const data = getFormData();
+        await set("CGInfo",{
+            "satellite": data.satellite,
+            "pastoral_team": data.pastoral_team,
+            "cgl_name": data.cgl_name,
+            "total_members_num" : data.total_members_num,
         })
     }
 
