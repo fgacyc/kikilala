@@ -258,9 +258,11 @@ function InputPIN({name,setter}) {
     return (
         <div className={"flex flex-col justify-center w-[64px]"}>
             <input type="number"
-                   className={`border-2 rounded-xl border-[#2E024930] 
-                   text-center text-2xl
-                   my-0 inline-block w-[50px] h-[50px] mx-[10px]`}
+                   className={`border-[#2E024930] 
+                   text-center 
+                   w-[32px] h-[32px] text-xl border rounded-lg
+                   sm:w-[48px] sm:h-[48px] sm:text-2xl sm:border-2 sm:rounded-xl
+                   my-0 inline-block  mx-[10px]`}
                    value={currentValue}
                      onChange={handleChange}
             />
@@ -277,12 +279,14 @@ function InputPINs({type}) {
         setCGNBNum,
         setCGNFNum,
         setCGRNFNum,
+        setCGACNum,
         setCGNBSNum
     ] = useFormStore(state => [
         state.setCGOMNum,
         state.setCGNBNum,
         state.setCGNFNum,
         state.setCGRNFNum,
+        state.setCGACNum,
         state.setCGNBSNum
     ])
 
@@ -291,12 +295,14 @@ function InputPINs({type}) {
         setServiceNBNum,
         setServiceNFNum,
         setServiceRNFNum,
+        setServiceACNum,
         setServiceNBSNum
     ] = useFormStore(state => [
         state.setServiceOMNum,
         state.setServiceNBNum,
         state.setServiceNFNum,
         state.setServiceRNFNum,
+        state.setServiceACNum,
         state.setServiceNBSNum
     ])
 
@@ -309,6 +315,7 @@ function InputPINs({type}) {
                     <InputPIN name={"NB"} setter={setCGNBNum}/>
                     <InputPIN name={"NF"}  setter={setCGNFNum}/>
                     <InputPIN name={"RNF"}  setter={setCGRNFNum}/>
+                    <InputPIN name={"AC"}  setter={setCGACNum}/>
                     <InputPIN name={"ABS"}  setter={setCGNBSNum}/>
                 </div>
                 :<div className={"flex flex-row justify-between items-start "}>
@@ -316,6 +323,7 @@ function InputPINs({type}) {
                     <InputPIN name={"NB"}  setter={setServiceNBNum}/>
                     <InputPIN name={"NF"}  setter={setServiceNFNum}/>
                     <InputPIN name={"RNF"} setter={setServiceRNFNum}/>
+                    <InputPIN name={"AC"}  setter={setServiceACNum}/>
                     <InputPIN name={"ABS"} setter={setServiceNBSNum}/>
                 </div>
             }
