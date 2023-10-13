@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Select, Input, Notification, Icon} from '@arco-design/web-react';
 import {readAllCGLs} from "../../api/CGLs.js";
-import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGInfo, ifExpire} from "./data.js";
+import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGInfo, getCGName, ifExpire} from "./data.js";
 import {SendIcon} from "../../Icon/SendIcon.jsx";
 import DateModal from "./DateModal.jsx";
 import {useFormStore} from "../../store/formStore.js";
@@ -74,7 +74,9 @@ function Selects({data, statellite}) {
     const [currentPT, setCurrentPT] = useState("")
     const [currentCGLName, setCurrentCGLName] = useState("")
     const [currentTeamLeaderNames, setCurrentTeamLeaderNames] = useState([])
-    const [setPastoralTeam,setCGLName] = useFormStore(state => [state.setPastoralTeam,state.setCGLName])
+    const [setPastoralTeam,setCGLName,setCGName] = useFormStore(state => [
+        state.setPastoralTeam,state.setCGLName,state.setCGName
+    ])
 
     const [ifPTLocal,setIfPTLocal] = useState(false)
 
@@ -118,7 +120,10 @@ function Selects({data, statellite}) {
     }, [currentPT])
 
     function CGLSelectHandler(value){
-        setCGLName(value)
+        setCGLName(value);
+        getCGName(value).then((res) => {
+            setCGName(res)
+        });
     }
 
 
@@ -215,7 +220,9 @@ function UIInput({type}) {
 
     useEffect(() => {
         getCGInfo("total_members_num").then((res) => {
+            console.log("total_members_num",res);
             setCurrentTotalMembersNum(res)
+            setTotalMembersNum(res)
         })
     }, []);
 

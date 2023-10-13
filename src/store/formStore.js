@@ -25,9 +25,13 @@ export const useFormStore = create((set) => ({
     service_nbs_num:0,
     service_absence_reason:"",
 
+    // add
+    cg_name : "",
+
     setSatellite: (satellite) => set({ satellite }),
     setPastoralTeam: (pastoral_team) => set({ pastoral_team }),
     setCGLName: (cgl_name) => set({ cgl_name }),
+    setCGName: (cg_name) => set({ cg_name }),
     setDate: (date) => set({ date }),
     setTotalMembersNum: (total_members_num) => set({ total_members_num }),
     setCGOMNum: (cg_om_num) => set({ cg_om_num }),
@@ -64,7 +68,8 @@ export const useFormStore = create((set) => ({
         service_rnf_num:0,
         service_ac_num:0,
         service_abs_num:0,
-        service_absence_reason:""
+        service_absence_reason:"",
+        cg_name : ""
     }),
     // print all values
     printForm : () => {
@@ -90,7 +95,10 @@ export const useFormStore = create((set) => ({
             service_rnf_num:useFormStore.getState().service_rnf_num,
             service_ac_num:useFormStore.getState().service_ac_num,
             service_nbs_num:useFormStore.getState().service_nbs_num,
-            service_absence_reason:useFormStore.getState().service_absence_reason
+            service_absence_reason:useFormStore.getState().service_absence_reason,
+
+            // cg name
+            cg_name : useFormStore.getState().cg_name
         }
     }
 }))

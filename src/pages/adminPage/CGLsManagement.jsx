@@ -2,7 +2,7 @@ import {Table, Input, Button, Popconfirm} from '@arco-design/web-react';
 import {useEffect, useRef, useState} from "react";
 import {deleteCGL, readAllCGLs} from "../../api/CGLs.js";
 import {convertCGLTableData} from "../formPage/data.js";
-import {IconDelete, IconEdit, IconSearch} from "@arco-design/web-react/icon";
+import {IconDelete, IconDownload, IconEdit, IconPlus, IconSearch} from "@arco-design/web-react/icon";
 import CGLsInfoEditModal from "./CGLsInfoEditModal.jsx";
 import {useCGLStore} from "../../store/CGLStore.js";
 import {pastoralTeamList, satelliteList} from "./config.js";
@@ -163,9 +163,12 @@ export  default  function  CGLsManagement(){
         <div className={"h-full w-full p-8"}>
             <div className={"flex flex-row justify-between"}>
                 <Button type='secondary' className={"mb-2"}
+                        icon={<IconPlus />}
                         onClick={() => setAddVisible(true)}
                 >Add New CGL</Button>
-                <Button type='secondary' className={"mb-2"}>Download</Button>
+                <Button type='secondary'
+                        icon={<IconDownload />}
+                        className={"mb-2"}>Download</Button>
             </div>
             <div className={"bg-white rounded-lg pb-2"}>
                 <CGLTable setVisible={setEditVisible} />

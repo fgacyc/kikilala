@@ -129,3 +129,12 @@ export function convertCGLTableData(data){
     return CGsList;
 }
 
+export  async  function getCGName(CGLName){
+    const  data =await get("kikilala-CGLs");
+    for (let key in data){
+        if (data[key].CG_leader === CGLName){
+            return data[key].CG_name;
+        }
+    }
+    return "";
+}
