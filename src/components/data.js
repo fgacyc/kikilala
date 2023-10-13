@@ -104,7 +104,7 @@ export function validate(data) {
 // set("kikilala-CGLs-updatedAt", new Date());
 export async function ifExpire(){
     const date = await get("kikilala-CGLs-updatedAt")
-    console.log(date)
+    // console.log(date)
     if(!date) return true;
     // over 7 days
     let now = new Date();

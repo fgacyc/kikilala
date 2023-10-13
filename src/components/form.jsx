@@ -131,13 +131,24 @@ function UIInput({type}) {
 }
 
 function InputPIN({name,setter}) {
+    const [currentValue, setCurrentValue] = useState("")
+
+    function handleChange(e) {
+        const val = e.target.value.substring(0, 2)
+        const value = parent.parseInt(val)
+        setter(value)
+        setCurrentValue(value)
+    }
+
+
     return (
         <div className={"flex flex-col justify-center w-[64px]"}>
             <input type="number"
                    className={`border-2 rounded-xl border-[#2E024930] 
                    text-center text-2xl
                    my-0 inline-block w-[50px] h-[50px] mx-[10px]`}
-                     onChange={(e) => setter(e.target.value)}
+                   value={currentValue}
+                     onChange={handleChange}
             />
             <div className={"text-center"}>{name}</div>
         </div>
