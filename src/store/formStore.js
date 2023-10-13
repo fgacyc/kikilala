@@ -4,6 +4,7 @@ export const useFormStore = create((set) => ({
     satellite:"",
     pastoral_team : "",
     cgl_name : "",
+    cg_name : "",
     date:"",
     total_members_num:0,
 
@@ -24,9 +25,6 @@ export const useFormStore = create((set) => ({
     service_ac_num:0,
     service_nbs_num:0,
     service_absence_reason:"",
-
-    // add
-    cg_name : "",
 
     setSatellite: (satellite) => set({ satellite }),
     setPastoralTeam: (pastoral_team) => set({ pastoral_team }),
