@@ -15,3 +15,7 @@ body{
         width: 468px !important;
     }
 }
+
+.arco-select.arco-select-focused .arco-select-view{
+    border-color: #00B05C !important;
+}

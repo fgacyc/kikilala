@@ -1,4 +1,5 @@
 import {Message} from "@arco-design/web-react";
+import {get} from "idb-keyval";
 
 export function  getAllPastoralTeamNames(satellite,data){
     let teamNames = [];
@@ -98,4 +99,16 @@ export function validate(data) {
         return false;
     }
     return true;
+}
+
+// set("kikilala-CGLs-updatedAt", new Date());
+export async function ifExpire(){
+    const date = await get("kikilala-CGLs-updatedAt")
+    console.log(date)
+    if(!date) return true;
+    // over 7 days
+    let now = new Date();
+    let diff = now.getTime() - date.getTime();
+    let days = Math.floor(diff / (24 * 3600 * 1000));
+    return days > 7;
 }

@@ -1,4 +1,5 @@
 import {addDoc, deleteDoc, readAllDocs, readDoc, updateDoc} from "./firebase.js";
+import {set} from "idb-keyval";
 
 // create
 export async function addCGL(data) {
@@ -18,6 +19,8 @@ export async function readCGL(docID) {
 export async function readAllCGLs() {
     let docs = await readAllDocs("CGLs");
     if (docs === false) return false;
+    set("kikilala-CGLs", docs);
+    set("kikilala-CGLs-updatedAt", new Date());
     return docs;
 }
 

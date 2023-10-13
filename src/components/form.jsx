@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Select, Input, Notification, Icon} from '@arco-design/web-react';
 import {readAllCGLs} from "../api/CGLs.js";
-import {getAllPastoralTeamNames, getAllTeamLeaderNames} from "./data.js";
+import {getAllPastoralTeamNames, getAllTeamLeaderNames, ifExpire} from "./data.js";
 import {SendIcon} from "../Icon/SendIcon.jsx";
 import DateModal from "./DateModal.jsx";
 import {useFormStore} from "../store/formStore.js";
+import {get} from "idb-keyval";
 const IconFont = Icon.addFromIconFontCn({
     src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
 });
@@ -78,7 +79,7 @@ function Selects({data, statellite}) {
 
     return (
         <div className={"w-full flex flex-row justify-between h-auto"}>
-            <Select placeholder='Select Pastoral Team'
+            <Select placeholder='Pastoral Team'
                     style={{width: "45%"}}
                     onChange={setCurrentPT}
                     onFocus={() => {
@@ -97,7 +98,7 @@ function Selects({data, statellite}) {
                     </Option>
                 ))}
             </Select>
-            <Select placeholder='Select CGL Name' style={{width: "45%"}}
+            <Select placeholder='CGL Name' style={{width: "45%"}}
                     onChange={CGLSelectHandler}
                     onFocus={() => {
                         if (!statellite) {
@@ -205,10 +206,19 @@ export default function Form() {
     const [setCGAbsenceReason,setServiceAbsenceReason] = useFormStore(state => [state.setCGAbsenceReason,state.setServiceAbsenceReason])
 
     useEffect(() => {
-        readAllCGLs().then((data) => {
-            // console.log(data);
-            setAllCGLs(data);
-        })
+        async function getData(){
+            const isExpire =await ifExpire();
+            const localData = await get("kikilala-CGLs");
+            if (localData && !isExpire){
+                setAllCGLs(localData);
+                return;
+            }
+            readAllCGLs().then((data) => {
+                console.log(data);
+                setAllCGLs(data);
+            })
+        }
+        getData();
     }, []);
 
     function submitHandler() {
