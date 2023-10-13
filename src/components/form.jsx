@@ -361,18 +361,18 @@ export default function Form() {
     return (
         <div>
             <div className={"font-bold mt-0 mb-3"}>
-                <div>Which Service Location are you attending?</div>
+                <div>Which Service Location do you attend?</div>
                 <div></div>
             </div>
             <ButtonGroup setCurrentSatellite={setCurrentSatellite}/>
-            <div className={"font-bold mt-5 mb-3"}>Which Pastoral Team are you belonging to?</div>
+            <div className={"font-bold mt-5 mb-3"}>Which Pastoral Team do you belong to?</div>
             <Selects data={allCGLs} statellite={currentStatellite}/>
             <div>
-                <div className={"font-bold mt-5 mb-1"}>How many members are there in your Cell Group?</div>
+                <div className={"font-bold mt-5 mb-1"}>How many members are there in your Connect Group?</div>
                 <UIInput type={"number"}/>
             </div>
             <div>
-                <div className={"font-bold mt-5 mb-3"}>How many members attended your Cell Group activity this week?
+                <div className={"font-bold mt-5 mb-3"}>How many members attended your CG this week?
                 </div>
                 <InputPINs type={"activity"}/>
                 <TextArea placeholder='Please enter absence reasons ...'

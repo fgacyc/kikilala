@@ -12,6 +12,7 @@ function App() {
             <Routes>
                 {/*<Route path="/login" element={<Login/>}/>*/}
                 <Route path="/" element={<Submit/>}/>
+                <Route path="*" element={<div>404</div>}/>
             </Routes>
         </Router>
     )
