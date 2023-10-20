@@ -6,9 +6,11 @@ import {
     getMonthlyCGNumbering,
     getMonthlyNewFriends, getMonthlySalvation,
     getNumOfCGs,
-    getServiceAttend,
+    getServiceAttend, getSundayDate, getSundayDates,
     getWeeklyServiceAttend
 } from "./calculation.js";
+import SummaryLineChart from "./charts/SummaryLineChart.jsx";
+import {PieChart} from "./charts/PieChart.jsx";
 
 export  default  function DataCharts(){
     const [attendance,setAttendance] = useState([])
@@ -30,6 +32,9 @@ export  default  function DataCharts(){
             }
         }
         getData();
+
+
+        console.log( getSundayDate())
     }, []);
 
     useEffect(() => {
@@ -55,6 +60,23 @@ export  default  function DataCharts(){
                 <StatisticCard  title='Weekly Service Attend' value={weeklyServiceAttend}/>
                 <StatisticCard  title='Monthly New Friends' value={monthlyNewFriends}/>
                 <StatisticCard  title='Monthly Salvation' value={monthlySalvation}/>
+            </div>
+           <div className={"m-4 shadow-xl"}>
+               <SummaryLineChart />
+           </div>
+            <div className={"flex flex-row justify-between flex-wrap"}>
+                <div className={"m-4 shadow-xl"}>
+                    <PieChart title={"Weekly CG Numbering"} />
+                </div>
+                <div className={"m-4 shadow-xl"}>
+                    <PieChart title={"Weekly Service Attend"} />
+                </div>
+                <div className={"m-4 shadow-xl"}>
+                    <PieChart title={"Weekly New Friends"} />
+                </div>
+                <div className={"m-4 shadow-xl"}>
+                    <PieChart title={"Weekly Salvation"} />
+                </div>
             </div>
         </div>
     )

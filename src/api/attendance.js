@@ -23,7 +23,7 @@ export async function readAllAttends() {
 
 // update
 export async function updateAttend(docID, data) {
-    let res = await updateDoc("attendance", docID, data);
+    let res = await updateDoc("attendance", data, docID);
     if (res === false) return false;
     return res;
 }

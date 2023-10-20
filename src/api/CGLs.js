@@ -26,7 +26,7 @@ export async function readAllCGLs() {
 
 // update
 export async function updateCGL(docID, data) {
-    let res = await updateDoc("CGLs", docID, data);
+    let res = await updateDoc("CGLs", data, docID);
     if (res === false) return false;
     return res;
 }

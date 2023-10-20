@@ -5,7 +5,7 @@ import {convertCGLTableData} from "../formPage/data.js";
 import {IconDelete, IconDownload, IconEdit, IconPlus, IconSearch} from "@arco-design/web-react/icon";
 import CGLsInfoEditModal from "./CGLsInfoEditModal.jsx";
 import {useCGLStore} from "../../store/CGLStore.js";
-import {pastoralTeamList, satelliteList} from "./config.js";
+import {pastoralTeamList, satelliteList} from "../../config.js";
 import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
 

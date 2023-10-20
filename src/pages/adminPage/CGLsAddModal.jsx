@@ -1,7 +1,7 @@
 import {Message, Modal, Select} from "@arco-design/web-react";
 import { Form, Input, Button, Checkbox } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
-import {pastoralTeamList, satelliteList} from "./config.js";
+import {pastoralTeamList, satelliteList} from "../../config.js";
 import {useEffect, useRef, useState} from "react";
 import {addCGL, updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";

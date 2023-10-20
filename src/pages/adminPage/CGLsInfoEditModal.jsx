@@ -1,9 +1,10 @@
 import {Message, Modal, Select} from "@arco-design/web-react";
 import { Form, Input, Button, Checkbox } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
-import {pastoralTeamList, satelliteList} from "./config.js";
+import {pastoralTeamList, satelliteList} from "../../config.js";
 import {useEffect, useRef, useState} from "react";
 import {updateCGL} from "../../api/CGLs.js";
+import PubSub from "pubsub-js";
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -41,11 +42,12 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
 
     function  handleSubmit() {
         const data = formRef.current.getFieldsValue();
-        console.log(data)
-        console.log(docId)
+        // console.log(data)
+        // console.log(docId)
         updateCGL(docId,data).then((res) => {
             if (res!== false){
                 Message.success('Submitted successfully!')
+                PubSub.publish('updateCGLs');
             }
         })
     }
