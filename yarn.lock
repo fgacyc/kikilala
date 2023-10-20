@@ -1727,6 +1727,11 @@ file-entry-cache@^6.0.1:
   dependencies:
     flat-cache "^3.0.4"
 
+file-saver@^2.0.2:
+  version "2.0.5"
+  resolved "https://registry.npmmirror.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
+
 fill-range@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-7.0.1.tgz#1919a6a7c75fe38b2c7c77e5198535da9acdda40"
@@ -2685,6 +2690,13 @@ react-clientside-effect@^1.2.6:
   integrity sha512-XGGGRQAKY+q25Lz9a/4EPqom7WRjz3z9R2k4jhVKA/puQFH/5Nt27vFZYql4m4NVNdUvX8PS3O7r/Zzm7cjUlg==
   dependencies:
     "@babel/runtime" "^7.12.13"
+
+react-csv-downloader@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.npmmirror.com/react-csv-downloader/-/react-csv-downloader-2.9.1.tgz#ccee0b6b5bb5f960f7e70788413a17b97a42ba1e"
+  integrity sha512-bjd+tRkzsoOkaxeFFf2PMevim9LZRi70KzNXbVKyljzr0/V+grFa6zJNWEZFdPI57JWKpE6ZZek1vaLxQjTttg==
+  dependencies:
+    file-saver "^2.0.2"
 
 react-dom@^18.2.0:
   version "18.2.0"

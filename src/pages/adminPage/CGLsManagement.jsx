@@ -8,8 +8,10 @@ import {useCGLStore} from "../../store/CGLStore.js";
 import {pastoralTeamList, satelliteList} from "../../config.js";
 import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
+import {downloadCGLsData, downloadXLSX, getTodayDateStr} from "../../tools.js";
+import CsvDownload from "react-csv-downloader";
 
-function  CGLTable({setVisible}){
+function  CGLTable({setTableData,setVisible}){
     const inputRef = useRef(null);
     const columns = [
         {
@@ -53,7 +55,7 @@ function  CGLTable({setVisible}){
             },
         },
         {
-            title: 'CG_name',
+            title: 'CG Name',
             render: (_, record) => {
                 return (
                     <div className={"w-[100px]"}>
@@ -93,7 +95,7 @@ function  CGLTable({setVisible}){
             },
         },
         {
-            title: 'pastoral_team',
+            title: 'Pastoral Team',
             render: (_, record) => {
                 return (
                     <div className={"w-[150px]"}>
@@ -110,7 +112,7 @@ function  CGLTable({setVisible}){
             filterMultiple: false,
         },
         {
-            title: 'satellite',
+            title: 'Satellite',
             render: (_, record) => {
                 return (
                     <div className={"w-[70px]"}>
@@ -168,6 +170,8 @@ function  CGLTable({setVisible}){
 
     async function updateCGLs(){
         const data = await readAllCGLs();
+        //console.log(convertCGLTableData(data))
+        setTableData(convertCGLTableData(data));
         setAllCGLs( convertCGLTableData(data));
     }
 
@@ -187,6 +191,9 @@ function  CGLTable({setVisible}){
 export  default  function  CGLsManagement(){
     const [editVisible, setEditVisible] = useState(false);
     const [addVisible, setAddVisible] = useState(false);
+    const [tableData, setTableData] = useState([]);
+
+
     return(
         <div className={"h-full w-full p-8"}>
             <div className={"flex flex-row justify-between"}>
@@ -196,10 +203,18 @@ export  default  function  CGLsManagement(){
                 >Add New CGL</Button>
                 <Button type='secondary'
                         icon={<IconDownload />}
-                        className={"mb-2"}>Download</Button>
+                        className={"mb-2"}>
+                    <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
+                               extension={".csv"}
+                               text={"Download"}
+                               datas={downloadCGLsData(tableData)} />
+                </Button>
+
             </div>
             <div className={"bg-white rounded-lg pb-2"}>
-                <CGLTable setVisible={setEditVisible} />
+                <CGLTable
+                    setTableData={setTableData}
+                    setVisible={setEditVisible} />
             </div>
             <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible}/>
             <CGLsAddModal  visible={addVisible} setVisible={setAddVisible}/>
