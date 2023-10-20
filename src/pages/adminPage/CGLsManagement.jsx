@@ -1,4 +1,4 @@
-import {Table, Input, Button, Popconfirm} from '@arco-design/web-react';
+import {Table, Input, Button, Popconfirm, Message, Space} from '@arco-design/web-react';
 import {useEffect, useRef, useState} from "react";
 import {deleteCGL, readAllCGLs} from "../../api/CGLs.js";
 import {convertCGLTableData} from "../formPage/data.js";
@@ -18,7 +18,7 @@ function  CGLTable({setTableData,setVisible}){
             title: 'CG leader',
             render: (_, record) => {
                 return (
-                    <div className={"w-[150px]"}>
+                    <div className={"w-[150px] truncate"}>
                         {
                             record.CG_leader
                         }
@@ -58,7 +58,7 @@ function  CGLTable({setTableData,setVisible}){
             title: 'CG Name',
             render: (_, record) => {
                 return (
-                    <div className={"w-[100px]"}>
+                    <div className={"w-[150px]"}>
                         {
                             record.CG_name
                         }
@@ -115,7 +115,7 @@ function  CGLTable({setTableData,setVisible}){
             title: 'Satellite',
             render: (_, record) => {
                 return (
-                    <div className={"w-[70px]"}>
+                    <div className={"w-[100px]"}>
                         {
                             record.satellite
                         }
@@ -136,8 +136,8 @@ function  CGLTable({setTableData,setVisible}){
                     <Button icon={<IconEdit />}
                             className={"mr-2"}
                             onClick={() => {
-                                setVisible(true);
                                 setCGL(record);
+                                setVisible(true);
                             }}
                             type="secondary"
                     ></Button>
@@ -150,12 +150,6 @@ function  CGLTable({setTableData,setVisible}){
                             deleteCGL(record.key);
                             PubSub.publish('updateCGLs');
                         }}
-                        onCancel={() => {
-                            Message.error({
-                                content: 'cancel',
-                            });
-                        }}
-
                     >
                         <Button icon={<IconDelete />}
                                 type="secondary"
@@ -184,7 +178,24 @@ function  CGLTable({setTableData,setVisible}){
         return () => PubSub.unsubscribe(subscription);
     }, []);
 
-    return <Table columns={columns} data={allCGLs} />;
+    return <Table
+            columns={columns}
+            data={allCGLs}
+            renderPagination={(paginationNode) => (
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginTop: 10,
+                    }}
+                >
+                    <Space>
+                        <span className={"ml-4"}>Items: {allCGLs.length}</span>
+                    </Space>
+                    {paginationNode}
+                </div>
+            )}
+    />;
 }
 
 
