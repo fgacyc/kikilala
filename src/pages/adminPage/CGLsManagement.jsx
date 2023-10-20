@@ -14,7 +14,14 @@ function  CGLTable({setVisible}){
     const columns = [
         {
             title: 'CG leader',
-            dataIndex: 'CG_leader',
+            render: (_, record) => {
+                return (
+                    <div className={"w-[150px]"}>
+                        {
+                            record.CG_leader
+                        }
+                    </div>
+                )},
             sorter: (a, b) => a.CG_leader.localeCompare(b.CG_leader),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
@@ -47,7 +54,14 @@ function  CGLTable({setVisible}){
         },
         {
             title: 'CG_name',
-            dataIndex: 'CG_name',
+            render: (_, record) => {
+                return (
+                    <div className={"w-[100px]"}>
+                        {
+                            record.CG_name
+                        }
+                    </div>
+                )},
             sorter: (a, b) => a.CG_name.localeCompare(b.CG_name),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
@@ -80,7 +94,14 @@ function  CGLTable({setVisible}){
         },
         {
             title: 'pastoral_team',
-            dataIndex: 'pastoral_team',
+            render: (_, record) => {
+                return (
+                    <div className={"w-[150px]"}>
+                        {
+                            record.pastoral_team
+                        }
+                    </div>
+                )},
             sorter: (a, b) => a.pastoral_team.localeCompare(b.pastoral_team),
             filters: pastoralTeamList,
             onFilter: (value, row) => {
@@ -90,7 +111,14 @@ function  CGLTable({setVisible}){
         },
         {
             title: 'satellite',
-            dataIndex: 'satellite',
+            render: (_, record) => {
+                return (
+                    <div className={"w-[70px]"}>
+                        {
+                            record.satellite
+                        }
+                    </div>
+                )},
             sorter: (a, b) => a.satellite.localeCompare(b.satellite),
             filters: satelliteList,
             onFilter: (value, row) => {
