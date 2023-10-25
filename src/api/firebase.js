@@ -70,3 +70,14 @@ export async function deleteDoc(collection, docid) {
         return false;
     }
 }
+
+// query
+export async function queryDoc(collection, query) {
+    try {
+        let res = await fbStore.query(collection, query);
+        return res;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}

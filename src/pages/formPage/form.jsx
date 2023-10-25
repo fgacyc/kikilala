@@ -14,6 +14,7 @@ import DateModal from "./DateModal.jsx";
 import {useFormStore} from "../../store/formStore.js";
 import {get} from "idb-keyval";
 import {IconHistory} from "@arco-design/web-react/icon";
+import {readAttendByCGName} from "../../api/attendance.js";
 const IconFont = Icon.addFromIconFontCn({
     src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
 });
@@ -422,7 +423,9 @@ export default function Form() {
                 </button>
                 <div className={`w-[44px] h-[44px] bg-gray-200 rounded-[8px] 
                                 hover:bg-[#00B05C] hover:text-white cursor-pointer
-                                flex flex-row items-center justify-center mb-[10px]`}>
+                                flex flex-row items-center justify-center mb-[10px]`}
+                    onClick={()=>readAttendByCGName("CYC (PUC) 07S")}
+                >
                     <IconHistory fontSize={24} />
                 </div>
             </div>

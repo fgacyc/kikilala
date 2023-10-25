@@ -1,4 +1,4 @@
-import {addDoc, deleteDoc, readAllDocs, readDoc, updateDoc} from "./firebase.js";
+import {addDoc, deleteDoc, readAllDocs, readDoc, updateDoc,queryDoc} from "./firebase.js";
 
 // create
 export async function addAttend(data) {
@@ -11,6 +11,14 @@ export async function addAttend(data) {
 export async function readAttend(docID) {
     let doc = await readDoc("attendance", docID);
     if (doc === false) return false;
+    return doc;
+}
+
+export async function readAttendByCGName(cg_name) {
+    const query = ["cg_name", "==", cg_name];
+    let doc = await queryDoc("attendance", query);
+    if (doc === false) return false;
+    console.log(doc)
     return doc;
 }
 
