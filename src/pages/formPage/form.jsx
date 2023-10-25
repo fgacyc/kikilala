@@ -1,11 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {Select, Input, Notification, Icon} from '@arco-design/web-react';
 import {readAllCGLs} from "../../api/CGLs.js";
-import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGInfo, getCGName, ifExpire} from "./data.js";
+import {
+    getAllPastoralTeamNames,
+    getAllTeamLeaderNames,
+    getCGInfo,
+    getCGName,
+    getSatelliteNames,
+    ifExpire
+} from "./data.js";
 import {SendIcon} from "../../Icon/SendIcon.jsx";
 import DateModal from "./DateModal.jsx";
 import {useFormStore} from "../../store/formStore.js";
 import {get} from "idb-keyval";
+import {IconHistory} from "@arco-design/web-react/icon";
 const IconFont = Icon.addFromIconFontCn({
     src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
 });
@@ -16,20 +24,26 @@ const TextArea = Input.TextArea;
 function ButtonGroup({setCurrentSatellite}) {
     const [active, setActive] = useState(-1)
     const setSatellite = useFormStore(state => state.setSatellite)
-    const satellites = [
-        'Kuchai YW',
-        'Kuchai WK',
-        'Kuchai GS',
-        'Klang',
-        'Serdang',
-        'Kepong',
-        'USJ',
-        'Setapak',
-        'SG Long',
-        'Seremban'
-    ]
+    // const satellites = [
+    //     'Kuchai YW',
+    //     'Kuchai WK',
+    //     'Kuchai GS',
+    //     'Klang',
+    //     'Serdang',
+    //     'Kepong',
+    //     'USJ',
+    //     'Setapak',
+    //     'SG Long',
+    //     'Seremban'
+    // ]
+    const [satellites, setSatellites] = useState([])
 
     useEffect(() => {
+        async function getSats(){
+            const data =await getSatelliteNames();
+            if (!data) return;
+            setSatellites(data);
+        }
        async  function getData(){
            const satellite =await  getCGInfo("satellite");
               if (!satellite) return;
@@ -40,6 +54,7 @@ function ButtonGroup({setCurrentSatellite}) {
               }
        }
         getData();
+        getSats();
     }, []);
 
     function handleClick(index) {
@@ -394,15 +409,23 @@ export default function Form() {
                           onChange={setServiceAbsenceReason}
                           className={"w-full resize-none mt-2"}/>
             </div>
-            <button className={`bg-[#00B05C] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] 
+
+            <div className={"flex flex-row justify-between items-end"}>
+                <button className={`bg-[#00B05C] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] 
                     mt-8 flex flex-row justify-center w-[200px]`}
-                    onClick={submitHandler}
+                        onClick={submitHandler}
                     //onClick={printForm}
-            >
-                <SendIcon className={"scale-50"}/>
-                <span className={"ml-3"}
-                >Submit Attendance</span>
-            </button>
+                >
+                    <SendIcon className={"scale-50"}/>
+                    <span className={"ml-3"}
+                    >Submit Attendance</span>
+                </button>
+                <div className={`w-[44px] h-[44px] bg-gray-200 rounded-[8px] 
+                                hover:bg-[#00B05C] hover:text-white cursor-pointer
+                                flex flex-row items-center justify-center mb-[10px]`}>
+                    <IconHistory fontSize={24} />
+                </div>
+            </div>
             <DateModal setVisible={setVisible} visible={visible}/>
         </div>
     )

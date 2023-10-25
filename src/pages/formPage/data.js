@@ -119,6 +119,17 @@ export async function getCGInfo(key){
     return data[key];
 }
 
+export async function getSatelliteNames(){
+    const data = await get("kikilala-CGLs");
+    let satelliteNames = [];
+    for (let key in data){
+        if (!satelliteNames.includes(data[key].satellite)){
+            satelliteNames.push(data[key].satellite)
+        }
+    }
+    return satelliteNames;
+}
+
 export function convertCGLTableData(data){
     let CGsList =[]
     for (let key in data){
