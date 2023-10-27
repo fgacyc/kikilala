@@ -20,16 +20,16 @@ function SocialMedia({position}) {
         <div className={` flex-row w-[200px] justify-between absolute left-0 bottom-0 
             ${position === "left" ? "lg:flex hidden" : "lg:hidden flex"}
         `}>
-            <FacebookIcon class={"cursor-pointer scale-100"}
+            <FacebookIcon className={"cursor-pointer scale-100"}
                           onClick={() => goToSocialMedia("fb")}
             />
-            <InstagramIcon class={"cursor-pointer scale-100"}
+            <InstagramIcon className={"cursor-pointer scale-100"}
                            onClick={() => goToSocialMedia("ig")}
             />
-            <ThreadsIcon class={"cursor-pointer scale-100"}
+            <ThreadsIcon className={"cursor-pointer scale-100"}
                          onClick={() => goToSocialMedia("th")}
             />
-            <YoutubeIcon class={"cursor-pointer scale-100"}
+            <YoutubeIcon className={"cursor-pointer scale-100"}
                          onClick={() => goToSocialMedia("yt")}
             />
         </div>
@@ -50,7 +50,7 @@ export default function Submit() {
                             
                                         `}>
                     <div className={"my-8"}>Let's Achieve</div>
-                    <div className={"my-8"}>The <b className={"text-[#313131]"}>M100</b> Vision</div>
+                    <div className={"my-8"}>The <b className={"text-[#313131]"}>M100</b> Mision</div>
                     <div className={"my-8"}>Together</div>
                 </div>
                 <SocialMedia position={"left"}/>
