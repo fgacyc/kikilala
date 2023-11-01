@@ -41,7 +41,7 @@ const AttendanceCard = ({ title, attendanceType, attendanceData, attendance_list
                         attendance_list.map((item, index) => (
                             <div key={index}>
                                 <FormItem
-                                    label={item}
+                                    label={item === 'NBS' ? 'ABS' : item}
                                     field={`${attendanceType}_${item.toLowerCase()}_num`}
                                     className="w-[150px] mt-6"
                                 >
