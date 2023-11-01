@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { readAttendByCGName } from '../../api/attendance';
-import { Table } from '@arco-design/web-react';
+import { Button, Table } from '@arco-design/web-react';
+import { IconDownload } from "@arco-design/web-react/icon";
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { attendanceTypeList } from '../../config';
+import CsvDownload from "react-csv-downloader";
+import { downloadCGLAttendanceData, getTodayDateStr } from '../../tools';
 
 const CGLAttendance = () => {
     const params = useParams()
@@ -12,26 +16,19 @@ const CGLAttendance = () => {
         {
             key: 'date',
             title: 'Date',
+            dataIndex: 'date',
             width: 120,
             render: (_, record) => <div>{record.date}</div>,
-            sorter: (a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]),
+            sorter: (a, b) => new Date(a.date.split('-')[0]) - new Date(b.date.split('-')[0]),
         },
         {
             key: 'type',
             title: 'Type',
+            dataIndex: 'type',
             width: 85,
             render: (_, record) => <div>{record.type}</div>,
             sorter: (a, b) => a.type.localeCompare(b.type),
-            filters: [
-                {
-                    text: 'CG',
-                    value: 'CG',
-                },
-                {
-                    text: 'Service',
-                    value: 'Service',
-                }
-            ],
+            filters: attendanceTypeList,
             onFilter: (value, row) => {
                 return row.type.toLowerCase().includes(value.toLowerCase());
             },
@@ -40,6 +37,7 @@ const CGLAttendance = () => {
         {
             key: 'om_num',
             title: 'OM',
+            dataIndex: 'om_num',
             width: 50,
             render: (_, record) => <div>{record.om_num}</div>,
             sorter: (a, b) => a.om_num - b.om_num,
@@ -47,6 +45,7 @@ const CGLAttendance = () => {
         {
             key: 'nb_num',
             title: 'NB',
+            dataIndex: 'nb_num',
             width: 50,
             render: (_, record) => <div>{record.nb_num}</div>,
             sorter: (a, b) => a.nb_num - b.nb_num,
@@ -54,6 +53,7 @@ const CGLAttendance = () => {
         {
             key: 'nf_num',
             title: 'NF',
+            dataIndex: 'nf_num',
             width: 50,
             render: (_, record) => <div>{record.nf_num}</div>,
             sorter: (a, b) => a.nf_num - b.nf_num,
@@ -61,6 +61,7 @@ const CGLAttendance = () => {
         {
             key: 'rnf_num',
             title: 'RNF',
+            dataIndex: 'rnf_num',
             width: 50,
             render: (_, record) => <div>{record.rnf_num}</div>,
             sorter: (a, b) => a.rnf_num - b.rnf_num,
@@ -68,6 +69,7 @@ const CGLAttendance = () => {
         {
             key: 'ac_num',
             title: 'AC',
+            dataIndex: 'ac_num',
             width: 50,
             render: (_, record) => <div>{record.ac_num}</div>,
             sorter: (a, b) => a.ac_num - b.ac_num,
@@ -75,9 +77,18 @@ const CGLAttendance = () => {
         {
             key: 'abs_num',
             title: 'ABS',
+            dataIndex: 'abs_num',
             width: 50,
             render: (_, record) => <div>{record.abs_num}</div>,
             sorter: (a, b) => a.abs_num - b.abs_num,
+        },
+        {
+            key: 'total_num',
+            title: 'Total',
+            dataIndex: 'total_num',
+            width: 50,
+            render: (_, record) => <div>{record.total_num}</div>,
+            sorter: (a, b) => a.total_num - b.total_num,
         },
     ];
 
@@ -105,6 +116,7 @@ const CGLAttendance = () => {
                 nf_num: item.cg_nf_num,
                 om_num: item.cg_om_num,
                 rnf_num: item.cg_rnf_num,
+                total_num: item.total_members_num,
                 absence_reason: item.cg_absence_reason,
             };
 
@@ -119,6 +131,7 @@ const CGLAttendance = () => {
                 nf_num: item.service_nf_num,
                 om_num: item.service_om_num,
                 rnf_num: item.service_rnf_num,
+                total_num: item.total_members_num,
                 absence_reason: item.service_absence_reason,
             };
 
@@ -128,8 +141,19 @@ const CGLAttendance = () => {
 
     return (
         <div className='p-10'>
-            <div className='flex flex-col pb-8 text-white text-3xl'>
-                <b className='text-[#313131] mb-3'>{`${params.cgl_name}'s `}</b>Connect Group Attendance
+            <div className='flex flex-col text-white text-3xl'>
+                <b className='text-[#313131] mb-2'>{`${params.cgl_name}'s `}</b>Connect Group Attendance
+            </div>
+            <div className='flex justify-end mb-2'>
+                <Button
+                    type='secondary'
+                    icon={<IconDownload />}>
+                    <CsvDownload
+                        filename={`CGLs_${getTodayDateStr()}`}
+                        extension={".csv"}
+                        text={"Download"}
+                        datas={downloadCGLAttendanceData(attendanceData)} />
+                </Button>
             </div>
             <Table
                 columns={columns}
