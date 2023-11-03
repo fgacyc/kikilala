@@ -66,6 +66,7 @@ function DateModal({visible, setVisible}) {
             "satellite": data.satellite,
             "pastoral_team": data.pastoral_team,
             "cgl_name": data.cgl_name,
+            "cg_name": data.cg_name,
             "total_members_num" : data.total_members_num,
         })
     }

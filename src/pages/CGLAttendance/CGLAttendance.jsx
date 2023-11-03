@@ -7,10 +7,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { attendanceTypeList } from '../../config';
 import CsvDownload from "react-csv-downloader";
 import { downloadCGLAttendanceData, getTodayDateStr } from '../../tools';
+import {readCGLNameByCGName} from "../../api/CGLs.js";
 
 const CGLAttendance = () => {
     const params = useParams()
     const [attendanceData, setAttendanceData] = useState([{}]);
+    const [CGLName, setCGLName] = useState('');
 
     const columns = [
         {
@@ -97,11 +99,14 @@ const CGLAttendance = () => {
             const attendance_data = await readAttendByCGName(params.cg_name);
             const transform_attendance_data = transformData(attendance_data)
                 .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
-            console.log(transform_attendance_data)
+            // console.log(transform_attendance_data)
             setAttendanceData(transform_attendance_data);
+            const CGLNameQ =await readCGLNameByCGName(params.cg_name);
+            setCGLName(CGLNameQ.CG_leader);
         }
 
         getCGLAttendance();
+
     }, [])
 
     const transformData = (data) => {
@@ -143,7 +148,7 @@ const CGLAttendance = () => {
     return (
         <div className='p-10'>
             <div className='flex flex-col text-white text-3xl'>
-                <b className='text-[#313131] mb-2'>{`${params.cgl_name}'s `}</b>Connect Group Attendance
+                <b className='text-[#313131] mb-2'>{`${CGLName}'s `}</b>Connect Group Attendance
             </div>
             <div className='flex justify-end mb-2'>
                 <Button

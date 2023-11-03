@@ -19,7 +19,7 @@ function App() {
                 <Route path="ki-admin" element={<CGLsManagement />} />
                 <Route path="ki-charts" element={<DataCharts />} />
                 <Route path="ki-attendance" element={<AttendanceManagement />} />
-                <Route path="ki-cgl-attendance/:cg_name/:cgl_name" element={<CGLAttendance />} />
+                <Route path="ki-cgl-attendance/:cg_name" element={<CGLAttendance />} />
             </Routes>
         </Router>
     )

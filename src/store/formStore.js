@@ -59,6 +59,7 @@ export const useFormStore = create((set) => ({
                 pastoral_team: data.pastoral_team || "",
                 satellite: data.satellite || "",
                 total_members_num: data.total_members_num || 0,
+                cg_name: data.cg_name || ""
             })
         }else{
             set({
@@ -66,6 +67,7 @@ export const useFormStore = create((set) => ({
                 pastoral_team: "",
                 satellite: "",
                 total_members_num: 0,
+                cg_name: ""
             })
         }
 

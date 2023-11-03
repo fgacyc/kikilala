@@ -96,10 +96,10 @@ function Selects({ data, statellite }) {
             let data = await get("kikilala-CGLs");
             if (!data) return;
             // set select 1 options
-            console.log(satellite, data)
+            //console.log(satellite, data)
             const allPastoralTeamNames = getAllPastoralTeamNames(satellite, data);
             setCurrentPastoralTeamNames(allPastoralTeamNames);
-            console.log(allPastoralTeamNames)
+            //console.log(allPastoralTeamNames)
             // set select 2 options
             const allTeamLeaderNames = getAllTeamLeaderNames(satellite, pastoral_team, data);
             setCurrentTeamLeaderNames(allTeamLeaderNames);
@@ -370,8 +370,10 @@ export default function Form() {
     }
 
     const viewHistory = () => {
+        // console.log("cg_name",cg_name)
+        // console.log("cgl_name",cgl_name)
         if (cg_name) {
-            navigate(`/ki-cgl-attendance/${cg_name}/${cgl_name}`)
+            navigate(`/ki-cgl-attendance/${cg_name}`)
         } else {
             Message.warning("Please select a CGL Name!")
         }

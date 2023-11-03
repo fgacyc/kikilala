@@ -1,4 +1,4 @@
-import {addDoc, deleteDoc, readAllDocs, readDoc, updateDoc} from "./firebase.js";
+import {addDoc, deleteDoc, queryDoc, readAllDocs, readDoc, updateDoc} from "./firebase.js";
 import {set} from "idb-keyval";
 
 // create
@@ -36,4 +36,12 @@ export async function deleteCGL(docID) {
     let res = await deleteDoc("CGLs", docID);
     if (res === false) return false;
     return res;
+}
+
+export async function readCGLNameByCGName(cg_name) {
+    console.log(cg_name)
+    const query = ["CG_name", "==", cg_name];
+    let doc = await queryDoc("CGLs", query);
+    if (doc == false) return false;
+    return doc[0]
 }
