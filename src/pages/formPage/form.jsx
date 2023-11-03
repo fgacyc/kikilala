@@ -25,26 +25,19 @@ const TextArea = Input.TextArea;
 function ButtonGroup({ setCurrentSatellite }) {
     const [active, setActive] = useState(-1)
     const setSatellite = useFormStore(state => state.setSatellite)
-    // const satellites = [
-    //     'Kuchai YW',
-    //     'Kuchai WK',
-    //     'Kuchai GS',
-    //     'Klang',
-    //     'Serdang',
-    //     'Kepong',
-    //     'USJ',
-    //     'Setapak',
-    //     'SG Long',
-    //     'Seremban'
-    // ]
-    const [satellites, setSatellites] = useState([])
+    const satellites = [
+        'Kuchai YW',
+        'Kuchai WK',
+        'Kuchai GS',
+        'Serdang',
+        'Kepong',
+        'USJ',
+        'Setapak',
+        'SG Long',
+        'Seremban'
+    ]
 
     useEffect(() => {
-        async function getSats() {
-            const data = await getSatelliteNames();
-            if (!data) return;
-            setSatellites(data);
-        }
         async function getData() {
             const satellite = await getCGInfo("satellite");
             if (!satellite) return;
@@ -55,7 +48,6 @@ function ButtonGroup({ setCurrentSatellite }) {
             }
         }
         getData();
-        getSats();
     }, []);
 
     function handleClick(index) {
