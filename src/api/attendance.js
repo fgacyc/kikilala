@@ -18,7 +18,7 @@ export async function readAttendByCGName(cg_name) {
     const query = ["cg_name", "==", cg_name];
     let doc = await queryDoc("attendance", query);
     if (doc === false) return false;
-    console.log(doc)
+    // console.log(doc)
     return doc;
 }
 

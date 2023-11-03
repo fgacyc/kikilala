@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import {get} from "idb-keyval";
 
 export const useFormStore = create((set) => ({
     rowKey: "",
@@ -8,7 +9,7 @@ export const useFormStore = create((set) => ({
     cgl_name: "",
     cg_name: "",
     date: "",
-    total_members_num: 0,
+    total_members_num: "",
 
     // cg activity attendance
     cg_om_num: 0,
@@ -16,7 +17,7 @@ export const useFormStore = create((set) => ({
     cg_nf_num: 0,
     cg_rnf_num: 0,
     cg_ac_num: 0,
-    cg_nbs_num: 0,
+    cg_abs_num: 0,
     cg_absence_reason: "",
 
     // service attendance
@@ -25,7 +26,7 @@ export const useFormStore = create((set) => ({
     service_nf_num: 0,
     service_rnf_num: 0,
     service_ac_num: 0,
-    service_nbs_num: 0,
+    service_abs_num: 0,
     service_absence_reason: "",
 
     setRowKey: (rowKey) => set({ rowKey }),
@@ -49,6 +50,16 @@ export const useFormStore = create((set) => ({
     setServiceNBSNum: (service_nbs_num) => set({ service_nbs_num }),
     setServiceACNum: (service_ac_num) => set({ service_ac_num }),
     setServiceAbsenceReason: (service_absence_reason) => set({ service_absence_reason }),
+
+    initData: async () => {
+        const data = await get("CGInfo");
+        set({
+            cgl_name: data.CG_name || "",
+            pastoral_team: data.pastoral_team || "",
+            satellite: data.satellite || "",
+            total_members_num: data.total_members_num || 0,
+        })
+    },
 
     reset: () => set({
         satellite: "",
@@ -88,14 +99,14 @@ export const useFormStore = create((set) => ({
             cg_nf_num: useFormStore.getState().cg_nf_num,
             cg_rnf_num: useFormStore.getState().cg_rnf_num,
             cg_ac_num: useFormStore.getState().cg_ac_num,
-            cg_nbs_num: useFormStore.getState().cg_nbs_num,
+            cg_nbs_num: useFormStore.getState().cg_abs_num,
             cg_absence_reason: useFormStore.getState().cg_absence_reason,
             service_om_num: useFormStore.getState().service_om_num,
             service_nb_num: useFormStore.getState().service_nb_num,
             service_nf_num: useFormStore.getState().service_nf_num,
             service_rnf_num: useFormStore.getState().service_rnf_num,
             service_ac_num: useFormStore.getState().service_ac_num,
-            service_nbs_num: useFormStore.getState().service_nbs_num,
+            service_nbs_num: useFormStore.getState().service_abs_num,
             service_absence_reason: useFormStore.getState().service_absence_reason,
 
             // cg name

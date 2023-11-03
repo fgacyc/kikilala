@@ -4,6 +4,8 @@ import {InstagramIcon} from "../../Icon/InstagramIcon.jsx";
 import {ThreadsIcon} from "../../Icon/ThreadsIcon.jsx";
 import {YoutubeIcon} from "../../Icon/YoutubeIcon.jsx";
 import {FacebookIcon} from "../../Icon/FacebookIcon.jsx";
+import {useFormStore} from "../../store/formStore.js";
+import {useEffect} from "react";
 
 function SocialMedia({position}) {
     function goToSocialMedia(type) {
@@ -37,6 +39,11 @@ function SocialMedia({position}) {
 }
 
 export default function Submit() {
+    const initData = useFormStore(state => state.initData);
+    useEffect(() => {
+        void initData();
+    }, []);
+
     return (
         <div className={`w-full h-full bg-[#00D97C] rounded-bl flex flex-row flex-wrap justify-between 
             sm:p-[50px] p-0`

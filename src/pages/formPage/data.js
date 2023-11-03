@@ -116,6 +116,7 @@ export async function ifExpire(){
 
 export async function getCGInfo(key){
     const  data = await get("CGInfo");
+    if(!data) return null;
     return data[key];
 }
 

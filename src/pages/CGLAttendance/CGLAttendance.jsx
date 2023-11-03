@@ -117,7 +117,7 @@ const CGLAttendance = () => {
                 om_num: item.cg_om_num,
                 rnf_num: item.cg_rnf_num,
                 total_num: item.total_members_num,
-                absence_reason: item.cg_absence_reason,
+                absence_reason: "Absence_reason: " + item.cg_absence_reason,
             };
 
             // Create a new object for "service" data
@@ -132,7 +132,7 @@ const CGLAttendance = () => {
                 om_num: item.service_om_num,
                 rnf_num: item.service_rnf_num,
                 total_num: item.total_members_num,
-                absence_reason: item.service_absence_reason,
+                absence_reason: "Absence_reason: " + item.service_absence_reason,
             };
 
             return [cgData, serviceData];
@@ -162,7 +162,8 @@ const CGLAttendance = () => {
                 expandProps={{
                     width: window.innerWidth > 768 ? 15 : 25,
                     expandRowByClick: true,
-                    rowExpandable: (record) => record.absence_reason !== null && record.absence_reason !== '',
+                    rowExpandable: (record) => record.absence_reason !== null && record.absence_reason !== ''
+                    && record.absence_reason !== 'Absence_reason: ',
                 }}
                 scroll={{
                     x: window.innerWidth * 0.9,

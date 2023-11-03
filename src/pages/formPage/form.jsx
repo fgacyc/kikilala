@@ -24,7 +24,8 @@ const TextArea = Input.TextArea;
 
 function ButtonGroup({ setCurrentSatellite }) {
     const [active, setActive] = useState(-1)
-    const setSatellite = useFormStore(state => state.setSatellite)
+    const [satellite, setSatellite] =
+        useFormStore(state => [state.satellite,state.setSatellite])
     const satellites = [
         'Kuchai YW',
         'Kuchai WK',
@@ -39,7 +40,6 @@ function ButtonGroup({ setCurrentSatellite }) {
 
     useEffect(() => {
         async function getData() {
-            const satellite = await getCGInfo("satellite");
             if (!satellite) return;
             for (let i = 0; i < satellites.length; i++) {
                 if (satellites[i] === satellite) {
@@ -48,7 +48,7 @@ function ButtonGroup({ setCurrentSatellite }) {
             }
         }
         getData();
-    }, []);
+    }, [satellite]);
 
     function handleClick(index) {
         setActive(index)
@@ -82,34 +82,40 @@ function Selects({ data, statellite }) {
     const [currentPT, setCurrentPT] = useState("")
     const [currentCGLName, setCurrentCGLName] = useState("")
     const [currentTeamLeaderNames, setCurrentTeamLeaderNames] = useState([])
-    const [setPastoralTeam, setCGLName, setCGName] = useFormStore(state => [
-        state.setPastoralTeam, state.setCGLName, state.setCGName
+    const [setPastoralTeam, setCGLName, setCGName,satellite,pastoral_team,cgl_name] = useFormStore(state => [
+        state.setPastoralTeam, state.setCGLName, state.setCGName,
+        state.satellite, state.pastoral_team, state.cgl_name
     ])
 
     const [ifPTLocal, setIfPTLocal] = useState(false)
 
     useEffect(() => {
         async function getData() {
+            if(!satellite) return;
+
             let data = await get("kikilala-CGLs");
             if (!data) return;
 
-            let statelliteDB = await getCGInfo("satellite");
-            let pastoralTeam = await getCGInfo("pastoral_team");
-            let cgl_name = await getCGInfo("cgl_name");
+            let  CGInfo = await get("CGInfo");
+            if (!CGInfo) return;
+
+            // let satelliteDB = await getCGInfo("satellite");
+            // let pastoralTeam = await getCGInfo("pastoral_team");
+            // let cgl_name = await getCGInfo("cgl_name");
 
             // set select 1 options
-            setCurrentPastoralTeamNames(getAllPastoralTeamNames(statelliteDB, data));
+            setCurrentPastoralTeamNames(getAllPastoralTeamNames(satellite, data));
             // set select 2 options
-            setCurrentTeamLeaderNames(getAllTeamLeaderNames(statelliteDB, pastoralTeam, data))
+            setCurrentTeamLeaderNames(getAllTeamLeaderNames(satellite, pastoral_team, data))
 
             // stet store
-            setPastoralTeam(pastoralTeam)
+            setPastoralTeam(pastoral_team)
             setCGLName(cgl_name)
 
             // set default value
             setIfPTLocal(true)
-            console.log(pastoralTeam)
-            setCurrentPT(pastoralTeam)
+            console.log(pastoral_team)
+            setCurrentPT(pastoral_team)
             console.log(cgl_name)
             setCurrentCGLName(cgl_name)
         }
@@ -137,119 +143,69 @@ function Selects({ data, statellite }) {
 
     return (
         <>
-            {
-                ifPTLocal
-                    ? <div className={"w-full flex flex-row justify-between h-auto"}>
-                        <Select placeholder={currentPT}
-                            style={{ width: "50%" }}
-                            onChange={setCurrentPT}
-                            onFocus={() => {
-                                if (!statellite) {
-                                    Notification.warning({
-                                        content: 'Please select Satellite first!',
-                                        icon: <IconFont type='icon-warning' />,
-                                        position: 'topLeft',
-                                    });
-                                }
-                            }}
-                        >
-                            {currentPastoralTeamNames && currentPastoralTeamNames.map((option, index) => (
-                                <Option key={index} value={option}>
-                                    {option}
-                                </Option>
-                            ))}
-                        </Select>
-                        <Select placeholder={currentCGLName} style={{ width: "45%" }}
-                            onChange={CGLSelectHandler}
-                            onFocus={() => {
-                                if (!statellite) {
-                                    Notification.warning({
-                                        content: 'Please select Satellite and Pastoral Team first!',
-                                        icon: <IconFont type='icon-warning' />,
-                                        position: 'topLeft',
-                                    });
-                                }
-                            }}
-                        >
-                            {currentTeamLeaderNames && currentTeamLeaderNames.map((option, index) => (
-                                <Option key={index} value={option}>
-                                    {option}
-                                </Option>
-                            ))}
-                        </Select>
-                    </div>
-                    : <div className={"w-full flex flex-row justify-between h-auto"}>
-                        <Select placeholder='Pastoral Team'
-                            style={{ width: "50%" }}
-                            onChange={setCurrentPT}
-                            onFocus={() => {
-                                if (!statellite) {
-                                    Notification.warning({
-                                        content: 'Please select Satellite first!',
-                                        icon: <IconFont type='icon-warning' />,
-                                        position: 'topLeft',
-                                    });
-                                }
-                            }}
-                        >
-                            {currentPastoralTeamNames && currentPastoralTeamNames.map((option, index) => (
-                                <Option key={index} value={option}>
-                                    {option}
-                                </Option>
-                            ))}
-                        </Select>
-                        <Select placeholder='CGL Name' style={{ width: "45%" }}
-                            onChange={CGLSelectHandler}
-                            onFocus={() => {
-                                if (!statellite) {
-                                    Notification.warning({
-                                        content: 'Please select Satellite and Pastoral Team first!',
-                                        icon: <IconFont type='icon-warning' />,
-                                        position: 'topLeft',
-                                    });
-                                }
-                            }}
-                        >
-                            {currentTeamLeaderNames && currentTeamLeaderNames.map((option, index) => (
-                                <Option key={index} value={option}>
-                                    {option}
-                                </Option>
-                            ))}
-                        </Select>
-                    </div>
-            }
+            <div className={"w-full flex flex-row justify-between h-auto"}>
+                <Select placeholder='Pastoral Team'
+                        style={{ width: "50%" }}
+                        onChange={setCurrentPT}
+                        // defaultValue={pastoral_team}
+                        onFocus={() => {
+                            if (!statellite) {
+                                Notification.warning({
+                                    content: 'Please select Satellite first!',
+                                    icon: <IconFont type='icon-warning' />,
+                                    position: 'topLeft',
+                                });
+                            }
+                        }}
+                >
+                    {currentPastoralTeamNames && currentPastoralTeamNames.map((option, index) => (
+                        <Option key={index} value={option}>
+                            {option}
+                        </Option>
+                    ))}
+                </Select>
+                <Select placeholder='CGL Name' style={{ width: "45%" }}
+                        onChange={CGLSelectHandler}
+                        onFocus={() => {
+                            if (!statellite) {
+                                Notification.warning({
+                                    content: 'Please select Satellite and Pastoral Team first!',
+                                    icon: <IconFont type='icon-warning' />,
+                                    position: 'topLeft',
+                                });
+                            }
+                        }}
+                >
+                    {currentTeamLeaderNames && currentTeamLeaderNames.map((option, index) => (
+                        <Option key={index} value={option}>
+                            {option}
+                        </Option>
+                    ))}
+                </Select>
+            </div>
         </>
     );
 }
 
 function UIInput({ type }) {
-    const setTotalMembersNum = useFormStore(state => state.setTotalMembersNum)
-    const [currentTotalMembersNum, setCurrentTotalMembersNum] = useState("")
-
-    useEffect(() => {
-        getCGInfo("total_members_num").then((res) => {
-            console.log("total_members_num", res);
-            setCurrentTotalMembersNum(res)
-            setTotalMembersNum(res)
-        })
-    }, []);
+    const [total_members_num,setTotalMembersNum] = useFormStore(state => [
+        state.total_members_num, state.setTotalMembersNum
+    ])
 
     function handleChange(e) {
         const val = e.target.value
         if (!val) {
-            setTotalMembersNum(0)
-            setCurrentTotalMembersNum("")
+            setTotalMembersNum("")
             return;
         }
         const value = parent.parseInt(val)
         setTotalMembersNum(value)
-        setCurrentTotalMembersNum(value)
     }
 
     return (
         <input type={type}
             onChange={handleChange}
-            value={currentTotalMembersNum}
+            value={total_members_num}
             className={"w-full  border-b-2 border-[#2E024930] h-[30px] my-0"} />
     )
 }
