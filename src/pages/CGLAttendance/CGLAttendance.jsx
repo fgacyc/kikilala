@@ -97,6 +97,7 @@ const CGLAttendance = () => {
             const attendance_data = await readAttendByCGName(params.cg_name);
             const transform_attendance_data = transformData(attendance_data)
                 .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
+            console.log(transform_attendance_data)
             setAttendanceData(transform_attendance_data);
         }
 
@@ -148,28 +149,31 @@ const CGLAttendance = () => {
                 <Button
                     type='secondary'
                     icon={<IconDownload />}>
-                    <CsvDownload
-                        filename={`CGLs_${getTodayDateStr()}`}
-                        extension={".csv"}
-                        text={"Download"}
-                        datas={downloadCGLAttendanceData(attendanceData)} />
+                    {/*<CsvDownload*/}
+                    {/*    filename={`CGLs_${getTodayDateStr()}`}*/}
+                    {/*    extension={".csv"}*/}
+                    {/*    text={"Download"}*/}
+                    {/*    datas={downloadCGLAttendanceData(attendanceData)} />*/}
                 </Button>
             </div>
-            <Table
-                columns={columns}
-                data={attendanceData}
-                expandedRowRender={(record) => record.absence_reason}
-                expandProps={{
-                    width: window.innerWidth > 768 ? 15 : 25,
-                    expandRowByClick: true,
-                    rowExpandable: (record) => record.absence_reason !== null && record.absence_reason !== ''
-                    && record.absence_reason !== 'Absence_reason: ',
-                }}
-                scroll={{
-                    x: window.innerWidth * 0.9,
-                    y: window.innerHeight,
-                }}
-            />
+            {
+                attendanceData.length !== 1 && <Table
+                    columns={columns}
+                    data={attendanceData}
+                    expandedRowRender={(record) => record.absence_reason}
+                    expandProps={{
+                        width: window.innerWidth > 768 ? 15 : 25,
+                        expandRowByClick: true,
+                        rowExpandable: (record) => record.absence_reason !== null && record.absence_reason !== ''
+                            && record.absence_reason !== 'Absence_reason: ',
+                    }}
+                    scroll={{
+                        x: window.innerWidth * 0.9,
+                        y: window.innerHeight,
+                    }}
+                />
+            }
+
         </div>
     )
 }

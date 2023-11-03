@@ -53,12 +53,23 @@ export const useFormStore = create((set) => ({
 
     initData: async () => {
         const data = await get("CGInfo");
-        set({
-            cgl_name: data.CG_name || "",
-            pastoral_team: data.pastoral_team || "",
-            satellite: data.satellite || "",
-            total_members_num: data.total_members_num || 0,
-        })
+        if(data){
+            set({
+                cgl_name: data.cgl_name || "",
+                pastoral_team: data.pastoral_team || "",
+                satellite: data.satellite || "",
+                total_members_num: data.total_members_num || 0,
+            })
+        }else{
+            set({
+                cgl_name: "",
+                pastoral_team: "",
+                satellite: "",
+                total_members_num: 0,
+            })
+        }
+
+
     },
 
     reset: () => set({

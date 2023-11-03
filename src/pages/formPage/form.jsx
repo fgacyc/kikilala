@@ -44,6 +44,7 @@ function ButtonGroup({ setCurrentSatellite }) {
             for (let i = 0; i < satellites.length; i++) {
                 if (satellites[i] === satellite) {
                     handleClick(i);
+                    setCurrentSatellite(satellites[i])
                 }
             }
         }
@@ -90,46 +91,73 @@ function Selects({ data, statellite }) {
     const [ifPTLocal, setIfPTLocal] = useState(false)
 
     useEffect(() => {
-        async function getData() {
-            if(!satellite) return;
+        async function getData(){
 
             let data = await get("kikilala-CGLs");
             if (!data) return;
-
-            let  CGInfo = await get("CGInfo");
-            if (!CGInfo) return;
-
-            // let satelliteDB = await getCGInfo("satellite");
-            // let pastoralTeam = await getCGInfo("pastoral_team");
-            // let cgl_name = await getCGInfo("cgl_name");
-
             // set select 1 options
-            setCurrentPastoralTeamNames(getAllPastoralTeamNames(satellite, data));
+            console.log(satellite, data)
+            const allPastoralTeamNames = getAllPastoralTeamNames(satellite, data);
+            setCurrentPastoralTeamNames(allPastoralTeamNames);
+            console.log(allPastoralTeamNames)
             // set select 2 options
-            setCurrentTeamLeaderNames(getAllTeamLeaderNames(satellite, pastoral_team, data))
+            const allTeamLeaderNames = getAllTeamLeaderNames(satellite, pastoral_team, data);
+            setCurrentTeamLeaderNames(allTeamLeaderNames);
+            // console.log(allTeamLeaderNames)
 
-            // stet store
-            setPastoralTeam(pastoral_team)
-            setCGLName(cgl_name)
-
-            // set default value
-            setIfPTLocal(true)
-            console.log(pastoral_team)
+            // set default pastoral team
             setCurrentPT(pastoral_team)
-            console.log(cgl_name)
+
+            // set default CGL name
             setCurrentCGLName(cgl_name)
+
+            // console.log(pastoral_team)
+            // console.log(cgl_name)
         }
         getData();
-    }, [])
+    }, [satellite])
 
-    useEffect(() => {
-        if (!statellite) return;
-        setCurrentPastoralTeamNames(getAllPastoralTeamNames(statellite, data));
-    }, [statellite])
+    // useEffect(() => {
+    //     async function getData() {
+    //         if(!satellite) return;
+    //
+    //         let data = await get("kikilala-CGLs");
+    //         if (!data) return;
+    //
+    //         let  CGInfo = await get("CGInfo");
+    //         if (!CGInfo) return;
+    //
+    //         // let satelliteDB = await getCGInfo("satellite");
+    //         // let pastoralTeam = await getCGInfo("pastoral_team");
+    //         // let cgl_name = await getCGInfo("cgl_name");
+    //
+    //         // set select 1 options
+    //         setCurrentPastoralTeamNames(getAllPastoralTeamNames(satellite, data));
+    //         // set select 2 options
+    //         setCurrentTeamLeaderNames(getAllTeamLeaderNames(satellite, pastoral_team, data))
+    //
+    //         // stet store
+    //         setPastoralTeam(pastoral_team)
+    //         setCGLName(cgl_name)
+    //
+    //         // set default value
+    //         setIfPTLocal(true)
+    //         console.log(pastoral_team)
+    //         setCurrentPT(pastoral_team)
+    //         console.log(cgl_name)
+    //         setCurrentCGLName(cgl_name)
+    //     }
+    //     getData();
+    // }, [])
+
+    // useEffect(() => {
+    //     if (!statellite) return;
+    //     setCurrentPastoralTeamNames(getAllPastoralTeamNames(statellite, data));
+    // }, [statellite])
 
     useEffect(() => {
         if (!currentPT) return;
-        setCurrentTeamLeaderNames(getAllTeamLeaderNames(statellite, currentPT, data))
+        setCurrentTeamLeaderNames(getAllTeamLeaderNames(satellite, currentPT, data))
         setPastoralTeam(currentPT)
     }, [currentPT])
 
@@ -148,8 +176,9 @@ function Selects({ data, statellite }) {
                         style={{ width: "50%" }}
                         onChange={setCurrentPT}
                         // defaultValue={pastoral_team}
+                        value={currentPT}
                         onFocus={() => {
-                            if (!statellite) {
+                            if (!satellite) {
                                 Notification.warning({
                                     content: 'Please select Satellite first!',
                                     icon: <IconFont type='icon-warning' />,
@@ -166,8 +195,9 @@ function Selects({ data, statellite }) {
                 </Select>
                 <Select placeholder='CGL Name' style={{ width: "45%" }}
                         onChange={CGLSelectHandler}
+                        value={cgl_name}
                         onFocus={() => {
-                            if (!statellite) {
+                            if (!satellite) {
                                 Notification.warning({
                                     content: 'Please select Satellite and Pastoral Team first!',
                                     icon: <IconFont type='icon-warning' />,
@@ -307,8 +337,9 @@ export default function Form() {
     const [currentStatellite, setCurrentSatellite] = useState(null)
     const [visible, setVisible] = useState(false);
     const [reset, printForm] = useFormStore(state => [state.reset, state.printForm])
-    const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason] =
-        useFormStore(state => [state.cg_name, state.cgl_name, state.setCGAbsenceReason, state.setServiceAbsenceReason])
+    const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason,satellite] =
+        useFormStore(state => [state.cg_name, state.cgl_name,
+            state.setCGAbsenceReason, state.setServiceAbsenceReason ,state.satellite])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -325,7 +356,14 @@ export default function Form() {
             })
         }
         getData();
+
     }, []);
+
+    useEffect(() => {
+        if(satellite){
+            setCurrentSatellite(satellite)
+        }
+    }, [satellite])
 
     function submitHandler() {
         setVisible(true)
