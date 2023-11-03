@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Input, Popconfirm, Table } from '@arco-design/web-react';
+import { Button, Input, Popconfirm, Space, Table } from '@arco-design/web-react';
 import { deleteAttend, readAllAttends } from '../../api/attendance';
 import { convertCGLTableData } from '../formPage/data';
 import { IconDelete, IconEdit, IconSearch } from '@arco-design/web-react/icon';
@@ -14,6 +14,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
     const columns = [
         {
             title: 'Date',
+            width: 200,
             render: (_, record) => {
                 return (
                     <div className={'w-[200px] truncate'}>
@@ -23,9 +24,11 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
                     </div>
                 )
             },
+            sorter: (a, b) => new Date(a.date.split('-')[0]) - new Date(b.date.split('-')[0]),
         },
         {
             title: 'CG Leader',
+            width: 150,
             render: (_, record) => {
                 return (
                     <div className={'w-[200px] truncate'}>
@@ -67,6 +70,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
         },
         {
             title: 'Pastoral Team',
+            width: 200,
             render: (_, record) => {
                 return (
                     <div className={'w-[150px] truncate'}>
@@ -85,6 +89,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
         },
         {
             title: 'Satellite',
+            width: 120,
             render: (_, record) => {
                 return (
                     <div className={'w-[150px] truncate'}>
@@ -104,6 +109,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
 
         {
             title: 'Total members',
+            width: 120,
             render: (_, record) => {
                 return (
                     <div className={'w-[150px] truncate'}>
@@ -141,6 +147,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
         },
         {
             title: 'Operation',
+            width: 120,
             render: (_, record) => (
                 <div>
                     <Button
@@ -193,7 +200,28 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
         getAttendance();
     }, [total_members_num])
 
-    return <Table columns={columns} data={attendance} />
+    return <Table
+        columns={columns}
+        data={attendance}
+        renderPagination={(paginationNode) => (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: 10,
+                }}
+            >
+                <Space>
+                    <span className={"mx-4 text-end truncate"}>Items: {attendance.length}</span>
+                </Space>
+                {paginationNode}
+            </div>
+        )}
+        scroll={{
+            x: window.innerWidth * 0.9,
+            y: window.innerHeight,
+        }}
+    />
 }
 
 const AttendanceManagement = () => {
