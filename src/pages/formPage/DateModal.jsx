@@ -23,7 +23,7 @@ function ButtonsGroup(){
     }
 
     return (
-        <div>
+        <>
             {
                 dateArray.map((date,index) => {
                     return (
@@ -39,12 +39,14 @@ function ButtonsGroup(){
                     )
                 })
             }
-        </div>
+        </>
     )
 }
 
 function DateModal({visible, setVisible}) {
-    const getFormData = useFormStore(state => state.getFormData);
+    const [getFormData,resetForm] = useFormStore(state => [
+        state.getFormData, state.resetForm
+    ]);
 
     function submit() {
         const data = getFormData();
@@ -53,6 +55,7 @@ function DateModal({visible, setVisible}) {
         addAttend(data).then((res) => {
             if (res!==false){
                 Message.success("Submitted successfully!")
+                resetForm();
                 saveCGInfoToLocal();
             }else{
                 Message.error("Submitted failed!")
@@ -98,7 +101,7 @@ function DateModal({visible, setVisible}) {
                     </div>
                 </div>
                 <hr/>
-                <div  className={"p-4"}>
+                <div  className={"p-4 text-center flex flex-row flex-wrap justify-around"}>
                     <ButtonsGroup />
                 </div>
                 <hr/>

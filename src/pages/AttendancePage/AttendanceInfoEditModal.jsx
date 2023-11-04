@@ -79,14 +79,14 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
                 cg_nf_num: attendanceRecord.cg_nf_num,
                 cg_rnf_num: attendanceRecord.cg_rnf_num,
                 cg_ac_num: attendanceRecord.cg_ac_num,
-                cg_nbs_num: attendanceRecord.cg_nbs_num,
+                cg_abs_num: attendanceRecord.cg_abs_num,
                 cg_absence_reason: attendanceRecord.cg_absence_reason || 'none',
                 service_om_num: attendanceRecord.service_om_num,
                 service_nb_num: attendanceRecord.service_nb_num,
                 service_nf_num: attendanceRecord.service_nf_num,
                 service_rnf_num: attendanceRecord.service_rnf_num,
                 service_ac_num: attendanceRecord.service_ac_num,
-                service_nbs_num: attendanceRecord.service_nbs_num,
+                service_abs_num: attendanceRecord.service_abs_num,
                 service_absence_reason: attendanceRecord.service_absence_reason || 'none',
             })
         }

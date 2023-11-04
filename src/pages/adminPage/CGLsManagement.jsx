@@ -112,7 +112,7 @@ function  CGLTable({setTableData,setVisible}){
             filterMultiple: false,
         },
         {
-            title: 'Satellite',
+            title: 'Service Location',
             render: (_, record) => {
                 return (
                     <div className={"w-[100px]"}>
@@ -195,6 +195,10 @@ function  CGLTable({setTableData,setVisible}){
                     {paginationNode}
                 </div>
             )}
+            scroll={{
+                x: window.innerWidth * 0.9,
+                y: window.innerHeight,
+            }}
     />;
 }
 

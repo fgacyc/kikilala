@@ -118,7 +118,7 @@ const CGLAttendance = () => {
                 date: item.date,
                 ac_num: item.cg_ac_num,
                 nb_num: item.cg_nb_num,
-                abs_num: item.cg_nbs_num,
+                abs_num: item.cg_abs_num,
                 nf_num: item.cg_nf_num,
                 om_num: item.cg_om_num,
                 rnf_num: item.cg_rnf_num,
@@ -133,7 +133,7 @@ const CGLAttendance = () => {
                 date: item.date,
                 ac_num: item.service_ac_num,
                 nb_num: item.service_nb_num,
-                abs_num: item.service_nbs_num,
+                abs_num: item.service_abs_num,
                 nf_num: item.service_nf_num,
                 om_num: item.service_om_num,
                 rnf_num: item.service_rnf_num,
@@ -152,24 +152,26 @@ const CGLAttendance = () => {
                     CGLName === '' ? '' : CGLName+ "'s "
                 }</b>Connect Group Attendance
             </div>
+            <div className={"bg-white pb-4"}>
+                {
+                    attendanceData.length !== 1 && <Table
+                        columns={columns}
+                        data={attendanceData}
+                        expandedRowRender={(record) => record.absence_reason}
+                        expandProps={{
+                            width: window.innerWidth > 768 ? 15 : 25,
+                            expandRowByClick: true,
+                            rowExpandable: (record) => record.absence_reason !== null && record.absence_reason !== ''
+                                && record.absence_reason !== 'Absence_reason: ',
+                        }}
+                        scroll={{
+                            x: window.innerWidth * 0.9,
+                            y: window.innerHeight,
+                        }}
+                    />
+                }
+            </div>
 
-            {
-                attendanceData.length !== 1 && <Table
-                    columns={columns}
-                    data={attendanceData}
-                    expandedRowRender={(record) => record.absence_reason}
-                    expandProps={{
-                        width: window.innerWidth > 768 ? 15 : 25,
-                        expandRowByClick: true,
-                        rowExpandable: (record) => record.absence_reason !== null && record.absence_reason !== ''
-                            && record.absence_reason !== 'Absence_reason: ',
-                    }}
-                    scroll={{
-                        x: window.innerWidth * 0.9,
-                        y: window.innerHeight,
-                    }}
-                />
-            }
             <div className='flex justify-end my-2'>
                 <Button
                     type='secondary'

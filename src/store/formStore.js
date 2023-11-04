@@ -40,14 +40,14 @@ export const useFormStore = create((set) => ({
     setCGNBNum: (cg_nb_num) => set({ cg_nb_num }),
     setCGNFNum: (cg_nf_num) => set({ cg_nf_num }),
     setCGRNFNum: (cg_rnf_num) => set({ cg_rnf_num }),
-    setCGNBSNum: (cg_nbs_num) => set({ cg_nbs_num }),
+    setCGABSNum: (cg_abs_num) => set({ cg_abs_num }),
     setCGACNum: (cg_ac_num) => set({ cg_ac_num }),
     setCGAbsenceReason: (cg_absence_reason) => set({ cg_absence_reason }),
     setServiceOMNum: (service_om_num) => set({ service_om_num }),
     setServiceNBNum: (service_nb_num) => set({ service_nb_num }),
     setServiceNFNum: (service_nf_num) => set({ service_nf_num }),
     setServiceRNFNum: (service_rnf_num) => set({ service_rnf_num }),
-    setServiceNBSNum: (service_nbs_num) => set({ service_nbs_num }),
+    setServiceABSNum: (service_abs_num) => set({ service_abs_num }),
     setServiceACNum: (service_ac_num) => set({ service_ac_num }),
     setServiceAbsenceReason: (service_absence_reason) => set({ service_absence_reason }),
 
@@ -96,6 +96,26 @@ export const useFormStore = create((set) => ({
         service_absence_reason: "",
         cg_name: ""
     }),
+
+    resetForm: () => {
+        set({
+            cg_om_num: "",
+            cg_nb_num: "",
+            cg_nf_num: "",
+            cg_rnf_num: "",
+            cg_ac_num: "",
+            cg_abs_num: "",
+            cg_absence_reason: "",
+            service_om_num: "",
+            service_nb_num: "",
+            service_nf_num: "",
+            service_rnf_num: "",
+            service_ac_num: "",
+            service_abs_num: "",
+            service_absence_reason: "",
+        })
+    },
+
     // print all values
     printForm: () => {
         console.log(useFormStore.getState())
@@ -112,14 +132,14 @@ export const useFormStore = create((set) => ({
             cg_nf_num: useFormStore.getState().cg_nf_num,
             cg_rnf_num: useFormStore.getState().cg_rnf_num,
             cg_ac_num: useFormStore.getState().cg_ac_num,
-            cg_nbs_num: useFormStore.getState().cg_abs_num,
+            cg_abs_num: useFormStore.getState().cg_abs_num,
             cg_absence_reason: useFormStore.getState().cg_absence_reason,
             service_om_num: useFormStore.getState().service_om_num,
             service_nb_num: useFormStore.getState().service_nb_num,
             service_nf_num: useFormStore.getState().service_nf_num,
             service_rnf_num: useFormStore.getState().service_rnf_num,
             service_ac_num: useFormStore.getState().service_ac_num,
-            service_nbs_num: useFormStore.getState().service_abs_num,
+            service_abs_num: useFormStore.getState().service_abs_num,
             service_absence_reason: useFormStore.getState().service_absence_reason,
 
             // cg name

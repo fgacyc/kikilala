@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input, Popconfirm, Space, Table } from '@arco-design/web-react';
 import { deleteAttend, readAllAttends } from '../../api/attendance';
-import { convertCGLTableData } from '../formPage/data';
+import {convertCGLTableData, getWeekDatesArray} from '../formPage/data';
 import { IconDelete, IconEdit, IconSearch } from '@arco-design/web-react/icon';
 import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
@@ -70,7 +70,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
         },
         {
             title: 'Pastoral Team',
-            width: 200,
+            width: 150,
             render: (_, record) => {
                 return (
                     <div className={'w-[150px] truncate'}>
@@ -88,8 +88,8 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
             filterMultiple: false,
         },
         {
-            title: 'Satellite',
-            width: 120,
+            title: 'Service Location',
+            width: 130,
             render: (_, record) => {
                 return (
                     <div className={'w-[150px] truncate'}>
@@ -227,6 +227,14 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
 const AttendanceManagement = () => {
     const [visible, setVisible] = useState(false);
     const [attendanceRecord, setAttendanceRecord] = useState({});
+    const [dateArray,setDateArray] = useState([])
+    const buttonsNumber = 4
+
+    useEffect(() => {
+        setDateArray(getWeekDatesArray(buttonsNumber));
+    }, []);
+
+
 
     const onOpenModal = () => {
         setVisible(true);
@@ -238,6 +246,28 @@ const AttendanceManagement = () => {
 
     return (
         <div className={"h-full w-full p-8"}>
+            <div className={"flex flex-row flex-wrap justify-between"}>
+                {
+                    dateArray.map((item) => {
+                        return (
+                            <Button
+                                className={"mb-2"}
+                                key={item}
+                                onClick={() => {
+                                    // onOpenModal();
+                                    // setAttendanceData({
+                                    //     date: item,
+                                    // });
+                                }}
+                            >
+                                {item}
+                            </Button>
+                        )
+                    } )
+                }
+            </div>
+
+
             <div className={"bg-white rounded-lg pb-2"}>
                 <AttendanceTable onOpenModal={onOpenModal} setAttendanceData={setAttendanceData} />
             </div>

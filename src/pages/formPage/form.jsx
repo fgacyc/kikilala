@@ -208,20 +208,23 @@ function UIInput({ type }) {
     )
 }
 
-function InputPIN({ name, setter }) {
-    const [currentValue, setCurrentValue] = useState("")
+function InputPIN({ name, setter,val }) {
 
     function handleChange(e) {
         const valueStr = e.target.value;
         const val = valueStr.substring(0, 2);
         if (!val) {
-            setter(0)
-            setCurrentValue("")
+            setter("")
         }
         const value = parent.parseInt(val)
         setter(value)
-        setCurrentValue(value)
     }
+
+    useEffect(() => {
+        if(val === 0){
+            setter("")
+        }
+    }, [])
 
 
     return (
@@ -232,7 +235,7 @@ function InputPIN({ name, setter }) {
                    w-[32px] h-[32px] text-xl border rounded-lg
                    sm:w-[48px] sm:h-[48px] sm:text-2xl sm:border-2 sm:rounded-xl
                    my-0 inline-block  mx-[10px]`}
-                value={currentValue}
+                value={val}
                 onChange={handleChange}
             />
             <div className={"text-center"}>{name}</div>
@@ -249,14 +252,14 @@ function InputPINs({ type }) {
         setCGNFNum,
         setCGRNFNum,
         setCGACNum,
-        setCGNBSNum
+        setCGABSNum
     ] = useFormStore(state => [
         state.setCGOMNum,
         state.setCGNBNum,
         state.setCGNFNum,
         state.setCGRNFNum,
         state.setCGACNum,
-        state.setCGNBSNum
+        state.setCGABSNum
     ])
 
     const [
@@ -265,14 +268,42 @@ function InputPINs({ type }) {
         setServiceNFNum,
         setServiceRNFNum,
         setServiceACNum,
-        setServiceNBSNum
+        setServiceABSNum
     ] = useFormStore(state => [
         state.setServiceOMNum,
         state.setServiceNBNum,
         state.setServiceNFNum,
         state.setServiceRNFNum,
         state.setServiceACNum,
-        state.setServiceNBSNum
+        state.setServiceABSNum
+    ])
+
+    const [
+        cg_om_num,
+        cg_nb_num,
+        cg_nf_num,
+        cg_rnf_num,
+        cg_ac_num,
+        cg_abs_num,
+        service_om_num,
+        service_nb_num,
+        service_nf_num,
+        service_rnf_num,
+        service_ac_num,
+        service_abs_num
+    ] = useFormStore(state => [
+        state.cg_om_num,
+        state.cg_nb_num,
+        state.cg_nf_num,
+        state.cg_rnf_num,
+        state.cg_ac_num,
+        state.cg_abs_num,
+        state.service_om_num,
+        state.service_nb_num,
+        state.service_nf_num,
+        state.service_rnf_num,
+        state.service_ac_num,
+        state.service_abs_num
     ])
 
 
@@ -280,20 +311,20 @@ function InputPINs({ type }) {
         <div>
             {type === "activity" ?
                 <div className={"flex flex-row justify-between items-start "}>
-                    <InputPIN name={"OM"} setter={setCGOMNum} />
-                    <InputPIN name={"NB"} setter={setCGNBNum} />
-                    <InputPIN name={"NF"} setter={setCGNFNum} />
-                    <InputPIN name={"RNF"} setter={setCGRNFNum} />
-                    <InputPIN name={"AC"} setter={setCGACNum} />
-                    <InputPIN name={"ABS"} setter={setCGNBSNum} />
+                    <InputPIN name={"OM"} setter={setCGOMNum} val={cg_om_num} />
+                    <InputPIN name={"NB"} setter={setCGNBNum} val={cg_nb_num}  />
+                    <InputPIN name={"NF"} setter={setCGNFNum} val={cg_nf_num}  />
+                    <InputPIN name={"RNF"} setter={setCGRNFNum} val={cg_rnf_num}  />
+                    <InputPIN name={"AC"} setter={setCGACNum} val={cg_ac_num}  />
+                    <InputPIN name={"ABS"} setter={setCGABSNum} val={cg_abs_num}  />
                 </div>
                 : <div className={"flex flex-row justify-between items-start "}>
-                    <InputPIN name={"OM"} setter={setServiceOMNum} />
-                    <InputPIN name={"NB"} setter={setServiceNBNum} />
-                    <InputPIN name={"NF"} setter={setServiceNFNum} />
-                    <InputPIN name={"RNF"} setter={setServiceRNFNum} />
-                    <InputPIN name={"AC"} setter={setServiceACNum} />
-                    <InputPIN name={"ABS"} setter={setServiceNBSNum} />
+                    <InputPIN name={"OM"} setter={setServiceOMNum} val={service_om_num}  />
+                    <InputPIN name={"NB"} setter={setServiceNBNum} val={service_nb_num}  />
+                    <InputPIN name={"NF"} setter={setServiceNFNum} val={service_nf_num}  />
+                    <InputPIN name={"RNF"} setter={setServiceRNFNum} val={service_rnf_num}  />
+                    <InputPIN name={"AC"} setter={setServiceACNum} val={service_ac_num}  />
+                    <InputPIN name={"ABS"} setter={setServiceABSNum} val={service_abs_num}  />
                 </div>
             }
         </div>
@@ -304,10 +335,13 @@ export default function Form() {
     const [allCGLs, setAllCGLs] = useState([])
     const [currentStatellite, setCurrentSatellite] = useState(null)
     const [visible, setVisible] = useState(false);
-    const [reset, printForm] = useFormStore(state => [state.reset, state.printForm])
-    const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason,satellite] =
+    //const [reset, printForm] = useFormStore(state => [state.reset, state.printForm])
+    const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason,
+        satellite,cg_absence_reason,service_absence_reason] =
         useFormStore(state => [state.cg_name, state.cgl_name,
-            state.setCGAbsenceReason, state.setServiceAbsenceReason ,state.satellite])
+            state.setCGAbsenceReason, state.setServiceAbsenceReason ,state.satellite
+            ,state.cg_absence_reason,state.service_absence_reason
+        ])
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -365,6 +399,7 @@ export default function Form() {
                 </div>
                 <InputPINs type={"activity"} />
                 <TextArea placeholder='Please enter absence reasons ...'
+                          value={cg_absence_reason}
                     onChange={setCGAbsenceReason}
                     className={"w-full resize-none mt-2"} />
             </div>
@@ -374,6 +409,7 @@ export default function Form() {
                 <InputPINs type={"service"} />
                 <TextArea placeholder='Please enter absence reasons ...'
                     onChange={setServiceAbsenceReason}
+                    value={service_absence_reason}
                     className={"w-full resize-none mt-2"} />
             </div>
 
