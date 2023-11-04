@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { readAttendByCGName } from '../../api/attendance';
 import { Button, Table } from '@arco-design/web-react';
-import { IconDownload } from "@arco-design/web-react/icon";
+import {IconArrowLeft, IconDownload, IconHistory} from "@arco-design/web-react/icon";
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { attendanceTypeList } from '../../config';
@@ -147,10 +147,22 @@ const CGLAttendance = () => {
 
     return (
         <div className='p-10'>
-            <div className='flex flex-col text-white text-3xl mb-2'>
-                <b className='text-[#313131] mb-2'>{
-                    CGLName === '' ? '' : CGLName+ "'s "
-                }</b>Connect Group Attendance
+            <div className='flex flex-row text-white text-3xl mb-2 justify-between flex-wrap'>
+                <div className={`w-[44px] h-[44px] bg-[#313131] rounded-[8px] mr-2
+                                hover:bg-gray-200 hover:text-[#313131] cursor-pointer
+                                flex flex-row items-center justify-center mb-[10px]`}
+                     // onClick={() => viewHistory()}
+                >
+                    <IconArrowLeft  fontSize={24} onClick={
+                        () => window.history.back()
+                    } />
+                </div>
+               <div>
+                   <b className='text-[#313131] mb-2'>{
+                       CGLName === '' ? '' : CGLName+ "'s "
+                   }</b>
+                   <div>Connect Group Attendance</div>
+               </div>
             </div>
             <div className={"bg-white pb-4"}>
                 {

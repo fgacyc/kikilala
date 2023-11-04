@@ -248,7 +248,7 @@ const AttendanceManagement = () => {
         <div className={"h-full w-full p-8"}>
             <div className={"flex flex-row flex-wrap justify-between"}>
                 {
-                    dateArray.map((item) => {
+                    dateArray.reverse().map((item) => {
                         return (
                             <Button
                                 className={"mb-2"}
