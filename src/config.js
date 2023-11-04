@@ -79,6 +79,10 @@ export const pastoralTeamList = [
         value: "GS - Ps Melvin Zone",
     },
     {
+        text: "GS - The Blessing",
+        value: "GS - The Blessing",
+    },
+    {
         text: "Young Professional",
         value: "Young Professional",
     },
