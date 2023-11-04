@@ -16,10 +16,9 @@ function App() {
             <Routes>
                 {/*<Route path="/login" element={<Login/>}/>*/}
                 <Route path="/" element={<Submit />} />
-                <Route path="ki-admin" element={<CGLsManagement />} />
-                <Route path="ki-charts" element={<DataCharts />} />
-                <Route path="ki-attendance" element={<AttendanceManagement />} />
-                <Route path="ki-cgl-attendance/:cg_name" element={<CGLAttendance />} />
+                <Route path="nb-admin" element={<CGLsManagement />} />
+                <Route path="nb-attendance" element={<AttendanceManagement />} />
+                <Route path="history/:cg_name" element={<CGLAttendance />} />
             </Routes>
         </Router>
     )

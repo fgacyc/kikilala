@@ -147,21 +147,12 @@ const CGLAttendance = () => {
 
     return (
         <div className='p-10'>
-            <div className='flex flex-col text-white text-3xl'>
-                <b className='text-[#313131] mb-2'>{`${CGLName}'s `}</b>Connect Group Attendance
+            <div className='flex flex-col text-white text-3xl mb-2'>
+                <b className='text-[#313131] mb-2'>{
+                    CGLName === '' ? '' : CGLName+ "'s "
+                }</b>Connect Group Attendance
             </div>
-            <div className='flex justify-end mb-2'>
-                <Button
-                    type='secondary'
-                    icon={<IconDownload/>}>
-                    <CsvDownload
-                        filename={`CGLs_${getTodayDateStr()}`}
-                        extension={".csv"}
-                        text={"Download"}
-                        datas={downloadCGLAttendanceData(attendanceData)}
-                    />
-                </Button>
-            </div>
+
             {
                 attendanceData.length !== 1 && <Table
                     columns={columns}
@@ -179,7 +170,18 @@ const CGLAttendance = () => {
                     }}
                 />
             }
-
+            <div className='flex justify-end my-2'>
+                <Button
+                    type='secondary'
+                    icon={<IconDownload/>}>
+                    <CsvDownload
+                        filename={`CGLs_${getTodayDateStr()}`}
+                        extension={".csv"}
+                        text={"Download"}
+                        datas={downloadCGLAttendanceData(attendanceData)}
+                    />
+                </Button>
+            </div>
         </div>
     )
 }

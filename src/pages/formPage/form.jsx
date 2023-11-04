@@ -341,7 +341,7 @@ export default function Form() {
         // console.log("cg_name",cg_name)
         // console.log("cgl_name",cgl_name)
         if (cg_name) {
-            navigate(`/ki-cgl-attendance/${cg_name}`)
+            navigate(`/history/${cg_name}`)
         } else {
             Message.warning("Please select a CGL Name!")
         }
