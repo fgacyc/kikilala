@@ -75,7 +75,7 @@ export default function Submit() {
             </div>
             {/*<SocialMedia position={"bottom"}/>*/}
             {
-                confirmModalVisible && <TutorialConfirm  setConfirmModalVisible={setConfirmModalVisible} />
+                confirmModalVisible && <TutorialConfirm visible={confirmModalVisible} setVisible={setConfirmModalVisible} />
             }
         </div>
     )

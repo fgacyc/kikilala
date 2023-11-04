@@ -6,16 +6,21 @@ body{
     border-color: #00B05C !important;
 }
 
-.arco-modal-simple{
+.arco-modal-simple,.arco-modal{
     width: 95% !important;
 }
 
 @media (min-width: 768px){
     .arco-modal-simple{
-        width: 468px !important;
+        width: 520px !important;
+    }
+
+    .arco-modal{
+        width: 520px !important;
     }
 }
 
 .arco-select.arco-select-focused .arco-select-view{
     border-color: #00B05C !important;
 }
+
