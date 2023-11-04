@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Select, Input, Notification, Icon, Drawer, Card, Message, Divider } from '@arco-design/web-react';
+import { Select, Input, Notification, Icon, Message } from '@arco-design/web-react';
 import { readAllCGLs } from "../../api/CGLs.js";
 import {
     getAllPastoralTeamNames,
     getAllTeamLeaderNames,
-    getCGInfo,
     getCGName,
-    getSatelliteNames,
     ifExpire
 } from "./data.js";
 import { SendIcon } from "../../Icon/SendIcon.jsx";
 import DateModal from "./DateModal.jsx";
 import { useFormStore } from "../../store/formStore.js";
 import { get } from "idb-keyval";
+
 import { IconHistory } from "@arco-design/web-react/icon";
 import { useNavigate } from "react-router-dom";
 const IconFont = Icon.addFromIconFontCn({
@@ -89,6 +88,13 @@ function Selects({ data, statellite }) {
     ])
 
     const [ifPTLocal, setIfPTLocal] = useState(false)
+    useEffect(() => {
+        get("CGInfo").then((res) => {
+            if (res) {
+                setIfPTLocal(true)
+            }
+        })
+    }, []);
 
     useEffect(() => {
         async function getData(){
@@ -111,51 +117,13 @@ function Selects({ data, statellite }) {
             // set default CGL name
             setCurrentCGLName(cgl_name)
 
-            // console.log(pastoral_team)
-            // console.log(cgl_name)
         }
         getData();
     }, [satellite])
 
-    // useEffect(() => {
-    //     async function getData() {
-    //         if(!satellite) return;
-    //
-    //         let data = await get("kikilala-CGLs");
-    //         if (!data) return;
-    //
-    //         let  CGInfo = await get("CGInfo");
-    //         if (!CGInfo) return;
-    //
-    //         // let satelliteDB = await getCGInfo("satellite");
-    //         // let pastoralTeam = await getCGInfo("pastoral_team");
-    //         // let cgl_name = await getCGInfo("cgl_name");
-    //
-    //         // set select 1 options
-    //         setCurrentPastoralTeamNames(getAllPastoralTeamNames(satellite, data));
-    //         // set select 2 options
-    //         setCurrentTeamLeaderNames(getAllTeamLeaderNames(satellite, pastoral_team, data))
-    //
-    //         // stet store
-    //         setPastoralTeam(pastoral_team)
-    //         setCGLName(cgl_name)
-    //
-    //         // set default value
-    //         setIfPTLocal(true)
-    //         console.log(pastoral_team)
-    //         setCurrentPT(pastoral_team)
-    //         console.log(cgl_name)
-    //         setCurrentCGLName(cgl_name)
-    //     }
-    //     getData();
-    // }, [])
-
-    // useEffect(() => {
-    //     if (!statellite) return;
-    //     setCurrentPastoralTeamNames(getAllPastoralTeamNames(statellite, data));
-    // }, [statellite])
 
     useEffect(() => {
+        // console.log("currentPT:", currentPT)
         if (!currentPT) return;
         setCurrentTeamLeaderNames(getAllTeamLeaderNames(satellite, currentPT, data))
         setPastoralTeam(currentPT)
@@ -175,7 +143,7 @@ function Selects({ data, statellite }) {
                 <Select placeholder='Pastoral Team'
                         style={{ width: "50%" }}
                         onChange={setCurrentPT}
-                        // defaultValue={pastoral_team}
+                        //defaultValue={currentPT}
                         value={currentPT}
                         onFocus={() => {
                             if (!satellite) {

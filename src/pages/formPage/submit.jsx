@@ -5,7 +5,8 @@ import {ThreadsIcon} from "../../Icon/ThreadsIcon.jsx";
 import {YoutubeIcon} from "../../Icon/YoutubeIcon.jsx";
 import {FacebookIcon} from "../../Icon/FacebookIcon.jsx";
 import {useFormStore} from "../../store/formStore.js";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import TutorialConfirm from "../AttendancePage/TutorialConfirm.jsx";
 
 function SocialMedia({position}) {
     function goToSocialMedia(type) {
@@ -40,9 +41,16 @@ function SocialMedia({position}) {
 
 export default function Submit() {
     const initData = useFormStore(state => state.initData);
+    const [confirmModalVisible, setConfirmModalVisible] = useState(false);
     useEffect(() => {
         void initData();
+        const isTutorial = localStorage.getItem("isTutorial");
+        if (isTutorial === null) {
+            setConfirmModalVisible(true);
+        }
     }, []);
+
+
 
     return (
         <div className={`w-full h-full bg-[#00D97C] rounded-bl flex flex-row flex-wrap justify-between 
@@ -66,6 +74,9 @@ export default function Submit() {
                 <Form/>
             </div>
             {/*<SocialMedia position={"bottom"}/>*/}
+            {
+                confirmModalVisible && <TutorialConfirm  setConfirmModalVisible={setConfirmModalVisible} />
+            }
         </div>
     )
 }

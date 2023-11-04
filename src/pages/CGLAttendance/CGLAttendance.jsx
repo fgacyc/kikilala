@@ -153,12 +153,13 @@ const CGLAttendance = () => {
             <div className='flex justify-end mb-2'>
                 <Button
                     type='secondary'
-                    icon={<IconDownload />}>
-                    {/*<CsvDownload*/}
-                    {/*    filename={`CGLs_${getTodayDateStr()}`}*/}
-                    {/*    extension={".csv"}*/}
-                    {/*    text={"Download"}*/}
-                    {/*    datas={downloadCGLAttendanceData(attendanceData)} />*/}
+                    icon={<IconDownload/>}>
+                    <CsvDownload
+                        filename={`CGLs_${getTodayDateStr()}`}
+                        extension={".csv"}
+                        text={"Download"}
+                        datas={downloadCGLAttendanceData(attendanceData)}
+                    />
                 </Button>
             </div>
             {
