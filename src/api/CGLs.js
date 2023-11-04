@@ -39,7 +39,7 @@ export async function deleteCGL(docID) {
 }
 
 export async function readCGLNameByCGName(cg_name) {
-    console.log(cg_name)
+    // console.log(cg_name)
     const query = ["CG_name", "==", cg_name];
     let doc = await queryDoc("CGLs", query);
     if (doc == false) return false;

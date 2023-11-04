@@ -10,6 +10,8 @@ import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
 import {downloadCGLsData, downloadXLSX, getTodayDateStr} from "../../tools.js";
 import CsvDownload from "react-csv-downloader";
+import {addRecord} from "../../api/records.js";
+import {useAuth0} from "@auth0/auth0-react";
 
 function  CGLTable({setTableData,setVisible}){
     const inputRef = useRef(null);
@@ -207,6 +209,19 @@ export  default  function  CGLsManagement(){
     const [editVisible, setEditVisible] = useState(false);
     const [addVisible, setAddVisible] = useState(false);
     const [tableData, setTableData] = useState([]);
+    const { loginWithRedirect,user,isLoading } = useAuth0();
+
+    useEffect(() => {
+        if (isLoading) return;
+        if (user) {
+            addRecord({
+                page: "CGLsManagement",
+                user_id: user.sub,
+            });
+            return;
+        }
+        loginWithRedirect();
+    }, [isLoading])
 
 
     return(

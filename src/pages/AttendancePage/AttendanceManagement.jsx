@@ -6,6 +6,8 @@ import { IconDelete, IconEdit, IconSearch } from '@arco-design/web-react/icon';
 import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
 import { useFormStore } from '../../store/formStore';
+import {useAuth0} from "@auth0/auth0-react";
+import {addRecord} from "../../api/records.js";
 
 const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
 
@@ -234,6 +236,20 @@ const AttendanceManagement = () => {
         setDateArray(getWeekDatesArray(buttonsNumber));
     }, []);
 
+
+    const { loginWithRedirect,user,isLoading } = useAuth0();
+
+    useEffect(() => {
+        if (isLoading) return;
+        if (user) {
+            addRecord({
+                page: "AttendanceManagement",
+                user_id: user.sub,
+            });
+            return;
+        }
+        loginWithRedirect();
+    }, [isLoading])
 
 
     const onOpenModal = () => {

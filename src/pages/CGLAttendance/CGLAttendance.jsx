@@ -8,12 +8,12 @@ import { attendanceTypeList } from '../../config';
 import CsvDownload from "react-csv-downloader";
 import { downloadCGLAttendanceData, getTodayDateStr } from '../../tools';
 import {readCGLNameByCGName} from "../../api/CGLs.js";
+import {useAuth0} from "@auth0/auth0-react";
 
 const CGLAttendance = () => {
     const params = useParams()
     const [attendanceData, setAttendanceData] = useState([{}]);
     const [CGLName, setCGLName] = useState('');
-
     const columns = [
         {
             key: 'date',
@@ -93,21 +93,28 @@ const CGLAttendance = () => {
             sorter: (a, b) => a.total_num - b.total_num,
         },
     ];
+    const { loginWithRedirect,user,isLoading } = useAuth0();
+
+    async function getCGLAttendance() {
+        const attendance_data = await readAttendByCGName(params.cg_name);
+        const transform_attendance_data = transformData(attendance_data)
+            .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
+        // console.log(transform_attendance_data)
+        setAttendanceData(transform_attendance_data);
+        const CGLNameQ =await readCGLNameByCGName(params.cg_name);
+        setCGLName(CGLNameQ.CG_leader);
+    }
 
     useEffect(() => {
-        async function getCGLAttendance() {
-            const attendance_data = await readAttendByCGName(params.cg_name);
-            const transform_attendance_data = transformData(attendance_data)
-                .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
-            // console.log(transform_attendance_data)
-            setAttendanceData(transform_attendance_data);
-            const CGLNameQ =await readCGLNameByCGName(params.cg_name);
-            setCGLName(CGLNameQ.CG_leader);
+        if (isLoading) return;
+        if (user) {
+            getCGLAttendance();
+            return;
         }
+        loginWithRedirect();
+    }, [isLoading])
 
-        getCGLAttendance();
 
-    }, [])
 
     const transformData = (data) => {
         return data.flatMap(item => {

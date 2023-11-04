@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 const IconFont = Icon.addFromIconFontCn({
     src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
 });
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -337,12 +339,15 @@ export default function Form() {
     const [visible, setVisible] = useState(false);
     //const [reset, printForm] = useFormStore(state => [state.reset, state.printForm])
     const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason,
-        satellite,cg_absence_reason,service_absence_reason] =
+        satellite,cg_absence_reason,service_absence_reason,
+        user_email,user_sub,setUserEmail,setUserSub] =
         useFormStore(state => [state.cg_name, state.cgl_name,
             state.setCGAbsenceReason, state.setServiceAbsenceReason ,state.satellite
             ,state.cg_absence_reason,state.service_absence_reason
+            ,state.user_email,state.user_sub,state.setUserEmail,state.setUserSub
         ])
     const navigate = useNavigate();
+    const { loginWithRedirect,logout,user } = useAuth0();
 
     useEffect(() => {
         async function getData() {
@@ -367,7 +372,18 @@ export default function Form() {
         }
     }, [satellite])
 
+    useEffect(() => {
+        if(!user) return;
+        setUserEmail(user.email)
+        setUserSub(user.sub)
+    }  ,[user])
+
     function submitHandler() {
+        if(!user_sub){
+            Message.warning("Please login first!")
+            return;
+        }
+
         setVisible(true)
     }
 
@@ -383,9 +399,26 @@ export default function Form() {
 
     return (
         <div>
+            {
+                !user_email
+                ? <div className={"font-bold mt-0 mb-3"}>
+                    <span>You haven't logged in yet! </span>
+                    <span className={"text-blue-500 cursor-pointer"}
+                          onClick={() => loginWithRedirect()}
+                    >Log in</span>
+                </div>
+                : <div className={"font-bold mt-0 mb-3"}>
+                        <span>{user_email}</span>
+                        <span className={"text-blue-500 cursor-pointer ml-2"}
+                              onClick={() =>{
+                                  logout({ returnTo: window.location.origin });
+                              }}
+                        >Switch account</span>
+                    </div>
+            }
+            <hr className={"my-2"} />
             <div className={"font-bold mt-0 mb-3"}>
                 <div>Which Service Location do you attend?</div>
-                <div></div>
             </div>
             <ButtonGroup setCurrentSatellite={setCurrentSatellite} />
             <div className={"font-bold mt-5 mb-3"}>Which Pastoral Team do you belong to?</div>

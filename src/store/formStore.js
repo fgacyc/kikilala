@@ -29,6 +29,9 @@ export const useFormStore = create((set) => ({
     service_abs_num: 0,
     service_absence_reason: "",
 
+    user_email: "",
+    user_sub: "",
+
     setRowKey: (rowKey) => set({ rowKey }),
     setSatellite: (satellite) => set({ satellite }),
     setPastoralTeam: (pastoral_team) => set({ pastoral_team }),
@@ -50,6 +53,8 @@ export const useFormStore = create((set) => ({
     setServiceABSNum: (service_abs_num) => set({ service_abs_num }),
     setServiceACNum: (service_ac_num) => set({ service_ac_num }),
     setServiceAbsenceReason: (service_absence_reason) => set({ service_absence_reason }),
+    setUserEmail: (user_email) => set({ user_email }),
+    setUserSub: (user_sub) => set({ user_sub }),
 
     initData: async () => {
         const data = await get("CGInfo");
@@ -143,7 +148,10 @@ export const useFormStore = create((set) => ({
             service_absence_reason: useFormStore.getState().service_absence_reason,
 
             // cg name
-            cg_name: useFormStore.getState().cg_name
+            cg_name: useFormStore.getState().cg_name,
+
+            // sub
+            user_sub: useFormStore.getState().user_sub,
         }
     }
 }))

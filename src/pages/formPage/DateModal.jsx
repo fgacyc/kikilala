@@ -49,6 +49,7 @@ function DateModal({visible, setVisible}) {
     ]);
 
     function submit() {
+
         const data = getFormData();
         if(validate(data) === false) return;
         setVisible(false);
