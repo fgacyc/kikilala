@@ -45,3 +45,10 @@ export async function readCGLNameByCGName(cg_name) {
     if (doc == false) return false;
     return doc[0]
 }
+
+
+export  async  function  getCGLNum(){
+    const data = await readAllCGLs();
+    // console.log(Object.keys(data).length)
+    return Object.keys(data).length;
+}

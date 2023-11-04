@@ -8,8 +8,9 @@ import AttendanceInfoEditModal from './AttendanceInfoEditModal';
 import { useFormStore } from '../../store/formStore';
 import {useAuth0} from "@auth0/auth0-react";
 import {addRecord} from "../../api/records.js";
+import {getCGLNum} from "../../api/CGLs.js";
 
-const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
+const AttendanceTable = ({ onOpenModal, setAttendanceData ,currentWeek,currentCGNum}) => {
 
     const inputRef = useRef(null);
 
@@ -179,6 +180,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
         }
     ];
 
+    const [allAttendance, setAllAttendance] = useState([]);
     const [attendance, setAttendance] = useState([])
 
     const [rowKey, total_members_num] = useFormStore((state) => [state.rowKey, state.total_members_num]);
@@ -195,12 +197,17 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
                 }
                 return item;
             })
-
+            setAllAttendance(updateattendanceData);
             setAttendance(updateattendanceData);
         }
-
         getAttendance();
     }, [total_members_num])
+
+
+    useEffect(() => {
+        const newAttendance = allAttendance.filter((item) => item.date === currentWeek);
+        setAttendance(newAttendance);
+    }, [currentWeek]);
 
     return <Table
         columns={columns}
@@ -214,7 +221,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData }) => {
                 }}
             >
                 <Space>
-                    <span className={"mx-4 text-end truncate"}>Items: {attendance.length}</span>
+                    <span className={"mx-4 text-end truncate"}>Items: {attendance.length} / {currentCGNum}</span>
                 </Space>
                 {paginationNode}
             </div>
@@ -231,9 +238,15 @@ const AttendanceManagement = () => {
     const [attendanceRecord, setAttendanceRecord] = useState({});
     const [dateArray,setDateArray] = useState([])
     const buttonsNumber = 4
+    const [currentWeek,setCurrentWeek] = useState("")
+    const [currentCGNum,setCurrentCGNum] = useState(0)
+    const [currentButton,setCurrentButton] = useState(-1)
 
     useEffect(() => {
         setDateArray(getWeekDatesArray(buttonsNumber));
+        getCGLNum().then((res) => {
+            setCurrentCGNum(res);
+        });
     }, []);
 
 
@@ -264,20 +277,22 @@ const AttendanceManagement = () => {
         <div className={"h-full w-full p-8"}>
             <div className={"flex flex-row flex-wrap justify-between"}>
                 {
-                    dateArray.reverse().map((item) => {
+                    dateArray.slice().reverse().map((item,index) => {
                         return (
-                            <Button
-                                className={"mb-2"}
-                                key={item}
+                            <button
+                                className={`mb-2 px-4 py-1.5 rounded-s-sm
+                                    ${index === currentButton ? "bg-[#00B05C] text-white" : "bg-white text-[#00D97C]"}
+                                `}
+                                key={index}
                                 onClick={() => {
-                                    // onOpenModal();
-                                    // setAttendanceData({
-                                    //     date: item,
-                                    // });
+                                    // console.log(item)
+                                    setCurrentWeek(item);
+                                    setCurrentButton(index)
                                 }}
+
                             >
                                 {item}
-                            </Button>
+                            </button>
                         )
                     } )
                 }
@@ -285,7 +300,11 @@ const AttendanceManagement = () => {
 
 
             <div className={"bg-white rounded-lg pb-2"}>
-                <AttendanceTable onOpenModal={onOpenModal} setAttendanceData={setAttendanceData} />
+                <AttendanceTable onOpenModal={onOpenModal}
+                                 setAttendanceData={setAttendanceData}
+                                 currentWeek={currentWeek}
+                                 currentCGNum={currentCGNum}
+                />
             </div>
             {
                 attendanceRecord && <AttendanceInfoEditModal
