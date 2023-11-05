@@ -59,6 +59,8 @@ export  function getWeekDatesArray(num){
 }
 
 export function validate(data) {
+    // console.log(data)
+
     if (
         data.satellite === "" ||
         data.pastoral_team === "" ||
@@ -89,6 +91,21 @@ export function validate(data) {
         return false;
     }
 
+    if (data.cg_om_num === "" ||
+        data.cg_nb_num === "" ||
+        data.cg_nf_num=== "" ||
+        data.cg_rnf_num === "" ||
+        data.cg_abs_num === "" ||
+        data.service_om_num === ""||
+        data.service_nb_num === "" ||
+        data.service_nf_num === "" ||
+        data.service_rnf_num === "" ||
+        data.service_abs_num === ""
+    ){
+        Message.warning("Please fill in all the number fields!")
+        return false;
+    }
+
     if (data.cg_abs_num >0 && data.cg_absence_reason === ""){
         Message.warning("Please fill in the absence reason!")
         return false;
@@ -98,6 +115,27 @@ export function validate(data) {
         Message.warning("Please fill in the absence reason!")
         return false;
     }
+
+    if (data.cg_abs_num ===0 && data.cg_absence_reason !== ""){
+        Message.warning("Please check the CG absence number")
+        return false;
+    }
+
+    if (data.service_abs_num === 0 && data.service_absence_reason !== ""){
+        Message.warning("Please check the Service absence number")
+        return false;
+    }
+
+    if (data.total_members_num !== data.cg_om_num + data.cg_abs_num){
+        Message.warning("Please check the OM number and CG absence number!")
+        return false;
+    }
+
+    if (data.total_members_num !== data.service_om_num + data.service_abs_num){
+        Message.warning("Please check the OM number and Service absence number!")
+        return false;
+    }
+
     return true;
 }
 
