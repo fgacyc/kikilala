@@ -41,7 +41,7 @@ const AttendanceCard = ({ title, attendanceType, attendanceData, attendance_list
                         attendance_list.map((item, index) => (
                             <div key={index}>
                                 <FormItem
-                                    label={item === 'NBS' ? 'ABS' : item}
+                                    label={item}
                                     field={`${attendanceType}_${item.toLowerCase()}_num`}
                                     className="w-[150px] mt-6"
                                 >
@@ -60,7 +60,7 @@ const AttendanceCard = ({ title, attendanceType, attendanceData, attendance_list
 };
 
 const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
-    const attendance_list = ['OM', 'NB', 'NF', 'RNF', 'AC', 'NBS']
+    const attendance_list = ['OM', 'NB', 'NF', 'RNF', 'AC', 'ABS']
 
     const [attendanceData, setAttendanceData] = useState({})
     const [total, setTotal] = useState(0);
@@ -73,6 +73,7 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
         if (visible) {
             setTotal(attendanceRecord.total_members_num);
             setAttendanceData(attendanceRecord)
+            console.log(attendanceRecord)
             form.setFieldsValue({
                 cg_om_num: attendanceRecord.cg_om_num,
                 cg_nb_num: attendanceRecord.cg_nb_num,
