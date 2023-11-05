@@ -414,10 +414,12 @@ const AttendanceManagement = () => {
     const [attendanceRecord, setAttendanceRecord] = useState({});
     const [dateArray,setDateArray] = useState([])
     const buttonsNumber = 4
-    const [currentWeek,setCurrentWeek] = useState("")
+    // const [currentWeek,setCurrentWeek] = useState("")
     const [currentCGNum,setCurrentCGNum] = useState(0)
     const { loginWithRedirect,user,isLoading } = useAuth0();
-    const [switchStatus, setSwitchStatus] = useState(true);
+    // const [switchStatus, setSwitchStatus] = useState(true);
+    const [initAttendData,currentWeek,setCurrentWeek,showSubmitted,setShowSubmitted] = useAttendanceStore(state => [
+            state.initAttendData,state.currentWeek,state.setCurrentWeek,state.showSubmitted,state.setShowSubmitted]);
 
 
     useEffect(() => {
@@ -425,11 +427,15 @@ const AttendanceManagement = () => {
         getCGLNum().then((res) => {
             setCurrentCGNum(res);
         });
+        initAttendData();
+        //console.log(currentWeek)
     }, []);
 
     useEffect(() => {
-        // console.log(dateArray[0])
-        setCurrentWeek(dateArray[3]);
+        if (dateArray[3] && currentWeek === ""){
+            setCurrentWeek(dateArray[3]);
+        }
+        // console.log(currentWeek)
     }, [dateArray]);
 
     useEffect(() => {
@@ -474,10 +480,10 @@ const AttendanceManagement = () => {
                         type='round'
                         checkedText='Submitted'
                         uncheckedText='Pending'
-                        defaultChecked
+                        checked={showSubmitted}
                         className={"bg-[#C9CDD4]"}
                         onChange={(value) => {
-                            setSwitchStatus(value);
+                            setShowSubmitted(value);
                         }}
                     />
                 </div>
@@ -488,12 +494,12 @@ const AttendanceManagement = () => {
                                  setAttendanceData={setAttendanceData}
                                  currentWeek={currentWeek}
                                  currentCGNum={currentCGNum}
-                                 className={switchStatus === false ? 'hidden' : 'block'}
+                                 className={showSubmitted === false ? 'hidden' : 'block'}
                 />
                 <AbsentCGLsTable
                     currentWeek={currentWeek}
                     currentCGNum={currentCGNum}
-                    className={!switchStatus === false ? 'hidden' : 'block'}
+                    className={!showSubmitted === false ? 'hidden' : 'block'}
                 />
 
             </div>
