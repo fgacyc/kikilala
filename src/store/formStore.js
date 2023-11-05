@@ -10,6 +10,7 @@ export const useFormStore = create((set) => ({
     cg_name: "",
     date: "",
     total_members_num: "",
+    cg_id: "",
 
     // cg activity attendance
     cg_om_num: 0,
@@ -39,6 +40,8 @@ export const useFormStore = create((set) => ({
     setCGName: (cg_name) => set({ cg_name }),
     setDate: (date) => set({ date }),
     setTotalMembersNum: (total_members_num) => set({ total_members_num }),
+    setCGID: (cg_id) => set({ cg_id }),
+
     setCGOMNum: (cg_om_num) => set({ cg_om_num }),
     setCGNBNum: (cg_nb_num) => set({ cg_nb_num }),
     setCGNFNum: (cg_nf_num) => set({ cg_nf_num }),
@@ -64,7 +67,8 @@ export const useFormStore = create((set) => ({
                 pastoral_team: data.pastoral_team || "",
                 satellite: data.satellite || "",
                 total_members_num: data.total_members_num || 0,
-                cg_name: data.cg_name || ""
+                cg_name: data.cg_name || "",
+                cg_id: data.cg_id || ""
             })
         }else{
             set({
@@ -72,7 +76,8 @@ export const useFormStore = create((set) => ({
                 pastoral_team: "",
                 satellite: "",
                 total_members_num: 0,
-                cg_name: ""
+                cg_name: "",
+                cg_id: ""
             })
         }
 
@@ -99,7 +104,8 @@ export const useFormStore = create((set) => ({
         service_ac_num: 0,
         service_abs_num: 0,
         service_absence_reason: "",
-        cg_name: ""
+        cg_name: "",
+        cg_id: ""
     }),
 
     resetForm: () => {
@@ -152,6 +158,9 @@ export const useFormStore = create((set) => ({
 
             // sub
             user_sub: useFormStore.getState().user_sub,
+
+            // cg id
+            cg_id: useFormStore.getState().cg_id
         }
     }
 }))

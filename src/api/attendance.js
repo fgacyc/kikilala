@@ -32,6 +32,15 @@ export async function readAllAttends() {
     return docs;
 }
 
+export  async  function queryAttends(date){
+    if (!date) return false;
+    // console.log(date)
+    const query = ["date", "==",date]
+    const doc = await queryDoc("attendance", query);
+    if (doc === false) return false;
+    return doc;
+}
+
 // update
 export async function updateAttend(docID, data) {
     let res = await updateDoc("attendance", data, docID);

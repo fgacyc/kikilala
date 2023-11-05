@@ -21,6 +21,9 @@ export async function readAllCGLs() {
     if (docs === false) return false;
     set("kikilala-CGLs", docs);
     set("kikilala-CGLs-updatedAt", new Date());
+    for (let key in docs) {
+        docs[key].CG_id = key;
+    }
     return docs;
 }
 

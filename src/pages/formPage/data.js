@@ -145,7 +145,11 @@ export  async  function getCGName(CGLName){
     const  data =await get("kikilala-CGLs");
     for (let key in data){
         if (data[key].CG_leader === CGLName){
-            return data[key].CG_name;
+            // console.log(data[key])
+            return {
+                cg_name: data[key].CG_name,
+                cg_id: data[key].CG_id
+            }
         }
     }
     return "";

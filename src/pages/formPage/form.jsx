@@ -84,9 +84,9 @@ function Selects({ data, statellite }) {
     const [currentPT, setCurrentPT] = useState("")
     const [currentCGLName, setCurrentCGLName] = useState("")
     const [currentTeamLeaderNames, setCurrentTeamLeaderNames] = useState([])
-    const [setPastoralTeam, setCGLName, setCGName,satellite,pastoral_team,cgl_name] = useFormStore(state => [
+    const [setPastoralTeam, setCGLName, setCGName,satellite,pastoral_team,cgl_name,setCGID] = useFormStore(state => [
         state.setPastoralTeam, state.setCGLName, state.setCGName,
-        state.satellite, state.pastoral_team, state.cgl_name
+        state.satellite, state.pastoral_team, state.cgl_name,state.setCGID
     ])
 
     const [ifPTLocal, setIfPTLocal] = useState(false)
@@ -134,7 +134,9 @@ function Selects({ data, statellite }) {
     function CGLSelectHandler(value) {
         setCGLName(value);
         getCGName(value).then((res) => {
-            setCGName(res)
+            console.log(res)
+            setCGName(res.cg_name)
+            setCGID(res.cg_id)
         });
     }
 
@@ -402,7 +404,7 @@ export default function Form() {
             {
                 !user_email
                 ? <div className={"font-bold mt-0 mb-3"}>
-                    <span>You haven't logged in yet! </span>
+                    <span>You haven't logged in yet. </span>
                     <span className={"text-blue-500 cursor-pointer"}
                           onClick={() => loginWithRedirect()}
                     >Log in</span>

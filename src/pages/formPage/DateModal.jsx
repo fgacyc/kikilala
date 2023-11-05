@@ -49,15 +49,17 @@ function DateModal({visible, setVisible}) {
     ]);
 
     function submit() {
-
         const data = getFormData();
+        // console.log(data);
+        // return;
+
         if(validate(data) === false) return;
         setVisible(false);
         addAttend(data).then((res) => {
             if (res!==false){
                 Message.success("Submitted successfully!")
-                resetForm();
                 saveCGInfoToLocal();
+                resetForm();
             }else{
                 Message.error("Submitted failed!")
             }
@@ -66,12 +68,14 @@ function DateModal({visible, setVisible}) {
 
     async function saveCGInfoToLocal(){
         const data = getFormData();
+        console.log(data)
         await set("CGInfo",{
             "satellite": data.satellite,
             "pastoral_team": data.pastoral_team,
             "cgl_name": data.cgl_name,
             "cg_name": data.cg_name,
             "total_members_num" : data.total_members_num,
+            "cg_id": data.cg_id,
         })
     }
 
