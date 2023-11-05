@@ -338,7 +338,8 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData ,currentWeek,currentCG
                         title='confirm'
                         content='Are you sure to delete this record?'
                         onOk={() => {
-                            deleteAttend(record.key);
+                            // console.log(record)
+                            deleteAttend(record.id);
                             setAttendance(attendance.filter((item) => item.key !== record.key));
                         }}
                     >
