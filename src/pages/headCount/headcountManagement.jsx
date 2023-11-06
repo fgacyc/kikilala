@@ -1,28 +1,30 @@
 import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import {addRecord} from "../../api/records.js";
-import {Button, Space, Table} from "@arco-design/web-react";
+import {Button, Popconfirm, Space, Table} from "@arco-design/web-react";
 import CGLsInfoEditModal from "../adminPage/CGLsInfoEditModal.jsx";
 import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
-import {readAllHeadcounts} from "../../api/headcount.js";
+import {deleteHeadcount, readAllHeadcounts} from "../../api/headcount.js";
 import {pastoralTeamList, satelliteList} from "../../config.js";
 import {serviceTypeOptions} from "./headcountForm.jsx";
+import {IconDelete, IconEdit} from "@arco-design/web-react/icon";
+import {deleteCGL} from "../../api/CGLs.js";
+import PubSub from "pubsub-js";
 
-function HeadCountTable(){
-    const [visible, setVisible] = useState(false);
-    const [data, setData] = useState([]);
+function HeadCountTable() {
+    const [data, setData] = useState(null);
     useEffect(() => {
         setHeadcountData();
     }, []);
 
-    async function setHeadcountData(){
+    async function setHeadcountData() {
         const res = await readAllHeadcounts();
         let headData = [];
-        for (let key in res){
+        for (let key in res) {
             res[key].key = key;
             headData.push(res[key]);
         }
-        console.log(headData)
+        // console.log(headData)
         setData(headData);
     }
 
@@ -69,47 +71,83 @@ function HeadCountTable(){
         ,
         {
             title: 'Kids',
-            dataIndex: 'yw_num'
+            dataIndex: 'kids_num'
         }
         ,
         {
             title: 'Crew',
             dataIndex: 'cm_num'
-        },{
+        }, {
             title: "total",
             dataIndex: "headCount"
+        },
+        {
+            title: "Operation",
+            dataIndex: "op",
+            render: (_, record) => (
+                <div>
+                    <Button icon={<IconEdit />}
+                            className={"mr-2"}
+                            onClick={() => {
+                                // setCGL(record);
+                                // setVisible(true);
+                            }}
+                            type="secondary"
+                    ></Button>
+                    <Popconfirm
+                        focusLock
+                        title='Confirm'
+                        content='Are you sure you want to delete?'
+                        onOk={() => {
+                            //console.log(record);
+                            deleteHeadcount(record.key);
+                            setHeadcountData()
+                        }}
+                    >
+                        <Button icon={<IconDelete />}
+                                type="secondary"
+                        ></Button>
+                    </Popconfirm>
+                </div>
+            ),
         }
     ];
 
-    return <Table columns={columns}
-                  data={data}
-                  renderPagination={(paginationNode) => (
-                      <div
-                          style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              marginTop: 10,
-                          }}
-                      >
-                          <Space>
-                              <span className={"ml-4"}>Items: {data.length}</span>
-                          </Space>
-                          {paginationNode}
-                      </div>
-                  )}
-                  scroll={{
-                      x: window.innerWidth * 0.9,
-                      y: window.innerHeight,
-                  }}
-    />;
+    return <>
+        {
+            data && <Table columns={columns}
+                           data={data}
+                           renderPagination={(paginationNode) => (
+                               <div
+                                   style={{
+                                       display: 'flex',
+                                       justifyContent: 'space-between',
+                                       marginTop: 10,
+                                   }}
+                               >
+                                   <Space>
+                                       <span className={"ml-4"}>Items: {data.length}</span>
+                                   </Space>
+                                   {paginationNode}
+                               </div>
+                           )}
+                           scroll={{
+                               x: window.innerWidth * 0.9,
+                               y: window.innerHeight,
+                           }}
+            />
+        }
+    </>
+
+
 }
 
 
-export default function HeadCountManagement(){
+export default function HeadCountManagement() {
     const [editVisible, setEditVisible] = useState(false);
     const [addVisible, setAddVisible] = useState(false);
     const [tableData, setTableData] = useState([]);
-    const { loginWithRedirect,user,isLoading } = useAuth0();
+    const {loginWithRedirect, user, isLoading} = useAuth0();
 
     useEffect(() => {
         if (isLoading) return;
@@ -124,13 +162,13 @@ export default function HeadCountManagement(){
     }, [isLoading])
 
 
-    return(
+    return (
         <div className={"h-full w-full p-8"}>
             <div className={"bg-white rounded-lg pb-2"}>
-                <HeadCountTable />
+                <HeadCountTable/>
             </div>
             <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible}/>
-            <CGLsAddModal  visible={addVisible} setVisible={setAddVisible}/>
+            <CGLsAddModal visible={addVisible} setVisible={setAddVisible}/>
         </div>
     )
 }
