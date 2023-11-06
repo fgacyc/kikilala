@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Message, Divider, InputNumber, Drawer, Input, Space } from '@arco-design/web-react';
+import { Form, Message, Divider, InputNumber, Drawer, Input, DatePicker } from '@arco-design/web-react';
+import dayjs from 'dayjs';
 import { updateAttend } from '../../api/attendance';
 import { useFormStore } from '../../store/formStore';
+import { breakDateRangeIntoArray, validateDateArray } from '../../tools';
 
+const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-const CGInfo = ({ attendanceData, total }) => {
+const CGInfo = ({ attendanceData, total, valueRange, setValueRange }) => {
     const cg_info_list = ['Date', 'CG Leader', 'Pastoral Team', 'Satellite', 'Total Members']
 
     return (
@@ -19,7 +22,10 @@ const CGInfo = ({ attendanceData, total }) => {
             {
                 attendanceData && (
                     <div>
-                        <div>{attendanceData.date}</div>
+                        <RangePicker
+                            value={valueRange}
+                            onChange={(v) => setValueRange(v)}
+                        />
                         <div>{attendanceData.cgl_name}</div>
                         <div>{attendanceData.pastoral_team}</div>
                         <div>{attendanceData.satellite}</div>
@@ -64,6 +70,7 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
 
     const [attendanceData, setAttendanceData] = useState({})
     const [total, setTotal] = useState(0);
+    const [valueRange, setValueRange] = useState([]);
 
     const [form] = Form.useForm();
 
@@ -73,7 +80,11 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
         if (visible) {
             setTotal(attendanceRecord.total_members_num);
             setAttendanceData(attendanceRecord)
-            console.log(attendanceRecord)
+
+            const defaultDateRange = attendanceRecord && [dayjs(breakDateRangeIntoArray(attendanceRecord.date)[0]),
+            dayjs(breakDateRangeIntoArray(attendanceRecord.date)[1])]
+            setValueRange(defaultDateRange);
+
             form.setFieldsValue({
                 cg_om_num: attendanceRecord.cg_om_num,
                 cg_nb_num: attendanceRecord.cg_nb_num,
@@ -117,23 +128,25 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
         return Math.max(cgTotal, serviceTotal);
     }
 
-
     const updateattendanceData = async () => {
         let fieldsValue = form.getFieldsValue();
         fieldsValue.total_members_num = calculateTotal(fieldsValue);
 
-        const attendance_data = await updateAttend(attendanceData.key, fieldsValue);
+        const date = validateDateArray(valueRange) ?
+            valueRange.map(date => date.replace(/-/g, '/')).join('-') : attendanceData.date;
 
-        if (attendance_data) {
-            setTotal(fieldsValue.total_members_num);
-            setRowKey(attendanceRecord.key);
-            setTotalMembersNum(fieldsValue.total_members_num);
-            Message.success('Updated successfully!');
-        } else {
-            Message.error('Failed to update. Please try again.');
-        }
+        await updateAttend(attendanceData.id,
+            { ...fieldsValue, date }).then((res) => {
+                if (res) {
+                    setTotal(fieldsValue.total_members_num);
+                    setRowKey(attendanceRecord.key);
+                    setTotalMembersNum(fieldsValue.total_members_num);
+                    Message.success('Updated successfully!');
+                } else {
+                    Message.error('Failed to update. Please try again.');
+                }
+            })
     }
-
 
     return (
         <Drawer
@@ -144,7 +157,12 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
                 setVisible(false);
             }}
         >
-            <CGInfo attendanceData={attendanceData} total={total} />
+            <CGInfo
+                attendanceData={attendanceData}
+                total={total}
+                valueRange={valueRange}
+                setValueRange={setValueRange}
+            />
             <Form
                 {...formItemLayout}
                 form={form}

@@ -82,3 +82,29 @@ export function downloadXLSX(data) {
     document.body.appendChild(a);
     a.click();
 }
+
+export function breakDateRangeIntoArray(dateRange) {
+    const dateArray = dateRange.split('-').map(date => {
+        const parts = date.split('/');
+        return `${parts[0]}-${parts[1]}-${parts[2]}`;
+    });
+
+    return dateArray;
+}
+
+export function validateDateArray(dateArray) {
+    for (const date of dateArray) {
+        // Check if the date matches the "yyyy-mm-dd" format
+        const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+        if (!datePattern.test(date)) {
+            return false;
+        }
+
+        const dateObj = new Date(date);
+        if (isNaN(dateObj.getTime())) {
+            return false;
+        }
+    }
+
+    return true;
+}
