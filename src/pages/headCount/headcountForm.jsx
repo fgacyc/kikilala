@@ -51,10 +51,10 @@ export default function HeadCountForm(){
 
     const [
         kids_num, cm_num, parents_num,
-        yw_num, gs_num, yp_num
+        yw_num, gs_num, yp_num,key
     ] = useHeadCountStore(state => [
         state.kids_num, state.cm_num, state.parents_num,
-        state.yw_num, state.gs_num, state.yp_num
+        state.yw_num, state.gs_num, state.yp_num, state.key
     ])
 
     const [
@@ -99,8 +99,8 @@ export default function HeadCountForm(){
 
 
     function  submitHandler(){
-        const data =  getHeadCountData();
-        console.log(data)
+        const data =  getHeadCountData("form");
+        //console.log(data)
         // return;
 
         if (!data) return;
@@ -111,6 +111,9 @@ export default function HeadCountForm(){
         })
     }
 
+    useEffect(() => {
+        console.log(key)
+    }, [key]);
 
     return(
         <div>
@@ -211,9 +214,6 @@ export default function HeadCountForm(){
                     <IconHistory fontSize={24} />
                 </div>
             </div>
-
-
-
         </div>
     )
 }

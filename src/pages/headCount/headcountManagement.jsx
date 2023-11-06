@@ -10,12 +10,29 @@ import {serviceTypeOptions} from "./headcountForm.jsx";
 import {IconDelete, IconEdit, IconSearch} from "@arco-design/web-react/icon";
 import {deleteCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
+import HeadCountDrawer from "./HeadcountDrawer.jsx";
+import {useHeadCountStore} from "../../store/headcountStore.js";
+import {useFormStore} from "../../store/formStore.js";
 
 function HeadCountTable() {
     const [data, setData] = useState(null);
     const inputRef = useRef(null);
+    const [headCountDrawerVisible, setHeadCountDrawerVisible] = useState(false);
+    const [scrollX, setScrollX] = useState(window.innerWidth *0.9);
+    const setHeadCountData = useHeadCountStore(state => state.setHeadCountData)
     useEffect(() => {
         setHeadcountData();
+        if (window.innerWidth < 768) {
+            setScrollX(window.innerWidth * 3);
+        }
+
+        const subscription = PubSub.subscribe('REFRESH_HEADCOUNT_TABLE', () => {
+            setHeadcountData();
+        }
+        );
+        return () => {
+            PubSub.unsubscribe(subscription);
+        };
     }, []);
 
     async function setHeadcountData() {
@@ -33,7 +50,7 @@ function HeadCountTable() {
     const columns = [
         {
             title: 'Service Location',
-            dataIndex: 'satellite',
+            dataIndex: "satellite",
             sorter: (a, b) => a.satellite.localeCompare(b.satellite),
             filters: satelliteList,
             onFilter: (value, row) => {
@@ -127,6 +144,8 @@ function HeadCountTable() {
                             onClick={() => {
                                 // setCGL(record);
                                 // setVisible(true);
+                                setHeadCountData(record);
+                                setHeadCountDrawerVisible(true);
                             }}
                             type="secondary"
                     ></Button>
@@ -168,11 +187,12 @@ function HeadCountTable() {
                                </div>
                            )}
                            scroll={{
-                               x: window.innerWidth * 0.9,
+                               x: scrollX,
                                y: window.innerHeight,
                            }}
             />
         }
+        <HeadCountDrawer setVisible={setHeadCountDrawerVisible} visible={headCountDrawerVisible} />
     </>
 
 
@@ -180,18 +200,17 @@ function HeadCountTable() {
 
 
 export default function HeadCountManagement() {
-    const [editVisible, setEditVisible] = useState(false);
-    const [addVisible, setAddVisible] = useState(false);
-    const [tableData, setTableData] = useState([]);
-    const {loginWithRedirect, user, isLoading} = useAuth0();
+  const {loginWithRedirect, user, isLoading} = useAuth0();
 
     useEffect(() => {
         if (isLoading) return;
         if (user) {
             addRecord({
-                page: "CGLsManagement",
+                page: "HeadcountManagement",
                 user_id: user.sub,
             });
+            useFormStore.getState().setUserEmail(user.email);
+            useFormStore.getState().setUserSub(user.sub);
             return;
         }
         loginWithRedirect();
@@ -199,12 +218,11 @@ export default function HeadCountManagement() {
 
 
     return (
-        <div className={"h-full w-full p-8"}>
+        <div className={`h-full w-full 
+            sm:p-8 p-4`}>
             <div className={"bg-white rounded-lg pb-2"}>
                 <HeadCountTable/>
             </div>
-            <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible}/>
-            <CGLsAddModal visible={addVisible} setVisible={setAddVisible}/>
         </div>
     )
 }
