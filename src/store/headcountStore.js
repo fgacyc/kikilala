@@ -6,7 +6,7 @@ export const useHeadCountStore = create((set) => ({
     satellite: "",
     dateTime: "",
     serviceType: "",
-    headCount: "",
+    headCount: 0,
     kids_num: "",
     cm_num: "",
     parents_num: "",
@@ -47,14 +47,14 @@ export const useHeadCountStore = create((set) => ({
             return false;
         }
         if(type === "form"){
-            if (useFormStore.getState().total_members_num === "") {
+            if (!useHeadCountStore.getState().headCount) {
                 Message.warning("Please enter a head count");
                 return false;
             }
         }
 
         if(type === "drawer"){
-            if (useHeadCountStore.getState().headCount === "") {
+            if (!useHeadCountStore.getState().headCount) {
                 Message.warning("Please enter a head count");
                 return false;
             }
@@ -111,7 +111,7 @@ export const useHeadCountStore = create((set) => ({
             satellite: useHeadCountStore.getState().satellite,
             dateTime: useHeadCountStore.getState().dateTime,
             serviceType: useHeadCountStore.getState().serviceType,
-            headCount: type==="form"? useFormStore.getState().total_members_num:useHeadCountStore.getState().headCount,
+            headCount: useHeadCountStore.getState().headCount,
             kids_num: useHeadCountStore.getState().kids_num,
             cm_num: useHeadCountStore.getState().cm_num,
             parents_num: useHeadCountStore.getState().parents_num,

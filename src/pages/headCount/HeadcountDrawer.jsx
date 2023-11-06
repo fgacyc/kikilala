@@ -1,5 +1,5 @@
 import {DatePicker, Drawer, Input, InputNumber, Message, Select} from "@arco-design/web-react";
-import React from "react";
+import React, {useEffect} from "react";
 import {serviceTypeOptions} from "./headcountForm.jsx";
 import {useHeadCountStore} from "../../store/headcountStore.js";
 import {addHeadcount, updateHeadcount} from "../../api/headcount.js";
@@ -40,6 +40,10 @@ export  default  function HeadCountDrawer({visible, setVisible}){
         state.setYWNum,state.setGSNum,state.setYPNum,state.setComment,
         state.getHeadCountData
     ]);
+
+    useEffect(() => {
+        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + yp_num)
+    }, [kids_num, cm_num, parents_num,yw_num, gs_num, yp_num])
 
     function submit(){
         const data =  getHeadCountData("drawer");
@@ -125,6 +129,7 @@ export  default  function HeadCountDrawer({visible, setVisible}){
                     className={"w-[calc(100%-40px)] ml-2"}
                     value={headCount}
                     onChange={setHeadCount}
+                    disabled={true}
                 />
             </div>
             <div className={"flex flex-row justify-between items-center py-2"}>

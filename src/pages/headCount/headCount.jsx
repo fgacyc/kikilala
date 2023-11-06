@@ -2,7 +2,7 @@ import HeadCountForm from "./headcountForm.jsx";
 export default function HeadCount() {
 
     return (
-        <div className={`w-full h-full bg-[#00D97C] rounded-bl flex flex-row flex-wrap justify-between relative
+        <div className={`w-full h-full bg-[#00acb0] rounded-bl flex flex-row flex-wrap justify-between relative
             sm:p-[50px] p-0`
         }>
             <div className={"relative flex flex-col justify-center"}>
