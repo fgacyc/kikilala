@@ -1,35 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Message, Divider, InputNumber, Drawer, Input, DatePicker } from '@arco-design/web-react';
-import dayjs from 'dayjs';
+import { Form, Message, Divider, InputNumber, Drawer, Input, Select } from '@arco-design/web-react';
 import { updateAttend } from '../../api/attendance';
-import { useFormStore } from '../../store/formStore';
-import { breakDateRangeIntoArray, validateDateArray } from '../../tools';
+import useSelectedRowStore from '../../store/attendanceRecordStore';
+import { getWeekDatesArray } from '../formPage/data';
 
-const { RangePicker } = DatePicker;
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-const CGInfo = ({ attendanceData, total, valueRange, setValueRange }) => {
-    const cg_info_list = ['Date', 'CG Leader', 'Pastoral Team', 'Satellite', 'Total Members']
+const CGInfo = ({ attendanceRecord, valueRange, setValueRange }) => {
+    const cg_info_list = ['CG Leader', 'Pastoral Team', 'Satellite', 'Total Members']
+    const dateArray = getWeekDatesArray(4);
+    const Option = Select.Option;
 
     return (
         <div className='flex justify-center mx-auto my-10'>
             <div className='mr-10 font-semibold'>
+                <div className='h-[45px] mt-[5px]'>Date</div>
                 {cg_info_list.map((item, index) => (
-                    <div key={index}>{item}</div>
+                    <div key={index} className='h-[40px]'>{item}</div>
                 ))}
             </div>
             {
-                attendanceData && (
+                attendanceRecord && (
                     <div>
-                        <RangePicker
-                            value={valueRange}
-                            onChange={(v) => setValueRange(v)}
-                        />
-                        <div>{attendanceData.cgl_name}</div>
-                        <div>{attendanceData.pastoral_team}</div>
-                        <div>{attendanceData.satellite}</div>
-                        <div>{total}</div>
+                        {
+                            dateArray &&
+                            <Select
+                                className='h-[50px]'
+                                value={valueRange}
+                                onChange={(v) => setValueRange(v)}
+                            >
+                                {dateArray.slice().reverse().map((option, index) => (
+                                    <Option key={index} value={option}>
+                                        {option}
+                                    </Option>
+                                ))}
+                            </Select>
+                        }
+                        <div className='h-[40px]'>{attendanceRecord.cgl_name}</div>
+                        <div className='h-[40px]'>{attendanceRecord.pastoral_team}</div>
+                        <div className='h-[40px]'>{attendanceRecord.satellite}</div>
+                        <div className='h-[40px]'>{attendanceRecord.total_members_num}</div>
                     </div>
                 )
             }
@@ -37,13 +48,13 @@ const CGInfo = ({ attendanceData, total, valueRange, setValueRange }) => {
     )
 }
 
-const AttendanceCard = ({ title, attendanceType, attendanceData, attendance_list }) => {
+const AttendanceCard = ({ title, attendanceType, attendanceRecord, attendance_list }) => {
     return (
         <>
             <Divider orientation='center'>{title}</Divider>
             <div className="mx-auto">
                 <div className="flex flex-wrap w-[325px]">
-                    {attendanceData &&
+                    {attendanceRecord &&
                         attendance_list.map((item, index) => (
                             <div key={index}>
                                 <FormItem
@@ -65,25 +76,16 @@ const AttendanceCard = ({ title, attendanceType, attendanceData, attendance_list
     );
 };
 
-const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
+const AttendanceInfoEditModal = ({ visible, setVisible }) => {
     const attendance_list = ['OM', 'NB', 'NF', 'RNF', 'AC', 'ABS']
-
-    const [attendanceData, setAttendanceData] = useState({})
-    const [total, setTotal] = useState(0);
     const [valueRange, setValueRange] = useState([]);
-
     const [form] = Form.useForm();
-
-    const [setRowKey, setTotalMembersNum] = useFormStore((state) => [state.setRowKey, state.setTotalMembersNum]);
+    const attendanceRecord = useSelectedRowStore((state) => state.selectedRow);
+    const setAttendanceRecord = useSelectedRowStore((state) => state.setSelectedRow);
 
     useEffect(() => {
         if (visible) {
-            setTotal(attendanceRecord.total_members_num);
-            setAttendanceData(attendanceRecord)
-
-            const defaultDateRange = attendanceRecord && [dayjs(breakDateRangeIntoArray(attendanceRecord.date)[0]),
-            dayjs(breakDateRangeIntoArray(attendanceRecord.date)[1])]
-            setValueRange(defaultDateRange);
+            setValueRange(attendanceRecord.date)
 
             form.setFieldsValue({
                 cg_om_num: attendanceRecord.cg_om_num,
@@ -120,19 +122,14 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
         return Math.max(cgTotal, serviceTotal);
     }
 
-    const updateattendanceData = async () => {
+    const updateattendanceRecord = async () => {
         let fieldsValue = form.getFieldsValue();
         fieldsValue.total_members_num = calculateTotal(fieldsValue);
 
-        const date = validateDateArray(valueRange) ?
-            valueRange.map(date => date.replace(/-/g, '/')).join('-') : attendanceData.date;
-
-        await updateAttend(attendanceData.id,
-            { ...fieldsValue, date }).then((res) => {
+        await updateAttend(attendanceRecord.id,
+            { ...fieldsValue, date: valueRange }).then((res) => {
                 if (res) {
-                    setTotal(fieldsValue.total_members_num);
-                    setRowKey(attendanceRecord.key);
-                    setTotalMembersNum(fieldsValue.total_members_num);
+                    setAttendanceRecord({ ...attendanceRecord, ...fieldsValue, date: valueRange });
                     Message.success('Updated successfully!');
                 } else {
                     Message.error('Failed to update. Please try again.');
@@ -144,14 +141,13 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
         <Drawer
             width={'100%'}
             visible={visible}
-            onOk={updateattendanceData}
+            onOk={updateattendanceRecord}
             onCancel={() => {
                 setVisible(false);
             }}
         >
             <CGInfo
-                attendanceData={attendanceData}
-                total={total}
+                attendanceRecord={attendanceRecord}
                 valueRange={valueRange}
                 setValueRange={setValueRange}
             />
@@ -168,13 +164,13 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
                 <AttendanceCard
                     title='Connect Group'
                     attendanceType='cg'
-                    attendanceData={attendanceData}
+                    attendanceRecord={attendanceRecord}
                     attendance_list={attendance_list}
                 />
                 <AttendanceCard
                     title='Service'
                     attendanceType='service'
-                    attendanceData={attendanceData}
+                    attendanceRecord={attendanceRecord}
                     attendance_list={attendance_list}
                 />
             </Form>

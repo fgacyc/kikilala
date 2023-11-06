@@ -2,8 +2,6 @@ import { create } from 'zustand'
 import {get} from "idb-keyval";
 
 export const useFormStore = create((set) => ({
-    rowKey: "",
-
     satellite: "",
     pastoral_team: "",
     cgl_name: "",
@@ -33,7 +31,6 @@ export const useFormStore = create((set) => ({
     user_email: "",
     user_sub: "",
 
-    setRowKey: (rowKey) => set({ rowKey }),
     setSatellite: (satellite) => set({ satellite }),
     setPastoralTeam: (pastoral_team) => set({ pastoral_team }),
     setCGLName: (cgl_name) => set({ cgl_name }),

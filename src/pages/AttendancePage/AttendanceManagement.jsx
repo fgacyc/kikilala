@@ -1,23 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {Button, Input, Popconfirm, Select, Space, Switch, Table} from '@arco-design/web-react';
-import {deleteAttend, queryAttends, readAllAttends} from '../../api/attendance';
-import {convertCGLTableData, getWeekDatesArray} from '../formPage/data';
+import { Button, Input, Popconfirm, Select, Space, Switch, Table } from '@arco-design/web-react';
+import { deleteAttend, queryAttends, readAllAttends } from '../../api/attendance';
+import { convertCGLTableData, getWeekDatesArray } from '../formPage/data';
 import { IconDelete, IconEdit, IconSearch } from '@arco-design/web-react/icon';
 import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
-import { useFormStore } from '../../store/formStore';
-import {useAuth0} from "@auth0/auth0-react";
-import {addRecord} from "../../api/records.js";
-import {getCGLNum} from "../../api/CGLs.js";
-import {useAttendanceStore} from "../../store/attendanceStore.js";
-import {get} from "idb-keyval";
-import {log10} from "chart.js/helpers";
+import { useAuth0 } from "@auth0/auth0-react";
+import { addRecord } from "../../api/records.js";
+import { getCGLNum } from "../../api/CGLs.js";
+import { useAttendanceStore } from "../../store/attendanceStore.js";
+import { get } from "idb-keyval";
+import useSelectedRowStore from '../../store/attendanceRecordStore.js';
 
 
 const Option = Select.Option;
-const options = ['Beijing', 'Shanghai', 'Guangzhou', 'Disabled'];
 
-function AbsentCGLsTable({currentWeek,currentCGNum,className}){
+function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
     const inputRef = useRef(null);
     const columns = [
         {
@@ -29,7 +27,8 @@ function AbsentCGLsTable({currentWeek,currentCGNum,className}){
                             record.CG_leader
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.CG_leader.localeCompare(b.CG_leader),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
@@ -69,7 +68,8 @@ function AbsentCGLsTable({currentWeek,currentCGNum,className}){
                             record.CG_name
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.CG_name.localeCompare(b.CG_name),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
@@ -109,7 +109,8 @@ function AbsentCGLsTable({currentWeek,currentCGNum,className}){
                             record.pastoral_team
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.pastoral_team.localeCompare(b.pastoral_team),
             filters: pastoralTeamList,
             onFilter: (value, row) => {
@@ -126,7 +127,8 @@ function AbsentCGLsTable({currentWeek,currentCGNum,className}){
                             record.satellite
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.satellite.localeCompare(b.satellite),
             filters: satelliteList,
             onFilter: (value, row) => {
@@ -135,18 +137,18 @@ function AbsentCGLsTable({currentWeek,currentCGNum,className}){
             filterMultiple: false,
         }
     ];
-    const currentSubmitData= useAttendanceStore(state => state.currentSubmitData);
-    const [tableData,setTableData] = useState([])
+    const currentSubmitData = useAttendanceStore(state => state.currentSubmitData);
+    const [tableData, setTableData] = useState([])
 
-    async function findAbsentMembers(){
-        if(!currentSubmitData) return;
+    async function findAbsentMembers() {
+        if (!currentSubmitData) return;
 
         let submitCGLs = currentSubmitData.map((item) => item.cg_id);
         let absentCGLs = [];
-        const allCGLs= await get("kikilala-CGLs")
-        for (let key in allCGLs){
+        const allCGLs = await get("kikilala-CGLs")
+        for (let key in allCGLs) {
             allCGLs[key].key = key;
-            if (!submitCGLs.includes(key)){
+            if (!submitCGLs.includes(key)) {
 
                 absentCGLs.push(allCGLs[key]);
             }
@@ -156,36 +158,37 @@ function AbsentCGLsTable({currentWeek,currentCGNum,className}){
 
     useEffect(() => {
         findAbsentMembers()
-    }, [currentSubmitData,currentWeek]);
+    }, [currentSubmitData, currentWeek]);
 
 
 
-    return(
+    return (
         <>
             {
                 tableData && <Table columns={columns} data={tableData} className={className}
-                       renderPagination={(paginationNode) => (
-                           <div
-                               style={{
-                                   display: 'flex',
-                                   justifyContent: 'space-between',
-                                   marginTop: 10,
-                               }}
-                           >
-                               <Space>
-                                   <span className={"mx-4 text-end truncate"}>Items: {tableData.length} / {currentCGNum}</span>
-                               </Space>
-                               {paginationNode}
-                           </div>
-                       )}
+                    renderPagination={(paginationNode) => (
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                marginTop: 10,
+                            }}
+                        >
+                            <Space>
+                                <span className={"mx-4 text-end truncate"}>Items: {tableData.length} / {currentCGNum}</span>
+                            </Space>
+                            {paginationNode}
+                        </div>
+                    )}
                 />
             }
         </>
     )
 }
 
-const AttendanceTable = ({ onOpenModal, setAttendanceData ,currentWeek,currentCGNum,className}) => {
+const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentCGNum, className }) => {
     const inputRef = useRef(null);
+    const [setSelectedRow] = useSelectedRowStore((state) => [state.setSelectedRow]);
     const columns = [
         {
             title: 'Date',
@@ -331,6 +334,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData ,currentWeek,currentCG
                         onClick={() => {
                             onOpenModal();
                             setAttendanceData(record);
+                            setSelectedRow(record);
                         }}
                     ></Button>
                     <Popconfirm
@@ -338,7 +342,6 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData ,currentWeek,currentCG
                         title='confirm'
                         content='Are you sure to delete this record?'
                         onOk={() => {
-                            // console.log(record)
                             deleteAttend(record.id);
                             setAttendance(attendance.filter((item) => item.key !== record.key));
                         }}
@@ -353,28 +356,25 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData ,currentWeek,currentCG
         }
     ];
     const [attendance, setAttendance] = useState([])
-    const [rowKey, total_members_num] = useFormStore((state) => [state.rowKey, state.total_members_num]);
     const setCurrentSubmitData = useAttendanceStore(state => state.setCurrentSubmitData);
+    const selectedRow = useSelectedRowStore(state => state.selectedRow);
 
     useEffect(() => {
         async function getAttendance() {
             const attendance_data = await queryAttends(currentWeek);
-            // console.log(attendance_data)
             const updateattendanceData = convertCGLTableData(attendance_data).map((item) => {
-                if (item.key === rowKey) {
-                    return {
-                        ...item,
-                        total_members_num: total_members_num,
+                if (selectedRow) {
+                    if (item.id === selectedRow.id) {
+                        return selectedRow;
                     }
                 }
                 return item;
             })
             setAttendance(updateattendanceData);
             setCurrentSubmitData(updateattendanceData);
-            // findAbsentMembers();
         }
         getAttendance();
-    }, [currentWeek])
+    }, [currentWeek, selectedRow])
 
     return (
         <div className={className}>
@@ -412,15 +412,12 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData ,currentWeek,currentCG
 const AttendanceManagement = () => {
     const [visible, setVisible] = useState(false);
     const [attendanceRecord, setAttendanceRecord] = useState({});
-    const [dateArray,setDateArray] = useState([])
+    const [dateArray, setDateArray] = useState([])
     const buttonsNumber = 4
-    // const [currentWeek,setCurrentWeek] = useState("")
-    const [currentCGNum,setCurrentCGNum] = useState(0)
-    const { loginWithRedirect,user,isLoading } = useAuth0();
-    // const [switchStatus, setSwitchStatus] = useState(true);
-    const [initAttendData,currentWeek,setCurrentWeek,showSubmitted,setShowSubmitted] = useAttendanceStore(state => [
-            state.initAttendData,state.currentWeek,state.setCurrentWeek,state.showSubmitted,state.setShowSubmitted]);
-
+    const [currentCGNum, setCurrentCGNum] = useState(0)
+    const { loginWithRedirect, user, isLoading } = useAuth0();
+    const [initAttendData, currentWeek, setCurrentWeek, showSubmitted, setShowSubmitted] = useAttendanceStore(state => [
+        state.initAttendData, state.currentWeek, state.setCurrentWeek, state.showSubmitted, state.setShowSubmitted]);
 
     useEffect(() => {
         setDateArray(getWeekDatesArray(buttonsNumber));
@@ -428,14 +425,12 @@ const AttendanceManagement = () => {
             setCurrentCGNum(res);
         });
         initAttendData();
-        //console.log(currentWeek)
     }, []);
 
     useEffect(() => {
-        if (dateArray[3] && currentWeek === ""){
+        if (dateArray[3] && currentWeek === "") {
             setCurrentWeek(dateArray[3]);
         }
-        // console.log(currentWeek)
     }, [dateArray]);
 
     useEffect(() => {
@@ -464,10 +459,10 @@ const AttendanceManagement = () => {
             {
                 dateArray && <div className={"flex flex-row justify-between mb-2"}>
                     <Select placeholder='Please select' style={{ width: 250 }} allowClear
-                            value={currentWeek}
-                            onChange={(value) => {
-                                setCurrentWeek(value);
-                            }}
+                        value={currentWeek}
+                        onChange={(value) => {
+                            setCurrentWeek(value);
+                        }}
                     >
                         {dateArray.slice().reverse().map((option, index) => (
                             <Option key={index} value={option}>
@@ -490,11 +485,12 @@ const AttendanceManagement = () => {
             }
 
             <div className={"bg-white rounded-lg pb-2"}>
-                <AttendanceTable onOpenModal={onOpenModal}
-                                 setAttendanceData={setAttendanceData}
-                                 currentWeek={currentWeek}
-                                 currentCGNum={currentCGNum}
-                                 className={showSubmitted === false ? 'hidden' : 'block'}
+                <AttendanceTable
+                    onOpenModal={onOpenModal}
+                    setAttendanceData={setAttendanceData}
+                    currentWeek={currentWeek}
+                    currentCGNum={currentCGNum}
+                    className={showSubmitted === false ? 'hidden' : 'block'}
                 />
                 <AbsentCGLsTable
                     currentWeek={currentWeek}
