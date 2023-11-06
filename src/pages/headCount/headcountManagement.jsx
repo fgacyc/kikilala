@@ -1,18 +1,19 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import {addRecord} from "../../api/records.js";
-import {Button, Popconfirm, Space, Table} from "@arco-design/web-react";
+import {Button, Input, Popconfirm, Space, Table} from "@arco-design/web-react";
 import CGLsInfoEditModal from "../adminPage/CGLsInfoEditModal.jsx";
 import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
 import {deleteHeadcount, readAllHeadcounts} from "../../api/headcount.js";
 import {pastoralTeamList, satelliteList} from "../../config.js";
 import {serviceTypeOptions} from "./headcountForm.jsx";
-import {IconDelete, IconEdit} from "@arco-design/web-react/icon";
+import {IconDelete, IconEdit, IconSearch} from "@arco-design/web-react/icon";
 import {deleteCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 
 function HeadCountTable() {
     const [data, setData] = useState(null);
+    const inputRef = useRef(null);
     useEffect(() => {
         setHeadcountData();
     }, []);
@@ -52,34 +53,69 @@ function HeadCountTable() {
         },
         {
             title: 'Date time',
-            dataIndex: 'dateTime'
+            dataIndex: 'dateTime',
+            sorter: (a, b) => a.dateTime.localeCompare(b.dateTime),
+            filterIcon: <IconSearch />,
+            filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+                return (
+                    <div className='arco-table-custom-filter'>
+                        <Input.Search
+                            allowClear={true}
+                            ref={inputRef}
+                            searchButton
+                            placeholder='Please enter datetime'
+                            value={filterKeys[0] || ''}
+                            onChange={(value) => {
+                                setFilterKeys(value ? [value] : []);
+                            }}
+                            onSearch={() => {
+                                confirm();
+                            }}
+                        />
+                    </div>
+                );
+            },
+            onFilter: (value, row) => {
+                return row.dateTime.toLowerCase().includes(value.toLowerCase());
+            },
+            onFilterDropdownVisibleChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => inputRef.current.focus(), 150);
+                }
+            },
         },
         {
             title: 'YW',
-            dataIndex: 'yw_num'
+            dataIndex: 'yw_num',
+            sorter: (a, b) => a.yw_num - b.yw_num,
         }
         ,
         {
             title: 'GS',
-            dataIndex: 'gs_num'
+            dataIndex: 'gs_num',
+            sorter: (a, b) => a.gs_num - b.gs_num,
         }
         ,
         {
             title: 'YP',
-            dataIndex: 'yp_num'
+            dataIndex: 'yp_num',
+            sorter: (a, b) => a.yp_num - b.yp_num,
         }
         ,
         {
             title: 'Kids',
-            dataIndex: 'kids_num'
+            dataIndex: 'kids_num',
+            sorter: (a, b) => a.kids_num - b.kids_num,
         }
         ,
         {
             title: 'Crew',
-            dataIndex: 'cm_num'
+            dataIndex: 'cm_num',
+            sorter: (a, b) => a.cm_num - b.cm_num,
         }, {
             title: "total",
-            dataIndex: "headCount"
+            dataIndex: "headCount",
+            sorter: (a, b) => a.headCount - b.headCount,
         },
         {
             title: "Operation",
