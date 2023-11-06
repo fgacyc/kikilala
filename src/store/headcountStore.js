@@ -15,6 +15,9 @@ export const useHeadCountStore = create((set) => ({
     yp_num: "",
     comment: "",
 
+    // key ,for edit
+    key: "",
+
     setSatellite: (satellite) => set({satellite}),
     setDateTime: (dateTime) => set({dateTime}),
     setServiceType: (serviceType) => set({serviceType}),
@@ -26,8 +29,9 @@ export const useHeadCountStore = create((set) => ({
     setGSNum: (gs_num) => set({gs_num}),
     setYPNum: (yp_num) => set({yp_num}),
     setComment: (comment) => set({comment}),
+    setKey: (key) => set({key}),
 
-    validateHeadCount: () => {
+    validateHeadCount: (type) => {
         if (useHeadCountStore.getState().satellite === "") {
             Message.warning("Please select a satellite");
             return false;
@@ -42,11 +46,20 @@ export const useHeadCountStore = create((set) => ({
             Message.warning("Please select a service type");
             return false;
         }
-
-        if (useFormStore.getState().total_members_num === "") {
-            Message.warning("Please enter a head count");
-            return false;
+        if(type === "form"){
+            if (useFormStore.getState().total_members_num === "") {
+                Message.warning("Please enter a head count");
+                return false;
+            }
         }
+
+        if(type === "drawer"){
+            if (useHeadCountStore.getState().headCount === "") {
+                Message.warning("Please enter a head count");
+                return false;
+            }
+        }
+
 
         if (useHeadCountStore.getState().kids_num === "") {
             Message.warning("Please enter a kids number");
@@ -92,13 +105,13 @@ export const useHeadCountStore = create((set) => ({
     },
 
 
-    getHeadCountData: () => {
-        if( useHeadCountStore.getState().validateHeadCount() === false) return ;
+    getHeadCountData: (type) => {
+        if( useHeadCountStore.getState().validateHeadCount(type) === false) return ;
         return {
             satellite: useHeadCountStore.getState().satellite,
             dateTime: useHeadCountStore.getState().dateTime,
             serviceType: useHeadCountStore.getState().serviceType,
-            headCount: useFormStore.getState().total_members_num,
+            headCount: type==="form"? useFormStore.getState().total_members_num:useHeadCountStore.getState().headCount,
             kids_num: useHeadCountStore.getState().kids_num,
             cm_num: useHeadCountStore.getState().cm_num,
             parents_num: useHeadCountStore.getState().parents_num,
@@ -109,5 +122,34 @@ export const useHeadCountStore = create((set) => ({
             user_sub: useFormStore.getState().user_sub,
             user_email: useFormStore.getState().user_email,
         }
+    },
+
+    setHeadCountData: (data) => {
+        // console.log("setHeadCountData", data)
+        set({satellite: data.satellite});
+        set({dateTime: data.dateTime});
+        set({serviceType: data.serviceType});
+        set({headCount: data.headCount});
+        set({kids_num: data.kids_num});
+        set({cm_num: data.cm_num});
+        set({parents_num: data.parents_num});
+        set({yw_num: data.yw_num});
+        set({gs_num: data.gs_num});
+        set({yp_num: data.yp_num});
+        set({comment: data.comment});
+        set({key: data.key});
+//         useHeadCountStore.getState().setSatellite(data.satellite);
+//         useHeadCountStore.getState().setDateTime(data.dateTime);
+//         useHeadCountStore.getState().setServiceType(data.serviceType);
+//         useHeadCountStore.getState().setHeadCount(data.headCount);
+//         useHeadCountStore.getState().setKidsNum(data.kids_num);
+//         useHeadCountStore.getState().setCMNum(data.cm_num);
+//         useHeadCountStore.getState().setParentsNum(data.parents_num);
+//         useHeadCountStore.getState().setYWNum(data.yw_num);
+//         useHeadCountStore.getState().setGSNum(data.gs_num);
+//         useHeadCountStore.getState().setYPNum(data.yp_num);
+//         useHeadCountStore.getState().setComment(data.comment);
+// useHeadCountStore.getState().setKey(data.key);
+
     },
 }))
