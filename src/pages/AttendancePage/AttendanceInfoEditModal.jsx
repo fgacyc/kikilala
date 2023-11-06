@@ -114,16 +114,8 @@ const AttendanceInfoEditModal = ({ visible, setVisible, attendanceRecord }) => {
     };
 
     const calculateTotal = (fieldsValue) => {
-        // Calculate the new total
-        let cgTotal = 0;
-        let serviceTotal = 0;
-
-        attendance_list.slice(0, 2).forEach((item) => {
-            const cgValue = fieldsValue[`cg_${item.toLowerCase()}_num`] || 0;
-            const serviceValue = fieldsValue[`service_${item.toLowerCase()}_num`] || 0;
-            cgTotal += cgValue;
-            serviceTotal += serviceValue;
-        });
+        const cgTotal = fieldsValue['cg_om_num'] + fieldsValue['cg_abs_num'];
+        const serviceTotal = fieldsValue['service_om_num'] + fieldsValue['service_abs_num'];
 
         return Math.max(cgTotal, serviceTotal);
     }
