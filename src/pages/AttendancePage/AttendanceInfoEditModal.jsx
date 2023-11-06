@@ -141,7 +141,11 @@ const AttendanceInfoEditModal = ({ visible, setVisible }) => {
         <Drawer
             width={'100%'}
             visible={visible}
-            onOk={updateattendanceRecord}
+            onOk={() => {
+                updateattendanceRecord().then(() => {
+                    setVisible(false);
+                });
+            }}
             onCancel={() => {
                 setVisible(false);
             }}
