@@ -155,8 +155,9 @@ function HeadCountTable() {
                         content='Are you sure you want to delete?'
                         onOk={() => {
                             //console.log(record);
-                            deleteHeadcount(record.key);
-                            setHeadcountData()
+                            deleteHeadcount(record.key).then((res)=>{
+                                setHeadcountData();
+                            })
                         }}
                     >
                         <Button icon={<IconDelete />}
