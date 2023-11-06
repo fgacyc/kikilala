@@ -5,7 +5,8 @@ import "@arco-design/web-react/dist/css/arco.css";
 import CGLsManagement from "./pages/adminPage/CGLsManagement.jsx";
 import AttendanceManagement from './pages/AttendancePage/AttendanceManagement';
 import CGLAttendance from './pages/CGLAttendance/CGLAttendance';
-import HeadCount from "./pages/formPage/headCount.jsx";
+import HeadCount from "./pages/headCount/headCount.jsx";
+import HeadCountManagement from "./pages/headCount/headcountManagement.jsx";
 function App() {
     return (
         <Router>
@@ -16,6 +17,7 @@ function App() {
                 <Route path="/headcount" element={<HeadCount />} />
                 <Route path="nb-admin" element={<CGLsManagement />} />
                 <Route path="nb-attendance" element={<AttendanceManagement />} />
+                <Route path="nb-headcount" element={<HeadCountManagement />} />
             </Routes>
         </Router>
     )

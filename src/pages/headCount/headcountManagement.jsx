@@ -1,0 +1,136 @@
+import {useEffect, useState} from "react";
+import {useAuth0} from "@auth0/auth0-react";
+import {addRecord} from "../../api/records.js";
+import {Button, Space, Table} from "@arco-design/web-react";
+import CGLsInfoEditModal from "../adminPage/CGLsInfoEditModal.jsx";
+import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
+import {readAllHeadcounts} from "../../api/headcount.js";
+import {pastoralTeamList, satelliteList} from "../../config.js";
+import {serviceTypeOptions} from "./headcountForm.jsx";
+
+function HeadCountTable(){
+    const [visible, setVisible] = useState(false);
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        setHeadcountData();
+    }, []);
+
+    async function setHeadcountData(){
+        const res = await readAllHeadcounts();
+        let headData = [];
+        for (let key in res){
+            res[key].key = key;
+            headData.push(res[key]);
+        }
+        console.log(headData)
+        setData(headData);
+    }
+
+
+    const columns = [
+        {
+            title: 'Service Location',
+            dataIndex: 'satellite',
+            sorter: (a, b) => a.satellite.localeCompare(b.satellite),
+            filters: satelliteList,
+            onFilter: (value, row) => {
+                return row.satellite === value;
+            },
+            filterMultiple: false,
+        },
+        {
+            title: 'Type',
+            dataIndex: 'serviceType',
+            sorter: (a, b) => a.serviceType.localeCompare(b.serviceType),
+            filters: serviceTypeOptions,
+            onFilter: (value, row) => {
+                return row.serviceType.toLowerCase() === value.toLowerCase();
+            },
+            filterMultiple: false,
+        },
+        {
+            title: 'Date time',
+            dataIndex: 'dateTime'
+        },
+        {
+            title: 'YW',
+            dataIndex: 'yw_num'
+        }
+        ,
+        {
+            title: 'GS',
+            dataIndex: 'gs_num'
+        }
+        ,
+        {
+            title: 'YP',
+            dataIndex: 'yp_num'
+        }
+        ,
+        {
+            title: 'Kids',
+            dataIndex: 'yw_num'
+        }
+        ,
+        {
+            title: 'Crew',
+            dataIndex: 'cm_num'
+        },{
+            title: "total",
+            dataIndex: "headCount"
+        }
+    ];
+
+    return <Table columns={columns}
+                  data={data}
+                  renderPagination={(paginationNode) => (
+                      <div
+                          style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              marginTop: 10,
+                          }}
+                      >
+                          <Space>
+                              <span className={"ml-4"}>Items: {data.length}</span>
+                          </Space>
+                          {paginationNode}
+                      </div>
+                  )}
+                  scroll={{
+                      x: window.innerWidth * 0.9,
+                      y: window.innerHeight,
+                  }}
+    />;
+}
+
+
+export default function HeadCountManagement(){
+    const [editVisible, setEditVisible] = useState(false);
+    const [addVisible, setAddVisible] = useState(false);
+    const [tableData, setTableData] = useState([]);
+    const { loginWithRedirect,user,isLoading } = useAuth0();
+
+    useEffect(() => {
+        if (isLoading) return;
+        if (user) {
+            addRecord({
+                page: "CGLsManagement",
+                user_id: user.sub,
+            });
+            return;
+        }
+        loginWithRedirect();
+    }, [isLoading])
+
+
+    return(
+        <div className={"h-full w-full p-8"}>
+            <div className={"bg-white rounded-lg pb-2"}>
+                <HeadCountTable />
+            </div>
+            <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible}/>
+            <CGLsAddModal  visible={addVisible} setVisible={setAddVisible}/>
+        </div>
+    )
+}

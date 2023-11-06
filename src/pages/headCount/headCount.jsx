@@ -1,10 +1,4 @@
-import {useFormStore} from "../../store/formStore.js";
-import {useEffect, useState} from "react";
-import Form from "./form.jsx";
-import TutorialConfirm from "../AttendancePage/TutorialConfirm.jsx";
 import HeadCountForm from "./headcountForm.jsx";
-
-
 export default function HeadCount() {
 
     return (

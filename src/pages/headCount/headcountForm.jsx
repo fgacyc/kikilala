@@ -13,7 +13,25 @@ import {useHeadCountStore} from "../../store/headcountStore.js";
 import {addHeadcount} from "../../api/headcount.js";
 
 const Option = Select.Option;
-const options = ['Service', 'Creative Service', 'Evangelistic Service', 'Leaders Community'];
+export const serviceTypeOptions = [
+    // 'Service', 'Creative Service', 'Evangelistic Service', 'Leaders Community'
+    {
+        value: 'service',
+        text: 'Service',
+    },
+    {
+        value: 'creative_service',
+        text: 'Creative Service',
+    },
+    {
+        value: 'evangelistic_service',
+        text: 'Evangelistic Service',
+    },
+    {
+        value: 'leaders_community',
+        text: 'Leaders Community',
+    }
+];
 const TextArea = Input.TextArea;
 
 
@@ -139,9 +157,9 @@ export default function HeadCountForm(){
                     onChange={setServiceType}
                     allowCreate={true}
                 >
-                    {options.map((option, index) => (
-                        <Option key={option}  value={option}>
-                            {option}
+                    {serviceTypeOptions.map((option, index) => (
+                        <Option key={option.text}  value={option.value}>
+                            {option.text}
                         </Option>
                     ))}
                 </Select>
