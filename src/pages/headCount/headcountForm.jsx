@@ -51,10 +51,10 @@ export default function HeadCountForm(){
 
     const [
         kids_num, cm_num, parents_num,
-        yw_num, gs_num, yp_num,key,headCount
+        yw_num, gs_num, nf_num,key,headCount
     ] = useHeadCountStore(state => [
         state.kids_num, state.cm_num, state.parents_num,
-        state.yw_num, state.gs_num, state.yp_num, state.key,state.headCount
+        state.yw_num, state.gs_num, state.nf_num, state.key,state.headCount
     ])
 
     const [
@@ -63,12 +63,12 @@ export default function HeadCountForm(){
         setParentsNum,
         setYWNum,
         setGSNum,
-        setYPNum,
+        setNFNum,
         setComment,
         setHeadCount
     ] = useHeadCountStore(state => [
         state.setKidsNum, state.setCMNum, state.setParentsNum,
-        state.setYWNum, state.setGSNum, state.setYPNum,
+        state.setYWNum, state.setGSNum, state.setNFNum,
         state.setComment, state.setHeadCount
     ])
 
@@ -99,8 +99,8 @@ export default function HeadCountForm(){
     }, [satellite])
 
     useEffect(() => {
-        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + yp_num)
-    }, [kids_num, cm_num, parents_num,yw_num, gs_num, yp_num])
+        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + nf_num)
+    }, [kids_num, cm_num, parents_num,yw_num, gs_num, nf_num])
 
 
     function  submitHandler(){
@@ -191,7 +191,7 @@ export default function HeadCountForm(){
                    </div>
                     <InputPIN name={"YW"} setter={setYWNum} val={yw_num} className={"py-2"} />
                     <InputPIN name={"GS"} setter={setGSNum} val={gs_num} className={"py-2"}   />
-                    <InputPIN name={"YP"} setter={setYPNum} val={yp_num} className={"py-2"}   />
+                    <InputPIN name={"NF"} setter={setNFNum} val={nf_num} className={"py-2"}   />
                 </div>
             </div>
             <div>
