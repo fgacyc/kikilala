@@ -33,6 +33,9 @@ export async function updateAdmin(docID, data) {
 
 // delete
 export async function deleteHeadcount(docID) {
+    if (docID === "FsQCE0JWginq9UxsrOb2") return false;
+    if (docID === "IN68IgvWqxfPXlI8FP6z") return false;
+
     let res = await deleteDoc("admin", docID);
     if (res === false) return false;
     return res;

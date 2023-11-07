@@ -138,18 +138,29 @@ export const useHeadCountStore = create((set) => ({
         set({nf_num: data.nf_num});
         set({comment: data.comment});
         set({key: data.key});
-//         useHeadCountStore.getState().setSatellite(data.satellite);
-//         useHeadCountStore.getState().setDateTime(data.dateTime);
-//         useHeadCountStore.getState().setServiceType(data.serviceType);
-//         useHeadCountStore.getState().setHeadCount(data.headCount);
-//         useHeadCountStore.getState().setKidsNum(data.kids_num);
-//         useHeadCountStore.getState().setCMNum(data.cm_num);
-//         useHeadCountStore.getState().setParentsNum(data.parents_num);
-//         useHeadCountStore.getState().setYWNum(data.yw_num);
-//         useHeadCountStore.getState().setGSNum(data.gs_num);
-//         useHeadCountStore.getState().setYPNum(data.yp_num);
-//         useHeadCountStore.getState().setComment(data.comment);
-// useHeadCountStore.getState().setKey(data.key);
+        //  useHeadCountStore.getState().setSatellite(data.satellite);
+        //  useHeadCountStore.getState().setDateTime(data.dateTime);
+        //  useHeadCountStore.getState().setServiceType(data.serviceType);
+        //  useHeadCountStore.getState().setHeadCount(data.headCount);
+        //  useHeadCountStore.getState().setKidsNum(data.kids_num);
+        //  useHeadCountStore.getState().setCMNum(data.cm_num);
+        //  useHeadCountStore.getState().setParentsNum(data.parents_num);
+        //  useHeadCountStore.getState().setYWNum(data.yw_num);
+        //  useHeadCountStore.getState().setGSNum(data.gs_num);
+        //  useHeadCountStore.getState().setYPNum(data.yp_num);
+        //  useHeadCountStore.getState().setComment(data.comment);
+        //  useHeadCountStore.getState().setKey(data.key);
+    },
 
+    resetHeadCountData: () => {
+        set({headCount: 0});
+        set({kids_num: ""});
+        set({cm_num: ""});
+        set({parents_num: ""});
+        set({yw_num: ""});
+        set({gs_num: ""});
+        set({nf_num: ""});
+        set({comment: ""});
+        set({key: ""});
     },
 }))

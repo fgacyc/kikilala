@@ -83,6 +83,7 @@ export default function HeadCountForm(){
     const navigate = useNavigate();
     const { loginWithRedirect,logout,user } = useAuth0();
     const getHeadCountData  = useHeadCountStore(state => state.getHeadCountData)
+    const resetHeadCountData = useHeadCountStore(state => state.resetHeadCountData)
 
     useEffect(() => {
         if(!user) return;
@@ -105,12 +106,14 @@ export default function HeadCountForm(){
 
     function  submitHandler(){
         const data =  getHeadCountData("form");
-        // console.log(data)
-        // return;
+        resetHeadCountData();
+        console.log(data)
+        return;
 
         if (!data) return;
         addHeadcount(data).then(res => {
             if (res!== false) {
+                resetHeadCountData();
                 Message.success("Submit successfully!")
             }
         })
