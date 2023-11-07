@@ -333,7 +333,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
         {
             title: 'Operation',
-            width: 150,
+            width: 110,
             fixed: 'right',
             render: (_, record) => (
                 <div>
@@ -464,7 +464,7 @@ const AttendanceManagement = () => {
     }
 
     return (
-        <div className={"h-full w-full sm:p-8 p-2"}>
+        <div className={"h-full w-full sm:px-8 px-2  py-4"}>
             {
                 dateArray && <div className={"flex flex-row justify-between mb-2"}>
                     <Select placeholder='Please select' style={{ width: 250 }} allowClear

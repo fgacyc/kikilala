@@ -140,7 +140,7 @@ function CGLTable({ setTableData, setVisible }) {
         },
         {
             title: "Operation",
-            width: 150,
+            width: 110,
             fixed: "right",
             dataIndex: "op",
             render: (_, record) => (
@@ -235,7 +235,7 @@ export default function CGLsManagement() {
 
 
     return (
-        <div className={"h-full w-full p-8"}>
+        <div className={"h-full w-full sm:px-8 px-2 py-4"}>
             <div className={"flex flex-row justify-between"}>
                 <Button type='secondary' className={"mb-2"}
                     icon={<IconPlus />}
