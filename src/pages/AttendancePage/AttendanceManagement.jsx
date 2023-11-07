@@ -20,9 +20,10 @@ function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
     const columns = [
         {
             title: 'CG leader',
+            width: 200,
             render: (_, record) => {
                 return (
-                    <div className={"w-[150px] truncate"}>
+                    <div className={"truncate"}>
                         {
                             record.CG_leader
                         }
@@ -61,9 +62,10 @@ function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
         },
         {
             title: 'CG Name',
+            width: 200,
             render: (_, record) => {
                 return (
-                    <div className={"w-[150px]"}>
+                    <div className={"truncate"}>
                         {
                             record.CG_name
                         }
@@ -102,9 +104,10 @@ function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
         },
         {
             title: 'Pastoral Team',
+            width: 200,
             render: (_, record) => {
                 return (
-                    <div className={"w-[150px]"}>
+                    <div className={"truncate"}>
                         {
                             record.pastoral_team
                         }
@@ -120,9 +123,10 @@ function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
         },
         {
             title: 'Service Location',
+            width: 180,
             render: (_, record) => {
                 return (
-                    <div className={"w-[100px]"}>
+                    <div className={"truncate"}>
                         {
                             record.satellite
                         }
@@ -180,6 +184,10 @@ function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
                             {paginationNode}
                         </div>
                     )}
+                    scroll={{
+                        x: window.innerWidth * 0.9,
+                        y: window.innerHeight,
+                    }}
                 />
             }
         </>
@@ -195,7 +203,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
             width: 200,
             render: (_, record) => {
                 return (
-                    <div className={'w-[200px] truncate'}>
+                    <div className={'truncate'}>
                         {
                             record.date
                         }
@@ -209,7 +217,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
             width: 150,
             render: (_, record) => {
                 return (
-                    <div className={'w-[200px] truncate'}>
+                    <div className={'truncate'}>
                         {
                             record.cgl_name
                         }
@@ -251,7 +259,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
             width: 150,
             render: (_, record) => {
                 return (
-                    <div className={'w-[150px] truncate'}>
+                    <div className={'truncate'}>
                         {
                             record.pastoral_team
                         }
@@ -270,7 +278,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
             width: 130,
             render: (_, record) => {
                 return (
-                    <div className={'w-[150px] truncate'}>
+                    <div className={'truncate'}>
                         {
                             record.satellite
                         }
@@ -290,7 +298,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
             width: 120,
             render: (_, record) => {
                 return (
-                    <div className={'w-[150px] truncate'}>
+                    <div className={'truncate'}>
                         {
                             record.total_members_num
                         }
@@ -326,6 +334,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         {
             title: 'Operation',
             width: 120,
+            fixed: 'right',
             render: (_, record) => (
                 <div>
                     <Button
@@ -455,7 +464,7 @@ const AttendanceManagement = () => {
     }
 
     return (
-        <div className={"h-full w-full p-8"}>
+        <div className={"h-full w-full sm:p-8 p-2"}>
             {
                 dateArray && <div className={"flex flex-row justify-between mb-2"}>
                     <Select placeholder='Please select' style={{ width: 250 }} allowClear
