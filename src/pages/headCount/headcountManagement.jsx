@@ -1,24 +1,24 @@
-import {useEffect, useRef, useState} from "react";
-import {useAuth0} from "@auth0/auth0-react";
-import {addRecord} from "../../api/records.js";
-import {Button, Input, Popconfirm, Space, Table} from "@arco-design/web-react";
+import { useEffect, useRef, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { addRecord } from "../../api/records.js";
+import { Button, Input, Popconfirm, Space, Table } from "@arco-design/web-react";
 import CGLsInfoEditModal from "../adminPage/CGLsInfoEditModal.jsx";
 import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
-import {deleteHeadcount, readAllHeadcounts} from "../../api/headcount.js";
-import {pastoralTeamList, satelliteList} from "../../config.js";
-import {serviceTypeOptions} from "./headcountForm.jsx";
-import {IconDelete, IconEdit, IconSearch} from "@arco-design/web-react/icon";
-import {deleteCGL} from "../../api/CGLs.js";
+import { deleteHeadcount, readAllHeadcounts } from "../../api/headcount.js";
+import { pastoralTeamList, satelliteList } from "../../config.js";
+import { serviceTypeOptions } from "./headcountForm.jsx";
+import { IconDelete, IconEdit, IconSearch } from "@arco-design/web-react/icon";
+import { deleteCGL } from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 import HeadCountDrawer from "./HeadcountDrawer.jsx";
-import {useHeadCountStore} from "../../store/headcountStore.js";
-import {useFormStore} from "../../store/formStore.js";
+import { useHeadCountStore } from "../../store/headcountStore.js";
+import { useFormStore } from "../../store/formStore.js";
 
 function HeadCountTable() {
     const [data, setData] = useState(null);
     const inputRef = useRef(null);
     const [headCountDrawerVisible, setHeadCountDrawerVisible] = useState(false);
-    const [scrollX, setScrollX] = useState(window.innerWidth *0.9);
+    const [scrollX, setScrollX] = useState(window.innerWidth * 0.9);
     const setHeadCountData = useHeadCountStore(state => state.setHeadCountData)
     useEffect(() => {
         setHeadcountData();
@@ -136,18 +136,19 @@ function HeadCountTable() {
         },
         {
             title: "Operation",
+            fixed: "right",
             dataIndex: "op",
             render: (_, record) => (
                 <div>
                     <Button icon={<IconEdit />}
-                            className={"mr-2"}
-                            onClick={() => {
-                                // setCGL(record);
-                                // setVisible(true);
-                                setHeadCountData(record);
-                                setHeadCountDrawerVisible(true);
-                            }}
-                            type="secondary"
+                        className={"mr-2"}
+                        onClick={() => {
+                            // setCGL(record);
+                            // setVisible(true);
+                            setHeadCountData(record);
+                            setHeadCountDrawerVisible(true);
+                        }}
+                        type="secondary"
                     ></Button>
                     <Popconfirm
                         focusLock
@@ -155,13 +156,13 @@ function HeadCountTable() {
                         content='Are you sure you want to delete?'
                         onOk={() => {
                             //console.log(record);
-                            deleteHeadcount(record.key).then((res)=>{
+                            deleteHeadcount(record.key).then((res) => {
                                 setHeadcountData();
                             })
                         }}
                     >
                         <Button icon={<IconDelete />}
-                                type="secondary"
+                            type="secondary"
                         ></Button>
                     </Popconfirm>
                 </div>
@@ -172,25 +173,25 @@ function HeadCountTable() {
     return <>
         {
             data && <Table columns={columns}
-                           data={data}
-                           renderPagination={(paginationNode) => (
-                               <div
-                                   style={{
-                                       display: 'flex',
-                                       justifyContent: 'space-between',
-                                       marginTop: 10,
-                                   }}
-                               >
-                                   <Space>
-                                       <span className={"ml-4"}>Items: {data.length}</span>
-                                   </Space>
-                                   {paginationNode}
-                               </div>
-                           )}
-                           scroll={{
-                               x: scrollX,
-                               y: window.innerHeight,
-                           }}
+                data={data}
+                renderPagination={(paginationNode) => (
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginTop: 10,
+                        }}
+                    >
+                        <Space>
+                            <span className={"ml-4"}>Items: {data.length}</span>
+                        </Space>
+                        {paginationNode}
+                    </div>
+                )}
+                scroll={{
+                    x: scrollX,
+                    y: window.innerHeight,
+                }}
             />
         }
         <HeadCountDrawer setVisible={setHeadCountDrawerVisible} visible={headCountDrawerVisible} />
@@ -201,7 +202,7 @@ function HeadCountTable() {
 
 
 export default function HeadCountManagement() {
-  const {loginWithRedirect, user, isLoading} = useAuth0();
+    const { loginWithRedirect, user, isLoading } = useAuth0();
 
     useEffect(() => {
         if (isLoading) return;
@@ -221,7 +222,7 @@ export default function HeadCountManagement() {
     return (
         <div className={`h-full w-full sm:p-8 p-4`}>
             <div className={"bg-white rounded-lg pb-2"}>
-                <HeadCountTable/>
+                <HeadCountTable />
             </div>
         </div>
     )

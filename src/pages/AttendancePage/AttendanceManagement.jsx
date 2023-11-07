@@ -214,7 +214,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
         {
             title: 'CG Leader',
-            width: 150,
+            width: 200,
             render: (_, record) => {
                 return (
                     <div className={'truncate'}>
@@ -256,7 +256,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
         {
             title: 'Pastoral Team',
-            width: 150,
+            width: 200,
             render: (_, record) => {
                 return (
                     <div className={'truncate'}>
@@ -275,7 +275,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
         {
             title: 'Service Location',
-            width: 130,
+            width: 180,
             render: (_, record) => {
                 return (
                     <div className={'truncate'}>
@@ -295,7 +295,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
 
         {
             title: 'Total members',
-            width: 120,
+            width: 180,
             render: (_, record) => {
                 return (
                     <div className={'truncate'}>
@@ -333,7 +333,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
         {
             title: 'Operation',
-            width: 120,
+            width: 150,
             fixed: 'right',
             render: (_, record) => (
                 <div>

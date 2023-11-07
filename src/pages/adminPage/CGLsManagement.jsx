@@ -1,31 +1,33 @@
-import {Table, Input, Button, Popconfirm, Message, Space} from '@arco-design/web-react';
-import {useEffect, useRef, useState} from "react";
-import {deleteCGL, readAllCGLs} from "../../api/CGLs.js";
-import {convertCGLTableData} from "../formPage/data.js";
-import {IconDelete, IconDownload, IconEdit, IconPlus, IconSearch} from "@arco-design/web-react/icon";
+import { Table, Input, Button, Popconfirm, Message, Space } from '@arco-design/web-react';
+import { useEffect, useRef, useState } from "react";
+import { deleteCGL, readAllCGLs } from "../../api/CGLs.js";
+import { convertCGLTableData } from "../formPage/data.js";
+import { IconDelete, IconDownload, IconEdit, IconPlus, IconSearch } from "@arco-design/web-react/icon";
 import CGLsInfoEditModal from "./CGLsInfoEditModal.jsx";
-import {useCGLStore} from "../../store/CGLStore.js";
-import {pastoralTeamList, satelliteList} from "../../config.js";
+import { useCGLStore } from "../../store/CGLStore.js";
+import { pastoralTeamList, satelliteList } from "../../config.js";
 import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
-import {downloadCGLsData, downloadXLSX, getTodayDateStr} from "../../tools.js";
+import { downloadCGLsData, downloadXLSX, getTodayDateStr } from "../../tools.js";
 import CsvDownload from "react-csv-downloader";
-import {addRecord} from "../../api/records.js";
-import {useAuth0} from "@auth0/auth0-react";
+import { addRecord } from "../../api/records.js";
+import { useAuth0 } from "@auth0/auth0-react";
 
-function  CGLTable({setTableData,setVisible}){
+function CGLTable({ setTableData, setVisible }) {
     const inputRef = useRef(null);
     const columns = [
         {
             title: 'CG leader',
+            width: 200,
             render: (_, record) => {
                 return (
-                    <div className={"w-[150px] truncate"}>
+                    <div className={"truncate"}>
                         {
                             record.CG_leader
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.CG_leader.localeCompare(b.CG_leader),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
@@ -58,14 +60,16 @@ function  CGLTable({setTableData,setVisible}){
         },
         {
             title: 'CG Name',
+            width: 200,
             render: (_, record) => {
                 return (
-                    <div className={"w-[150px]"}>
+                    <div className={"truncate"}>
                         {
                             record.CG_name
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.CG_name.localeCompare(b.CG_name),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
@@ -98,14 +102,16 @@ function  CGLTable({setTableData,setVisible}){
         },
         {
             title: 'Pastoral Team',
+            width: 200,
             render: (_, record) => {
                 return (
-                    <div className={"w-[150px]"}>
+                    <div className={"truncate"}>
                         {
                             record.pastoral_team
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.pastoral_team.localeCompare(b.pastoral_team),
             filters: pastoralTeamList,
             onFilter: (value, row) => {
@@ -115,14 +121,16 @@ function  CGLTable({setTableData,setVisible}){
         },
         {
             title: 'Service Location',
+            width: 180,
             render: (_, record) => {
                 return (
-                    <div className={"w-[100px]"}>
+                    <div className={"truncate"}>
                         {
                             record.satellite
                         }
                     </div>
-                )},
+                )
+            },
             sorter: (a, b) => a.satellite.localeCompare(b.satellite),
             filters: satelliteList,
             onFilter: (value, row) => {
@@ -132,16 +140,18 @@ function  CGLTable({setTableData,setVisible}){
         },
         {
             title: "Operation",
+            width: 150,
+            fixed: "right",
             dataIndex: "op",
             render: (_, record) => (
                 <div>
                     <Button icon={<IconEdit />}
-                            className={"mr-2"}
-                            onClick={() => {
-                                setCGL(record);
-                                setVisible(true);
-                            }}
-                            type="secondary"
+                        className={"mr-2"}
+                        onClick={() => {
+                            setCGL(record);
+                            setVisible(true);
+                        }}
+                        type="secondary"
                     ></Button>
                     <Popconfirm
                         focusLock
@@ -154,21 +164,21 @@ function  CGLTable({setTableData,setVisible}){
                         }}
                     >
                         <Button icon={<IconDelete />}
-                                type="secondary"
+                            type="secondary"
                         ></Button>
                     </Popconfirm>
                 </div>
             ),
         }
     ];
-    const [allCGLs,setAllCGLs] = useState([])
+    const [allCGLs, setAllCGLs] = useState([])
     const setCGL = useCGLStore(state => state.setCGL);
 
-    async function updateCGLs(){
+    async function updateCGLs() {
         const data = await readAllCGLs();
         //console.log(convertCGLTableData(data))
         setTableData(convertCGLTableData(data));
-        setAllCGLs( convertCGLTableData(data));
+        setAllCGLs(convertCGLTableData(data));
     }
 
 
@@ -181,35 +191,35 @@ function  CGLTable({setTableData,setVisible}){
     }, []);
 
     return <Table
-            columns={columns}
-            data={allCGLs}
-            renderPagination={(paginationNode) => (
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        marginTop: 10,
-                    }}
-                >
-                    <Space>
-                        <span className={"ml-4"}>Items: {allCGLs.length}</span>
-                    </Space>
-                    {paginationNode}
-                </div>
-            )}
-            scroll={{
-                x: window.innerWidth * 0.9,
-                y: window.innerHeight,
-            }}
+        columns={columns}
+        data={allCGLs}
+        renderPagination={(paginationNode) => (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: 10,
+                }}
+            >
+                <Space>
+                    <span className={"ml-4"}>Items: {allCGLs.length}</span>
+                </Space>
+                {paginationNode}
+            </div>
+        )}
+        scroll={{
+            x: window.innerWidth * 0.9,
+            y: window.innerHeight,
+        }}
     />;
 }
 
 
-export  default  function  CGLsManagement(){
+export default function CGLsManagement() {
     const [editVisible, setEditVisible] = useState(false);
     const [addVisible, setAddVisible] = useState(false);
     const [tableData, setTableData] = useState([]);
-    const { loginWithRedirect,user,isLoading } = useAuth0();
+    const { loginWithRedirect, user, isLoading } = useAuth0();
 
     useEffect(() => {
         if (isLoading) return;
@@ -224,20 +234,20 @@ export  default  function  CGLsManagement(){
     }, [isLoading])
 
 
-    return(
+    return (
         <div className={"h-full w-full p-8"}>
             <div className={"flex flex-row justify-between"}>
                 <Button type='secondary' className={"mb-2"}
-                        icon={<IconPlus />}
-                        onClick={() => setAddVisible(true)}
+                    icon={<IconPlus />}
+                    onClick={() => setAddVisible(true)}
                 >Add New CGL</Button>
                 <Button type='secondary'
-                        icon={<IconDownload />}
-                        className={"mb-2"}>
+                    icon={<IconDownload />}
+                    className={"mb-2"}>
                     <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
-                               extension={".csv"}
-                               text={"Download"}
-                               datas={downloadCGLsData(tableData)} />
+                        extension={".csv"}
+                        text={"Download"}
+                        datas={downloadCGLsData(tableData)} />
                 </Button>
 
             </div>
@@ -246,8 +256,8 @@ export  default  function  CGLsManagement(){
                     setTableData={setTableData}
                     setVisible={setEditVisible} />
             </div>
-            <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible}/>
-            <CGLsAddModal  visible={addVisible} setVisible={setAddVisible}/>
+            <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible} />
+            <CGLsAddModal visible={addVisible} setVisible={setAddVisible} />
         </div>
     )
 }
