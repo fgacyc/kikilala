@@ -1,8 +1,14 @@
 import { Table, Input, Button, Popconfirm, Message, Space } from '@arco-design/web-react';
 import { useEffect, useRef, useState } from "react";
-import { deleteCGL, readAllCGLs } from "../../api/CGLs.js";
+import {CGStatusEnum, closeCG, deleteCGL, readAllCGLs} from "../../api/CGLs.js";
 import { convertCGLTableData } from "../formPage/data.js";
-import { IconDelete, IconDownload, IconEdit, IconPlus, IconSearch } from "@arco-design/web-react/icon";
+import {
+    IconClose,
+    IconDownload,
+    IconEdit,
+    IconPlus,
+    IconSearch
+} from "@arco-design/web-react/icon";
 import CGLsInfoEditModal from "./CGLsInfoEditModal.jsx";
 import { useCGLStore } from "../../store/CGLStore.js";
 import { pastoralTeamList, satelliteList } from "../../config.js";
@@ -156,14 +162,15 @@ function CGLTable({ setTableData, setVisible }) {
                     <Popconfirm
                         focusLock
                         title='Confirm'
-                        content='Are you sure you want to delete?'
+                        content='Are you sure you want to close this CG?'
                         onOk={() => {
                             // console.log(record);
-                            deleteCGL(record.key);
-                            PubSub.publish('updateCGLs');
+                            closeCG(record.key).then((res) => {
+                                if(res!==false)PubSub.publish('updateCGLs');
+                            });
                         }}
                     >
-                        <Button icon={<IconDelete />}
+                        <Button icon={<IconClose />}
                             type="secondary"
                         ></Button>
                     </Popconfirm>
@@ -178,7 +185,11 @@ function CGLTable({ setTableData, setVisible }) {
         const data = await readAllCGLs();
         //console.log(convertCGLTableData(data))
         setTableData(convertCGLTableData(data));
-        setAllCGLs(convertCGLTableData(data));
+
+        // const openedList = data.filter((item) => item.CG_status === "open");
+        const allCGLs = convertCGLTableData(data);
+        const activeCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.active);
+        setAllCGLs(activeCGLs);
     }
 
 
@@ -249,7 +260,6 @@ export default function CGLsManagement() {
                         text={"Download"}
                         datas={downloadCGLsData(tableData)} />
                 </Button>
-
             </div>
             <div className={"bg-white rounded-lg pb-2"}>
                 <CGLTable

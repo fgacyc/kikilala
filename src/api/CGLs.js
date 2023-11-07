@@ -1,6 +1,12 @@
 import {addDoc, deleteDoc, queryDoc, readAllDocs, readDoc, updateDoc} from "./firebase.js";
 import {set} from "idb-keyval";
 
+export const CGStatusEnum = {
+    active: 'active',
+    closed: 'closed'
+}
+
+
 // create
 export async function addCGL(data) {
     let docID = await addDoc("CGLs", data);
@@ -34,6 +40,16 @@ export async function updateCGL(docID, data) {
     return res;
 }
 
+// close CG
+export async function closeCG(docID) {
+    const data = {
+        CG_status: CGStatusEnum.closed
+    }
+    let res = await updateDoc("CGLs", data, docID);
+    if (res === false) return false;
+    return res;
+}
+
 // delete
 export async function deleteCGL(docID) {
     let res = await deleteDoc("CGLs", docID);
@@ -55,3 +71,23 @@ export  async  function  getCGLNum(){
     // console.log(Object.keys(data).length)
     return Object.keys(data).length;
 }
+
+// temp
+// export async function updateCGStatus(docID, data) {
+//     const cgls = await readAllCGLs();
+//     data = {
+//         CG_status : CGStatusEnum.active
+//     }
+//
+//     for(let key in cgls){
+//         await updateDoc("CGLs", data, key)
+//         //console.log(key)
+//     }
+//     console.log("done")
+//
+//
+//     return;
+//     let res = await updateDoc("CGLs", data, docID);
+//     if (res === false) return false;
+//     return res;
+// }

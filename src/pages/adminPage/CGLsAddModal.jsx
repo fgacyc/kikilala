@@ -3,10 +3,11 @@ import { Form, Input, Button, Checkbox } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
 import {pastoralTeamList, satelliteList} from "../../config.js";
 import {useEffect, useRef, useState} from "react";
-import {addCGL, updateCGL} from "../../api/CGLs.js";
+import {addCGL, CGStatusEnum, updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 
 export default function CGLsAddModal({ visible, setVisible }) {
     const formRef = useRef(null);
@@ -14,7 +15,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
 
     function  handleSubmit() {
         const data = formRef.current.getFieldsValue();
-
+        data.CG_status = CGStatusEnum.active;
         addCGL(data).then((res) => {
             console.log(res)
             if (res!== false){
