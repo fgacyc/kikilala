@@ -23,6 +23,10 @@ export default function CGLsAddModal({ visible, setVisible }) {
         }
 
         data.CG_status = CGStatusEnum.active;
+
+        console.log(data)
+        return;
+
         addCGL(data).then((res) => {
             console.log(res)
             if (res!== false){
@@ -50,30 +54,23 @@ export default function CGLsAddModal({ visible, setVisible }) {
                   ref={formRef}
                   form={form}
                   autoComplete='off'>
-                <FormItem label='CG Leader'
+                <FormItem label='CGL name'
                           field={'CG_leader'}
                 >
                     <Input
-                           placeholder='please enter your username...' />
+                           placeholder='please enter CGL name...' />
+                </FormItem>
+                <FormItem label='CGL nickname'
+                          field={'nickname'}
+                >
+                    <Input
+                        placeholder='please enter CGL nickname...' />
                 </FormItem>
                 <FormItem label='CG Name'
                           field={'CG_name'}
                 >
                     <Input
-                            placeholder='please enter your post...' />
-                </FormItem>
-                <FormItem label='Pastoral Team'
-                          field={'pastoral_team'}
-                >
-                    <Select
-                        placeholder='Please select  pastoral team...'
-                    >
-                        {pastoralTeamList.map((option, index) => (
-                            <Option key={index} value={option.value}>
-                                {option.text}
-                            </Option>
-                        ))}
-                    </Select>
+                            placeholder='please enter CG name...' />
                 </FormItem>
                 <FormItem label='Satellite'
                           field={'satellite'}
@@ -88,6 +85,20 @@ export default function CGLsAddModal({ visible, setVisible }) {
                         ))}
                     </Select>
                 </FormItem>
+                <FormItem label='Pastoral Team'
+                          field={'pastoral_team'}
+                >
+                    <Select
+                        placeholder='Please select  pastoral team...'
+                    >
+                        {pastoralTeamList.map((option, index) => (
+                            <Option key={index} value={option.value}>
+                                {option.text}
+                            </Option>
+                        ))}
+                    </Select>
+                </FormItem>
+
             </Form>
         </Modal>
     );

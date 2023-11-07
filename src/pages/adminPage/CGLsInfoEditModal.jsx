@@ -14,25 +14,26 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
         CG_name,
         pastoral_team,
         satellite,
-        docId
+        docId,
+        nickname,
     ] = useCGLStore(state => [
         state.CG_leader,
         state.CG_name,
         state.pastoral_team,
         state.satellite,
-        state.docId
+        state.docId,
+        state.nickname,
     ]);
 
     useEffect(() => {
         if(!formRef.current) return;
-        if (visible) {
-            formRef.current?.setFieldsValue({
-                CG_leader: CG_leader,
-                CG_name: CG_name,
-                pastoral_team: pastoral_team,
-                satellite: satellite,
-            }   );
-        }
+        formRef.current?.setFieldsValue({
+            CG_leader: CG_leader,
+            CG_name: CG_name,
+            pastoral_team: pastoral_team,
+            satellite: satellite,
+            nickname: nickname,
+        }   );
     }, [visible]);
 
 
@@ -78,14 +79,34 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                 >
                     <Input value={CG_leader}
                            defaultValue={CG_leader}
-                        placeholder='please enter your username...' />
+                        placeholder='please enter CGL name...' />
+                </FormItem>
+                <FormItem label='CGL nickname'
+                          field={'nickname'}
+                >
+                    <Input
+                        placeholder='please enter CGL nickname...' />
                 </FormItem>
                 <FormItem label='CG Name'
                     field={'CG_name'}
                 >
                     <Input  value={CG_name}
                             defaultValue={CG_name}
-                        placeholder='please enter your post...' />
+                        placeholder='please enter CG name...' />
+                </FormItem>
+                <FormItem label='Satellite'
+                          field={'satellite'}
+                >
+                    <Select
+                        placeholder='Please select satellite...'
+                        value={satellite}
+                    >
+                        {satelliteList.map((option, index) => (
+                            <Option key={index} value={option.value}>
+                                {option.text}
+                            </Option>
+                        ))}
+                    </Select>
                 </FormItem>
                 <FormItem label='Pastoral Team'
                     field={'pastoral_team'}
@@ -101,20 +122,7 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                         ))}
                     </Select>
                 </FormItem>
-                <FormItem label='Satellite'
-                    field={'satellite'}
-                >
-                        <Select
-                            placeholder='Please select satellite...'
-                            value={satellite}
-                        >
-                            {satelliteList.map((option, index) => (
-                                <Option key={index} value={option.value}>
-                                    {option.text}
-                                </Option>
-                            ))}
-                        </Select>
-                </FormItem>
+
             </Form>
         </Modal>
     );

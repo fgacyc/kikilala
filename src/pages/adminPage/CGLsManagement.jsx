@@ -65,18 +65,18 @@ function CGLTable({ setTableData, setVisible }) {
             },
         },
         {
-            title: 'CG Name',
+            title: 'Nickname',
             width: 200,
             render: (_, record) => {
                 return (
                     <div className={"truncate"}>
                         {
-                            record.CG_name
+                            record.nickname
                         }
                     </div>
                 )
             },
-            sorter: (a, b) => a.CG_name.localeCompare(b.CG_name),
+            sorter: (a, b) => a?.nickname.localeCompare(b?.nickname),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
                 return (
@@ -98,7 +98,7 @@ function CGLTable({ setTableData, setVisible }) {
                 );
             },
             onFilter: (value, row) => {
-                return row.CG_name.toLowerCase().includes(value.toLowerCase());
+                return row.nickname.toLowerCase().includes(value.toLowerCase());
             },
             onFilterDropdownVisibleChange: (visible) => {
                 if (visible) {

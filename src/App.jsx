@@ -15,7 +15,6 @@ function App() {
                 <Route path="/" element={<Submit />} />
                 <Route path="history/:cg_name" element={<CGLAttendance />} />
                 <Route path="/headcount" element={<HeadCount />} />
-
                 <Route path="admin" element={<CGLsManagement />} />
                 <Route path="nb-admin" element={<CGLsManagement />} />
                 <Route path="nb-attendance" element={<AttendanceManagement />} />
