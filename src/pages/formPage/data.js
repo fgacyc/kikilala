@@ -80,11 +80,13 @@ export function validate(data) {
         data.cg_nb_num < 0 ||
         data.cg_nf_num < 0 ||
         data.cg_rnf_num < 0 ||
+        data.cg_ac_num < 0 ||
         data.cg_abs_num < 0 ||
         data.service_om_num < 0 ||
         data.service_nb_num < 0 ||
         data.service_nf_num < 0 ||
         data.service_rnf_num < 0 ||
+        data.service_ac_num < 0 ||
         data.service_abs_num < 0
     ){
         Message.warning("The number of members cannot be negative!")
@@ -95,15 +97,38 @@ export function validate(data) {
         data.cg_nb_num === "" ||
         data.cg_nf_num=== "" ||
         data.cg_rnf_num === "" ||
+        data.cg_ac_num === "" ||
         data.cg_abs_num === "" ||
         data.service_om_num === ""||
         data.service_nb_num === "" ||
         data.service_nf_num === "" ||
         data.service_rnf_num === "" ||
+        data.service_ac_num === "" ||
         data.service_abs_num === ""
     ){
         Message.warning("Please fill in all the number fields!")
         return false;
+    }
+
+    if (
+            data.cg_om_num === 0 &&
+            data.cg_nb_num === 0 &&
+            data.cg_nf_num=== 0 &&
+            data.cg_rnf_num === 0 &&
+            data.cg_ac_num === 0 &&
+            data.cg_abs_num === 0 &&
+            data.cg_absence_reason !== "" &&
+            data.service_om_num !== "" &&
+            data.service_nb_num !== "" &&
+            data.service_nf_num !== "" &&
+            data.service_rnf_num !== "" &&
+            data.service_ac_num !== "" &&
+            data.service_abs_num !== "" &&
+            data.total_members_num === data.service_om_num + data.service_abs_num
+    )
+    {
+        //Message.warning("If there is no CG, please fill in the absence reason!")
+        return true;
     }
 
     if (data.cg_abs_num >0 && data.cg_absence_reason === ""){

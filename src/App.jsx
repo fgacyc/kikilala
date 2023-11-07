@@ -7,6 +7,8 @@ import AttendanceManagement from './pages/AttendancePage/AttendanceManagement';
 import CGLAttendance from './pages/CGLAttendance/CGLAttendance';
 import HeadCount from "./pages/headCount/headCount.jsx";
 import HeadCountManagement from "./pages/headCount/headcountManagement.jsx";
+import AdminMenu from "./pages/adminMenu/adminMenu.jsx";
+import UserManagement from "./pages/userManagement/userManagement.jsx";
 function App() {
     return (
         <Router>
@@ -15,8 +17,9 @@ function App() {
                 <Route path="/" element={<Submit />} />
                 <Route path="history/:cg_name" element={<CGLAttendance />} />
                 <Route path="/headcount" element={<HeadCount />} />
-                <Route path="admin" element={<CGLsManagement />} />
+                <Route path="admin" element={<AdminMenu />} />
                 <Route path="nb-admin" element={<CGLsManagement />} />
+                <Route path="nb-user" element={<UserManagement />} />
                 <Route path="nb-attendance" element={<AttendanceManagement />} />
                 <Route path="nb-headcount" element={<HeadCountManagement />} />
             </Routes>
