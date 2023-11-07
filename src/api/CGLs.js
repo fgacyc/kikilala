@@ -73,6 +73,7 @@ export  async  function  getCGLNum(){
 }
 
 // temp
+// 1. add CG status to all CGs
 // export async function updateCGStatus(docID, data) {
 //     const cgls = await readAllCGLs();
 //     data = {
@@ -91,3 +92,35 @@ export  async  function  getCGLNum(){
 //     if (res === false) return false;
 //     return res;
 // }
+
+// 2. find duplicate CG name
+export async function duplicateCheck(name) {
+    const cgls = await readAllCGLs();
+    let cg_name = [];
+    for(let key in cgls){
+        const item  = cgls[key];
+        cg_name.push(item.CG_name.toLowerCase());
+    }
+    //console.log(cg_name.includes(name.toLowerCase()))
+    return cg_name.includes(name.toLowerCase());
+}
+
+export async function findDuplicateCGName() {
+    const cgls = await readAllCGLs();
+    let cg_name = [];
+    for(let key in cgls){
+        const item  = cgls[key];
+        cg_name.push(item.CG_name.toLowerCase());
+    }
+
+    let duplicate = [];
+    let duplicate_name = [];
+    for(let i = 0; i < cg_name.length; i++){
+        for(let j = i + 1; j < cg_name.length; j++){
+            if(cg_name[i] === cg_name[j]){
+                duplicate.push(cg_name[i]);
+            }
+        }
+    }
+    console.log(duplicate)
+}

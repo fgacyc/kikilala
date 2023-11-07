@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
 import {pastoralTeamList, satelliteList} from "../../config.js";
 import {useEffect, useRef, useState} from "react";
-import {addCGL, CGStatusEnum, updateCGL} from "../../api/CGLs.js";
+import {addCGL, CGStatusEnum, duplicateCheck, updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,14 +13,22 @@ export default function CGLsAddModal({ visible, setVisible }) {
     const formRef = useRef(null);
     const [form] = Form.useForm();
 
-    function  handleSubmit() {
+    async  function  handleSubmit() {
         const data = formRef.current.getFieldsValue();
+        //console.log(data)
+        const isCGNameDuplicate = await duplicateCheck(data.CG_name);
+        if(isCGNameDuplicate){
+            Message.warning('CG Name already exists!')
+            return;
+        }
+
         data.CG_status = CGStatusEnum.active;
         addCGL(data).then((res) => {
             console.log(res)
             if (res!== false){
                 Message.success('Submitted successfully!')
                 PubSub.publish('updateCGLs');
+                setVisible(false);
             }
         })
     }
@@ -30,10 +38,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
         <Modal
             title="Add new CGLs"
             visible={visible}
-            onOk={() => {
-                setVisible(false)
-                handleSubmit()
-            }}
+            onOk={handleSubmit}
             onCancel={() => setVisible(false)}
             autoFocus={false}
             focusLock={true}

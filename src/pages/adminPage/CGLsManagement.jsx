@@ -1,6 +1,6 @@
 import { Table, Input, Button, Popconfirm, Message, Space } from '@arco-design/web-react';
 import { useEffect, useRef, useState } from "react";
-import {CGStatusEnum, closeCG, deleteCGL, readAllCGLs} from "../../api/CGLs.js";
+import {CGStatusEnum, closeCG, deleteCGL, duplicateCheck, findDuplicateCGName, readAllCGLs} from "../../api/CGLs.js";
 import { convertCGLTableData } from "../formPage/data.js";
 import {
     IconClose,
@@ -260,6 +260,11 @@ export default function CGLsManagement() {
                         text={"Download"}
                         datas={downloadCGLsData(tableData)} />
                 </Button>
+                {/*<Button type='secondary' onClick={() =>{*/}
+                {/*    duplicateCheck("The Blessing 2")*/}
+                {/*}}>*/}
+                {/*    Click*/}
+                {/*</Button>*/}
             </div>
             <div className={"bg-white rounded-lg pb-2"}>
                 <CGLTable
