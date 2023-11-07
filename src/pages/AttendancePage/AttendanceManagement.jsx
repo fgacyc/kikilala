@@ -294,7 +294,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
 
         {
-            title: 'Total members',
+            title: 'Numbering',
             width: 180,
             render: (_, record) => {
                 return (

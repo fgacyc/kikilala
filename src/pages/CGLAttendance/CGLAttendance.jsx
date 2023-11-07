@@ -84,14 +84,22 @@ const CGLAttendance = () => {
             render: (_, record) => <div>{record.abs_num}</div>,
             sorter: (a, b) => a.abs_num - b.abs_num,
         },
+        // {
+        //     key: 'total_num',
+        //     title: 'Numbering',
+        //     dataIndex: 'total_num',
+        //     width: 50,
+        //     render: (_, record) => <div>{record.total_num}</div>,
+        //     sorter: (a, b) => a.total_num - b.total_num,
+        // },
         {
             key: 'total_num',
             title: 'Total',
             dataIndex: 'total_num',
             width: 50,
-            render: (_, record) => <div>{record.total_num}</div>,
-            sorter: (a, b) => a.total_num - b.total_num,
-        },
+            render: (_, record) => <div>{record.om_num + record.nb_num + record.nf_num + record.rnf_num + record.ac_num }</div>,
+            //sorter: (a, b) => a.total_num - b.total_num,
+        }
     ];
     const { loginWithRedirect,user,isLoading } = useAuth0();
 
