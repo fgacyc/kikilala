@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input, Popconfirm, Select, Space, Switch, Table } from '@arco-design/web-react';
 import { deleteAttend, queryAttends, readAllAttends } from '../../api/attendance';
-import { convertCGLTableData, getWeekDatesArray } from '../formPage/data';
+import { convertTableData, getWeekDatesArray } from '../formPage/data';
 import { IconDelete, IconEdit, IconSearch } from '@arco-design/web-react/icon';
 import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
@@ -371,7 +371,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
     useEffect(() => {
         async function getAttendance() {
             const attendance_data = await queryAttends(currentWeek);
-            const updateattendanceData = convertCGLTableData(attendance_data).map((item) => {
+            const updateattendanceData = convertTableData(attendance_data).map((item) => {
                 if (selectedRow) {
                     if (item.id === selectedRow.id) {
                         return selectedRow;

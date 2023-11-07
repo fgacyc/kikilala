@@ -33,7 +33,7 @@ export async function updateAdmin(docID, data) {
 
 // delete
 export async function deleteHeadcount(docID) {
-    let res = await deleteDoc("headcount", docID);
+    let res = await deleteDoc("admin", docID);
     if (res === false) return false;
     return res;
 }

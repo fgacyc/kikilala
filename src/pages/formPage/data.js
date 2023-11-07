@@ -194,7 +194,7 @@ export async function getSatelliteNames(){
     return satelliteNames;
 }
 
-export function convertCGLTableData(data){
+export function convertTableData(data){
     let CGsList =[]
     for (let key in data){
         const item = data[key];

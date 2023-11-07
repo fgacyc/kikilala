@@ -1,7 +1,7 @@
 import { Table, Input, Button, Popconfirm, Message, Space } from '@arco-design/web-react';
 import { useEffect, useRef, useState } from "react";
 import {CGStatusEnum, closeCG, deleteCGL, duplicateCheck, findDuplicateCGName, readAllCGLs} from "../../api/CGLs.js";
-import { convertCGLTableData } from "../formPage/data.js";
+import { convertTableData } from "../formPage/data.js";
 import {
     IconClose,
     IconDownload,
@@ -184,10 +184,10 @@ function CGLTable({ setTableData, setVisible }) {
     async function updateCGLs() {
         const data = await readAllCGLs();
         //console.log(convertCGLTableData(data))
-        setTableData(convertCGLTableData(data));
+        setTableData(convertTableData(data));
 
         // const openedList = data.filter((item) => item.CG_status === "open");
-        const allCGLs = convertCGLTableData(data);
+        const allCGLs = convertTableData(data);
         const activeCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.active);
         setAllCGLs(activeCGLs);
     }
