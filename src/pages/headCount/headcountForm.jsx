@@ -5,7 +5,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import ButtonGroup from "../components/buttonGroup.jsx";
 import Selects from "../components/selects.jsx";
 import UIInput from "../components/UIInput.jsx";
-import {DatePicker, Input, Message, Select} from "@arco-design/web-react";
+import {DatePicker, Input, InputNumber, Message, Select} from "@arco-design/web-react";
 import InputPIN from "../components/InputPIN.jsx";
 import {SendIcon} from "../../Icon/SendIcon.jsx";
 import {IconHistory} from "@arco-design/web-react/icon";
@@ -51,10 +51,10 @@ export default function HeadCountForm(){
 
     const [
         kids_num, cm_num, parents_num,
-        yw_num, gs_num, yp_num,key
+        yw_num, gs_num, yp_num,key,headCount
     ] = useHeadCountStore(state => [
         state.kids_num, state.cm_num, state.parents_num,
-        state.yw_num, state.gs_num, state.yp_num, state.key
+        state.yw_num, state.gs_num, state.yp_num, state.key,state.headCount
     ])
 
     const [
@@ -64,11 +64,12 @@ export default function HeadCountForm(){
         setYWNum,
         setGSNum,
         setYPNum,
-        setComment
+        setComment,
+        setHeadCount
     ] = useHeadCountStore(state => [
         state.setKidsNum, state.setCMNum, state.setParentsNum,
         state.setYWNum, state.setGSNum, state.setYPNum,
-        state.setComment
+        state.setComment, state.setHeadCount
     ])
 
     const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason,
@@ -97,10 +98,14 @@ export default function HeadCountForm(){
         }
     }, [satellite])
 
+    useEffect(() => {
+        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + yp_num)
+    }, [kids_num, cm_num, parents_num,yw_num, gs_num, yp_num])
+
 
     function  submitHandler(){
         const data =  getHeadCountData("form");
-        //console.log(data)
+        // console.log(data)
         // return;
 
         if (!data) return;
@@ -168,10 +173,10 @@ export default function HeadCountForm(){
                 </Select>
 
             </div>
-            <div>
-                <div className={"font-bold mt-5 mb-1"}>How many is the total headcount?</div>
-                <UIInput type={"number"} />
-            </div>
+            {/*<div>*/}
+            {/*    <div className={"font-bold mt-5 mb-1"}>How many is the total headcount?</div>*/}
+            {/*    <UIInput type={"number"} />*/}
+            {/*</div>*/}
             <div>
                 <div className={"font-bold mt-5 mb-1"}>How many people attend this week?</div>
                 <div className={"flex flex-row justify-between items-start"}>
@@ -190,6 +195,15 @@ export default function HeadCountForm(){
                 </div>
             </div>
             <div>
+                <div className={"font-bold mt-5 mb-1"}>Total headcount:</div>
+                <InputNumber
+                    mode='button'
+                    disabled
+                    value={headCount}
+                    style={{ width: 160, margin: '10px 24px 10px 0' }}
+                />
+            </div>
+            <div>
                 <div className={"font-bold mt-5 mb-1"}>Do you have any comments?</div>
                 <TextArea
                     placeholder='Please enter comments...'
@@ -198,7 +212,7 @@ export default function HeadCountForm(){
                 />
             </div>
             <div className={"flex flex-row justify-between items-end"}>
-                <button className={`bg-[#00B05C] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] 
+                <button className={`bg-[#00acb0] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] 
                     mt-8 flex flex-row justify-center w-[200px]`}
                         onClick={submitHandler}
                 >

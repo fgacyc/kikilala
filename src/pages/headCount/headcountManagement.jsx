@@ -219,8 +219,7 @@ export default function HeadCountManagement() {
 
 
     return (
-        <div className={`h-full w-full 
-            sm:p-8 p-4`}>
+        <div className={`h-full w-full sm:p-8 p-4`}>
             <div className={"bg-white rounded-lg pb-2"}>
                 <HeadCountTable/>
             </div>
