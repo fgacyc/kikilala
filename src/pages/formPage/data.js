@@ -201,6 +201,11 @@ export function convertTableData(data){
         item.key = key;
         CGsList.push(item);
     }
+    // sort by createdAt
+    CGsList.sort((a,b) => {
+        return new Date(b.updatedAt.seconds) - new Date(a.updatedAt.seconds);
+    });
+
     return CGsList;
 }
 

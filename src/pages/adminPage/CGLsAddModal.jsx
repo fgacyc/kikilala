@@ -24,8 +24,8 @@ export default function CGLsAddModal({ visible, setVisible }) {
 
         data.CG_status = CGStatusEnum.active;
 
-        console.log(data)
-        return;
+        // console.log(data)
+        // return;
 
         addCGL(data).then((res) => {
             console.log(res)

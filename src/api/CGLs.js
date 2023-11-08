@@ -50,6 +50,15 @@ export async function closeCG(docID) {
     return res;
 }
 
+export async function openCG(docID) {
+    const data = {
+        CG_status: CGStatusEnum.active
+    }
+    let res = await updateDoc("CGLs", data, docID);
+    if (res === false) return false;
+    return res;
+}
+
 // delete
 export async function deleteCGL(docID) {
     let res = await deleteDoc("CGLs", docID);
