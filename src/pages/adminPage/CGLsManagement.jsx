@@ -28,7 +28,7 @@ import CsvDownload from "react-csv-downloader";
 import { addRecord } from "../../api/records.js";
 import { useAuth0 } from "@auth0/auth0-react";
 
-function CGLTable({tableData ,updateData,type}) {
+function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
     const inputRef = useRef(null);
     const columns = [
         {
@@ -164,7 +164,7 @@ function CGLTable({tableData ,updateData,type}) {
                         className={`mr-2 ${type==="closed" && "hidden"}`}
                         onClick={() => {
                             setCGL(record);
-                            setVisible(true);
+                            setCGEditModalVisible(true);
                         }}
                         type="secondary"
                     ></Button>
@@ -239,6 +239,7 @@ export default function CGLsManagement() {
     const [closedCGLs, setClosedCGLs] = useState([]);
     const { loginWithRedirect, user, isLoading } = useAuth0();
     const [isShowActive, setIsShowActive] = useState(true);
+    const [CGEditModalVisible, setCGEditModalVisible] = useState(false);
 
 
     useEffect(() => {
@@ -306,16 +307,18 @@ export default function CGLsManagement() {
                             tableData={tableData}
                             updateData={updateCGLs}
                             type={"active"}
+                            setCGEditModalVisible={setCGEditModalVisible}
                         />
                         : <CGLTable
                             tableData={closedCGLs}
                             updateData={updateCGLs}
                             type={"closed"}
+                            setCGEditModalVisible={setCGEditModalVisible}
                         />
                 }
 
             </div>
-            <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible} />
+            <CGLsInfoEditModal visible={CGEditModalVisible} setVisible={setCGEditModalVisible} />
             <CGLsAddModal visible={addVisible} setVisible={setAddVisible} />
         </div>
     )
