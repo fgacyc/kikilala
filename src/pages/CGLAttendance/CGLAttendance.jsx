@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { readAttendByCGName } from '../../api/attendance';
-import { Button, Table } from '@arco-design/web-react';
+import {Button, Space, Table} from '@arco-design/web-react';
 import {IconArrowLeft, IconDownload, IconHistory} from "@arco-design/web-react/icon";
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -95,9 +95,9 @@ const CGLAttendance = () => {
         {
             key: 'total_num',
             title: 'Total',
-            dataIndex: 'total_num',
+            //dataIndex: 'total_num',
             width: 50,
-            render: (_, record) => <div>{record.om_num + record.nb_num + record.nf_num + record.rnf_num + record.ac_num }</div>,
+            render: (_, record) => <div>{record.om_num + record.nb_num + record.nf_num + record.rnf_num + record.ac_num  }</div>,
             //sorter: (a, b) => a.total_num - b.total_num,
         }
     ];
@@ -195,6 +195,20 @@ const CGLAttendance = () => {
                             x: window.innerWidth * 0.9,
                             y: window.innerHeight,
                         }}
+                        renderPagination={(paginationNode) => (
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    marginTop: 10,
+                                }}
+                            >
+                                <Space>
+                                    <span className={"ml-4"}>Items: {attendanceData.length}</span>
+                                </Space>
+                                {paginationNode}
+                            </div>
+                        )}
                     />
                 }
             </div>
@@ -204,7 +218,7 @@ const CGLAttendance = () => {
                     type='secondary'
                     icon={<IconDownload/>}>
                     <CsvDownload
-                        filename={`CGLs_${getTodayDateStr()}`}
+                        filename={`${CGLName}'s_CG_attendance_${getTodayDateStr()}`}
                         extension={".csv"}
                         text={"Download"}
                         datas={downloadCGLAttendanceData(attendanceData)}
