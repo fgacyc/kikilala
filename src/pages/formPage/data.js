@@ -172,7 +172,7 @@ export async function ifExpire(){
     // over 7 days
     let now = new Date();
     let diff = now.getTime() - date.getTime();
-    let days = Math.floor(diff / (24 * 3600 * 1000));
+    let days = Math.floor(diff / (1 * 3600 * 1000)); //update cache every 1 hour
     return days > 7;
 }
 

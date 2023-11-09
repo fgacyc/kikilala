@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input, Popconfirm, Select, Space, Switch, Table } from '@arco-design/web-react';
 import { deleteAttend, queryAttends, readAllAttends } from '../../api/attendance';
 import { convertTableData, getWeekDatesArray } from '../formPage/data';
-import {IconDelete, IconDownload, IconEdit, IconSearch} from '@arco-design/web-react/icon';
+import {IconDelete, IconDownload, IconEdit, IconNotification, IconSearch} from '@arco-design/web-react/icon';
 import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -12,6 +12,7 @@ import { useAttendanceStore } from "../../store/attendanceStore.js";
 import { get } from "idb-keyval";
 import useSelectedRowStore from '../../store/attendanceRecordStore.js';
 import AttendanceDownloadModal from "./AttendanceDownloadModal.jsx";
+import AttendanceReminder from "./AttendanceReminder.jsx";
 
 
 const Option = Select.Option;
@@ -429,6 +430,7 @@ const AttendanceManagement = () => {
     const [initAttendData, currentWeek, setCurrentWeek, showSubmitted, setShowSubmitted] = useAttendanceStore(state => [
         state.initAttendData, state.currentWeek, state.setCurrentWeek, state.showSubmitted, state.setShowSubmitted]);
     const [attendanceDownloadModalVisible, setAttendanceDownloadModalVisible] = useState(false);
+    const [reminderModalVisible, setReminderModalVisible] = useState(false);
 
     useEffect(() => {
         setDateArray(getWeekDatesArray(buttonsNumber));
@@ -489,6 +491,11 @@ const AttendanceManagement = () => {
                                         setAttendanceDownloadModalVisible(true);
                                     }}
                             />
+                            <Button type='secondary' icon={<IconNotification />} className={"ml-2"}
+                                    onClick={() => {
+                                        setReminderModalVisible(true);
+                                    }}
+                            />
                         </div>
 
                         <Switch
@@ -528,6 +535,7 @@ const AttendanceManagement = () => {
                 />
             }
             <AttendanceDownloadModal setVisible={setAttendanceDownloadModalVisible} visible={attendanceDownloadModalVisible} />
+            <AttendanceReminder setVisible={setReminderModalVisible} visible={reminderModalVisible} />
         </div>
     )
 }
