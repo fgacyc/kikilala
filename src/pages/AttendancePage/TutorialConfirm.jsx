@@ -9,7 +9,10 @@ export default function TutorialConfirm({ visible, setVisible }) {
                 localStorage.setItem("isTutorial", "true");
                 window.open("https://square.fgacyc.com/t/numbers-user-document/263", "_blank")
             }}
-            onCancel={() => setVisible(false)}
+            onCancel={() => {
+                setVisible(false)
+                localStorage.setItem("isTutorial", "false");
+            }}
             autoFocus={false}
             focusLock={true}
         >
