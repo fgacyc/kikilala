@@ -7,8 +7,8 @@ import { getWeekDatesArray } from '../formPage/data';
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
 
-const CGInfo = ({ attendanceRecord, valueRange, setValueRange }) => {
-    const cg_info_list = ['CG Leader', 'Pastoral Team', 'Satellite', 'Total Members']
+const CGInfo = ({ attendanceRecord, valueRange, setValueRange, totalCgNumbering }) => {
+    const cg_info_list = ['CG Leader', 'Pastoral Team', 'Satellite', 'CG Numbering']
     const dateArray = getWeekDatesArray(4);
     const Option = Select.Option;
 
@@ -40,7 +40,7 @@ const CGInfo = ({ attendanceRecord, valueRange, setValueRange }) => {
                         <div className='h-[40px]'>{attendanceRecord.cgl_name}</div>
                         <div className='h-[40px]'>{attendanceRecord.pastoral_team}</div>
                         <div className='h-[40px]'>{attendanceRecord.satellite}</div>
-                        <div className='h-[40px]'>{attendanceRecord.total_members_num}</div>
+                        <div className='h-[40px]'>{totalCgNumbering}</div>
                     </div>
                 )
             }
@@ -48,7 +48,15 @@ const CGInfo = ({ attendanceRecord, valueRange, setValueRange }) => {
     )
 }
 
-const AttendanceCard = ({ title, attendanceType, attendanceRecord, attendance_list }) => {
+const AttendanceCard = ({ form, title, attendanceType, attendanceRecord, attendance_list, calculateTotal, setTotalCgNumbering }) => {
+    const updateForm = (field, value) => {
+        const currentFormValues = form.getFieldsValue();
+        currentFormValues[field] = value;
+        currentFormValues.total_cg_numbering = calculateTotal(currentFormValues);
+        form.setFieldsValue(currentFormValues);
+        setTotalCgNumbering(currentFormValues.total_cg_numbering);
+    }
+
     return (
         <>
             <Divider orientation='center'>{title}</Divider>
@@ -61,8 +69,12 @@ const AttendanceCard = ({ title, attendanceType, attendanceRecord, attendance_li
                                     label={item}
                                     field={`${attendanceType}_${item.toLowerCase()}_num`}
                                     className="w-[150px] mt-6"
+
                                 >
-                                    <InputNumber min={0} />
+                                    <InputNumber
+                                        min={0}
+                                        onChange={(value) => { updateForm(`${attendanceType}_${item.toLowerCase()}_num`, value) }}
+                                    />
                                 </FormItem>
                             </div>
                         ))}
@@ -82,10 +94,12 @@ const AttendanceInfoEditModal = ({ visible, setVisible }) => {
     const [form] = Form.useForm();
     const attendanceRecord = useSelectedRowStore((state) => state.selectedRow);
     const setAttendanceRecord = useSelectedRowStore((state) => state.setSelectedRow);
+    const [total_cg_numbering, setTotal_cg_numbering] = useState(0);
 
     useEffect(() => {
         if (visible) {
             setValueRange(attendanceRecord.date)
+            setTotal_cg_numbering(attendanceRecord.total_members_num)
 
             form.setFieldsValue({
                 cg_om_num: attendanceRecord.cg_om_num,
@@ -154,6 +168,7 @@ const AttendanceInfoEditModal = ({ visible, setVisible }) => {
                 attendanceRecord={attendanceRecord}
                 valueRange={valueRange}
                 setValueRange={setValueRange}
+                totalCgNumbering={total_cg_numbering}
             />
             <Form
                 {...formItemLayout}
@@ -166,16 +181,22 @@ const AttendanceInfoEditModal = ({ visible, setVisible }) => {
                 }}
             >
                 <AttendanceCard
+                    form={form}
                     title='Connect Group'
                     attendanceType='cg'
                     attendanceRecord={attendanceRecord}
                     attendance_list={attendance_list}
+                    calculateTotal={calculateTotal}
+                    setTotalCgNumbering={setTotal_cg_numbering}
                 />
                 <AttendanceCard
+                    form={form}
                     title='Service'
                     attendanceType='service'
                     attendanceRecord={attendanceRecord}
                     attendance_list={attendance_list}
+                    calculateTotal={calculateTotal}
+                    setTotalCgNumbering={setTotal_cg_numbering}
                 />
             </Form>
         </Drawer >
