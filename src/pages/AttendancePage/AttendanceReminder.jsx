@@ -62,7 +62,7 @@ export default function AttendanceReminder({visible, setVisible}) {
                 focusLock={true}
             >
                 <div className={"mb-4"}>
-                    <div className={"mb-2"}>Which pastoral team's attendance data do you want to download?</div>
+                    <div className={"mb-2"}>Which pastoral team's reminder message do you want to generate?</div>
                     <Select
                         placeholder='Please select  pastoral team...'
                         value={pastoralTeam}
