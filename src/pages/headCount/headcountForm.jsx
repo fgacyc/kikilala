@@ -51,10 +51,12 @@ export default function HeadCountForm(){
 
     const [
         kids_num, cm_num, parents_num,
-        yw_num, gs_num, nf_num,key,headCount
+        yw_num, gs_num, nf_num,key,
+        headCount,comment
     ] = useHeadCountStore(state => [
         state.kids_num, state.cm_num, state.parents_num,
-        state.yw_num, state.gs_num, state.nf_num, state.key,state.headCount
+        state.yw_num, state.gs_num, state.nf_num,
+        state.key,state.headCount,state.comment
     ])
 
     const [
@@ -106,9 +108,9 @@ export default function HeadCountForm(){
 
     function  submitHandler(){
         const data =  getHeadCountData("form");
-        resetHeadCountData();
-        console.log(data)
-        return;
+
+        // console.log(data)
+        // return;
 
         if (!data) return;
         addHeadcount(data).then(res => {
@@ -158,6 +160,7 @@ export default function HeadCountForm(){
                     //onChange={onChange}
                     onSelect={setDateTime}
                     //onOk={onOk}
+                    dayStartOfWeek={1}
                 />
             </div>
             <div>
@@ -186,15 +189,15 @@ export default function HeadCountForm(){
                    <div className={"text-center"}>
                        <div className={`flex flex-row justify-between bg-gray-100 rounded-xl 
                                     sm:py-2 sm:px-4 py-2`}>
-                           <InputPIN name={"Kids"} setter={setKidsNum} val={kids_num}  />
-                           <InputPIN name={"CM"} setter={setCMNum} val={cm_num}  />
-                           <InputPIN name={"Parents"} setter={setParentsNum} val={parents_num}  />
+                           <InputPIN name={"Kids"} setter={setKidsNum} val={kids_num} range={3} />
+                           <InputPIN name={"CM"} setter={setCMNum} val={cm_num} range={3} />
+                           <InputPIN name={"Parents"} setter={setParentsNum} val={parents_num} range={3} />
                        </div>
                        <div className={"mt-1"}>Wonder Kids</div>
                    </div>
-                    <InputPIN name={"YW"} setter={setYWNum} val={yw_num} className={"py-2"} />
-                    <InputPIN name={"GS"} setter={setGSNum} val={gs_num} className={"py-2"}   />
-                    <InputPIN name={"NF"} setter={setNFNum} val={nf_num} className={"py-2"}   />
+                    <InputPIN name={"YW"} setter={setYWNum} val={yw_num} className={"py-2"} range={3} />
+                    <InputPIN name={"GS"} setter={setGSNum} val={gs_num} className={"py-2"}  range={3} />
+                    <InputPIN name={"NF"} setter={setNFNum} val={nf_num} className={"py-2"} range={3}  />
                 </div>
             </div>
             <div>
@@ -212,6 +215,7 @@ export default function HeadCountForm(){
                     placeholder='Please enter comments...'
                     style={{ marginTop:5, width: "100%" ,resize: "none" }}
                     onChange={setComment}
+                    value={comment}
                 />
             </div>
             <div className={"flex flex-row justify-between items-end"}>

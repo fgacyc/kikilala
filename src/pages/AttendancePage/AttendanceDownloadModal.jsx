@@ -73,6 +73,7 @@ function ButtonsGroup({setDataDuration,visible}){
                         setDataDuration(v[0]+"-"+v[1]);
                     }}
                     format="YYYY/MM/DD"
+                    dayStartOfWeek={1}
                 />
             </button>
             <button

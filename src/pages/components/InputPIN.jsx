@@ -1,9 +1,10 @@
 import React, {useEffect} from "react";
-export default function InputPIN({ name, setter,val ,className }) {
+export default function InputPIN({ name, setter,val ,className,range }) {
+    if(!range) range= 2;
 
     function handleChange(e) {
         const valueStr = e.target.value;
-        const val = valueStr.substring(0, 2);
+        const val = valueStr.substring(0, range);
         if (!val) {
             setter("")
         }

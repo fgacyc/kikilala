@@ -91,3 +91,18 @@ export function filterAttendByDate(data,duration){
     }
     return res;
 }
+
+export function filterHeadcountByDate(data,duration){
+    const dates = duration.split('-');
+    const startDate = new Date(dates[0]);
+    const endDate = new Date(dates[1]);
+    let res = [];
+    for (let item of data){
+        const itemDatetime = new Date(item.dateTime);
+        // console.log(itemDatetime)
+        if (itemDatetime >= startDate && itemDatetime <= endDate){
+            res.push(item);
+        }
+    }
+    return res;
+}

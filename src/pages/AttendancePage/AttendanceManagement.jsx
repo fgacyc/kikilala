@@ -433,6 +433,7 @@ const AttendanceManagement = () => {
     useEffect(() => {
         setDateArray(getWeekDatesArray(buttonsNumber));
         getCGLNum().then((res) => {
+            console.log(res)
             setCurrentCGNum(res);
         });
         initAttendData();
@@ -466,56 +467,58 @@ const AttendanceManagement = () => {
     }
 
     return (
-        <div className={"h-full w-full sm:px-8 px-2  py-4"}>
-            {
-                dateArray && <div className={"flex flex-row justify-between mb-2"}>
-                    <div>
-                        <Select placeholder='Please select' style={{ width: 250 }} allowClear
-                                value={currentWeek}
-                                onChange={(value) => {
-                                    setCurrentWeek(value);
-                                }}
-                        >
-                            {dateArray.slice().reverse().map((option, index) => (
-                                <Option key={index} value={option}>
-                                    {option}
-                                </Option>
-                            ))}
-                        </Select>
-                        <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
-                            onClick={() => {
-                                setAttendanceDownloadModalVisible(true);
+        <div className={"h-full w-full sm:px-8 px-2  py-4 "}>
+            <div className={"bg-white pt-2 rounded"}>
+                {
+                    dateArray && <div className={"flex flex-row justify-between mb-2 bg-white"}>
+                        <div>
+                            <Select placeholder='Please select' style={{ width: 250 }} allowClear
+                                    value={currentWeek}
+                                    onChange={(value) => {
+                                        setCurrentWeek(value);
+                                    }}
+                            >
+                                {dateArray.slice().reverse().map((option, index) => (
+                                    <Option key={index} value={option}>
+                                        {option}
+                                    </Option>
+                                ))}
+                            </Select>
+                            <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
+                                    onClick={() => {
+                                        setAttendanceDownloadModalVisible(true);
+                                    }}
+                            />
+                        </div>
+
+                        <Switch
+                            type='round'
+                            checkedText='Submitted'
+                            uncheckedText='Pending'
+                            checked={showSubmitted}
+                            className={"bg-[#C9CDD4]"}
+                            onChange={(value) => {
+                                setShowSubmitted(value);
                             }}
                         />
                     </div>
+                }
 
-                    <Switch
-                        type='round'
-                        checkedText='Submitted'
-                        uncheckedText='Pending'
-                        checked={showSubmitted}
-                        className={"bg-[#C9CDD4]"}
-                        onChange={(value) => {
-                            setShowSubmitted(value);
-                        }}
+                <div className={"bg-white rounded-lg pb-2"}>
+                    <AttendanceTable
+                        onOpenModal={onOpenModal}
+                        setAttendanceData={setAttendanceData}
+                        currentWeek={currentWeek}
+                        currentCGNum={currentCGNum}
+                        className={showSubmitted === false ? 'hidden' : 'block'}
                     />
+                    <AbsentCGLsTable
+                        currentWeek={currentWeek}
+                        currentCGNum={currentCGNum}
+                        className={!showSubmitted === false ? 'hidden' : 'block'}
+                    />
+
                 </div>
-            }
-
-            <div className={"bg-white rounded-lg pb-2"}>
-                <AttendanceTable
-                    onOpenModal={onOpenModal}
-                    setAttendanceData={setAttendanceData}
-                    currentWeek={currentWeek}
-                    currentCGNum={currentCGNum}
-                    className={showSubmitted === false ? 'hidden' : 'block'}
-                />
-                <AbsentCGLsTable
-                    currentWeek={currentWeek}
-                    currentCGNum={currentCGNum}
-                    className={!showSubmitted === false ? 'hidden' : 'block'}
-                />
-
             </div>
             {
                 attendanceRecord && <AttendanceInfoEditModal

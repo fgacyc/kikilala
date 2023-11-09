@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addRecord } from "../../api/records.js";
-import { Button, Input, Popconfirm, Space, Table } from "@arco-design/web-react";
+import {Button, Input, Popconfirm, Select, Space, Table} from "@arco-design/web-react";
 import CGLsInfoEditModal from "../adminPage/CGLsInfoEditModal.jsx";
 import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
 import { deleteHeadcount, readAllHeadcounts } from "../../api/headcount.js";
@@ -13,28 +13,32 @@ import PubSub from "pubsub-js";
 import HeadCountDrawer from "./HeadcountDrawer.jsx";
 import { useHeadCountStore } from "../../store/headcountStore.js";
 import { useFormStore } from "../../store/formStore.js";
+import WeekSelect from "../components/WeekSelect.jsx";
+import {filterAttendByDate, filterHeadcountByDate} from "../../api/attendance.js";
+import {getWeekDatesArray} from "../formPage/data.js";
+import HeadCountSummary from "./HeadcountSummary.jsx";
 
 function HeadCountTable() {
-    const [data, setData] = useState(null);
+    const [headcountTableData, setHeadcountTableData] = useState(null);
+    const [currentTableData, setCurrentTableData] = useState(null);
     const inputRef = useRef(null);
     const [headCountDrawerVisible, setHeadCountDrawerVisible] = useState(false);
     const [scrollX, setScrollX] = useState(window.innerWidth * 0.9);
     const setHeadCountData = useHeadCountStore(state => state.setHeadCountData)
+    const [currentWeek, setCurrentWeek] = useState(getWeekDatesArray(4)[3]);
+
     useEffect(() => {
-        setHeadcountData();
+        void setHeadcountData();
         if (window.innerWidth < 768) {
             setScrollX(window.innerWidth * 3);
         }
-
         const subscription = PubSub.subscribe('REFRESH_HEADCOUNT_TABLE', () => {
-            setHeadcountData();
-        }
-        );
+            void setHeadcountData();
+        });
         return () => {
             PubSub.unsubscribe(subscription);
         };
     }, []);
-
     async function setHeadcountData() {
         const res = await readAllHeadcounts();
         let headData = [];
@@ -42,11 +46,10 @@ function HeadCountTable() {
             res[key].key = key;
             headData.push(res[key]);
         }
-        // console.log(headData)
-        setData(headData);
+        setHeadcountTableData(headData);
+        headData = filterHeadcountByDate(headData,currentWeek);
+        setCurrentTableData(headData);
     }
-
-
     const columns = [
         {
             title: 'Service Location',
@@ -105,31 +108,33 @@ function HeadCountTable() {
             title: 'YW',
             dataIndex: 'yw_num',
             sorter: (a, b) => a.yw_num - b.yw_num,
-        }
-        ,
+        },
         {
             title: 'GS',
             dataIndex: 'gs_num',
             sorter: (a, b) => a.gs_num - b.gs_num,
-        }
-        ,
+        },
         {
             title: 'NF',
             dataIndex: 'nf_num',
             sorter: (a, b) => a.yp_num - b.yp_num,
-        }
-        ,
+        },
         {
             title: 'Kids',
             dataIndex: 'kids_num',
             sorter: (a, b) => a.kids_num - b.kids_num,
-        }
-        ,
+        },
         {
             title: 'Crew',
             dataIndex: 'cm_num',
             sorter: (a, b) => a.cm_num - b.cm_num,
-        }, {
+        },
+        {
+            title: 'Parents',
+            dataIndex: 'parents_num',
+            sorter: (a, b) => a.cm_num - b.cm_num,
+        },
+        {
             title: "Total",
             dataIndex: "headCount",
             sorter: (a, b) => a.headCount - b.headCount,
@@ -143,8 +148,6 @@ function HeadCountTable() {
                     <Button icon={<IconEdit />}
                         className={"mr-2"}
                         onClick={() => {
-                            // setCGL(record);
-                            // setVisible(true);
                             setHeadCountData(record);
                             setHeadCountDrawerVisible(true);
                         }}
@@ -170,10 +173,24 @@ function HeadCountTable() {
         }
     ];
 
-    return <>
+    useEffect(() => {
+        if(!currentWeek || !currentTableData) return;
+        // console.log(currentWeek)
+        // return;
+        const currentData = filterHeadcountByDate(headcountTableData,currentWeek);
+        setCurrentTableData(currentData);
+    }, [currentWeek]);
+
+    return <div className={"py-2"}>
+        <div className={"mb-2"}>
+            <WeekSelect
+                currentWeek={currentWeek}
+                setCurrentWeek={setCurrentWeek}
+            />
+        </div>
         {
-            data && <Table columns={columns}
-                data={data}
+            currentTableData && <Table columns={columns}
+                data={currentTableData}
                 renderPagination={(paginationNode) => (
                     <div
                         style={{
@@ -183,7 +200,7 @@ function HeadCountTable() {
                         }}
                     >
                         <Space>
-                            <span className={"ml-4"}>Items: {data.length}</span>
+                            <span className={"ml-4"}>Items: {currentTableData.length}</span>
                         </Space>
                         {paginationNode}
                     </div>
@@ -194,10 +211,9 @@ function HeadCountTable() {
                 }}
             />
         }
+        <HeadCountSummary data={currentTableData} />
         <HeadCountDrawer setVisible={setHeadCountDrawerVisible} visible={headCountDrawerVisible} />
-    </>
-
-
+    </div>
 }
 
 

@@ -3,7 +3,7 @@ import {useFormStore} from "./formStore.js";
 import {Message} from "@arco-design/web-react";
 
 export const useHeadCountStore = create((set) => ({
-    satellite: "",
+    satellite:  "",
     dateTime: "",
     serviceType: "",
     headCount: 0,
@@ -18,7 +18,10 @@ export const useHeadCountStore = create((set) => ({
     // key ,for edit
     key: "",
 
-    setSatellite: (satellite) => set({satellite}),
+    setSatellite: (satellite) =>{
+        localStorage.setItem("headcount-satellite", satellite);
+        set({satellite});
+    },
     setDateTime: (dateTime) => set({dateTime}),
     setServiceType: (serviceType) => set({serviceType}),
     setHeadCount: (headCount) => set({headCount}),
@@ -31,7 +34,7 @@ export const useHeadCountStore = create((set) => ({
     setComment: (comment) => set({comment}),
     setKey: (key) => set({key}),
 
-    validateHeadCount: (type) => {
+    validateHeadCount: () => {
         if (useHeadCountStore.getState().satellite === "") {
             Message.warning("Please select a satellite");
             return false;
@@ -46,56 +49,13 @@ export const useHeadCountStore = create((set) => ({
             Message.warning("Please select a service type");
             return false;
         }
-        if(type === "form"){
-            if (!useHeadCountStore.getState().headCount) {
-                Message.warning("Please enter a head count");
-                return false;
-            }
-        }
-
-        if(type === "drawer"){
-            if (!useHeadCountStore.getState().headCount) {
-                Message.warning("Please enter a head count");
-                return false;
-            }
-        }
 
 
-        if (useHeadCountStore.getState().kids_num === "") {
-            Message.warning("Please enter a kids number");
+        if (!(useHeadCountStore.getState().headCount)) {
+            Message.warning("Please enter a head count");
             return false;
         }
 
-        if (useHeadCountStore.getState().cm_num === "") {
-            Message.warning("Please enter a CM number");
-            return false;
-        }
-
-        if (useHeadCountStore.getState().parents_num === "") {
-            Message.warning("Please enter a parents number");
-            return false;
-        }
-
-        if (useHeadCountStore.getState().yw_num === "") {
-            Message.warning("Please enter a YW number");
-            return false;
-        }
-
-        if (useHeadCountStore.getState().gs_num === "") {
-            Message.warning("Please enter a GS number");
-            return false;
-        }
-
-        if (useHeadCountStore.getState().nf_num === "") {
-            Message.warning("Please enter a NF number");
-            return false;
-        }
-
-        // comment is optional
-        // if (useHeadCountStore.getState().comment === "") {
-        //     Message.warning("Please enter a comment");
-        //     return false;
-        // }
 
         if( useFormStore.getState().user_sub === "") {
             Message.warning("Please login again");
@@ -138,18 +98,6 @@ export const useHeadCountStore = create((set) => ({
         set({nf_num: data.nf_num});
         set({comment: data.comment});
         set({key: data.key});
-        //  useHeadCountStore.getState().setSatellite(data.satellite);
-        //  useHeadCountStore.getState().setDateTime(data.dateTime);
-        //  useHeadCountStore.getState().setServiceType(data.serviceType);
-        //  useHeadCountStore.getState().setHeadCount(data.headCount);
-        //  useHeadCountStore.getState().setKidsNum(data.kids_num);
-        //  useHeadCountStore.getState().setCMNum(data.cm_num);
-        //  useHeadCountStore.getState().setParentsNum(data.parents_num);
-        //  useHeadCountStore.getState().setYWNum(data.yw_num);
-        //  useHeadCountStore.getState().setGSNum(data.gs_num);
-        //  useHeadCountStore.getState().setYPNum(data.yp_num);
-        //  useHeadCountStore.getState().setComment(data.comment);
-        //  useHeadCountStore.getState().setKey(data.key);
     },
 
     resetHeadCountData: () => {

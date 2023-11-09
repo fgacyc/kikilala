@@ -16,19 +16,27 @@ export  default  function ButtonGroup({ setCurrentSatellite }) {
         'SG Long',
         'Seremban'
     ]
-
-    useEffect(() => {
-        async function getData() {
-            if (!satellite) return;
-            for (let i = 0; i < satellites.length; i++) {
-                if (satellites[i] === satellite) {
-                    handleClick(i);
-                    setCurrentSatellite(satellites[i])
-                }
+    async function getData() {
+        if (!satellite) return;
+        for (let i = 0; i < satellites.length; i++) {
+            if (satellites[i] === satellite) {
+                handleClick(i);
+                setCurrentSatellite(satellites[i])
             }
         }
+    }
+
+
+    useEffect(() => {
         getData();
     }, [satellite]);
+
+    useEffect(() => {
+        const sate = localStorage.getItem("headcount-satellite")
+        if (sate) {
+            setSatellite(sate)
+        }
+    }, []);
 
     function handleClick(index) {
         setActive(index)
