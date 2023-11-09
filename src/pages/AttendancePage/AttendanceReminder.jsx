@@ -76,7 +76,7 @@ export default function AttendanceReminder({visible, setVisible}) {
                     </Select>
                 </div>
                 <div className="relative">
-                    <div className={"mb-2"}>Remind Message:</div>
+                    <div className={"mb-2"}>Reminder Message:</div>
                     <TextArea
                         className={"resize-none h-[100px]"}
                         value={message}
