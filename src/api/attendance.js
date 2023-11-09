@@ -62,3 +62,32 @@ export async function checkDuplicate(date, cg_id) {
     if (doc === false) return true;
     return doc.length > 0;
 }
+
+
+export async function getAttendByPastoralTeam(name){
+    if (!name) return false;
+    // console.log(date)
+    const query = ["pastoral_team", "==",name]
+    const doc = await queryDoc("attendance", query);
+    if (doc === false) return false;
+    return doc;
+}
+
+///2023/10/30-2023/11/05
+
+export function filterAttendByDate(data,duration){
+    if(duration==="all") return data;
+    const dates = duration.split('-');
+    const startDate = new Date(dates[0]);
+    const endDate = new Date(dates[1]);
+    let res = [];
+    for (let item of data){
+        const itemDate =item.date.split('-');
+        const itemStartDate = new Date(itemDate[0]);
+        const itemEndDate = new Date(itemDate[1]);
+        if (itemStartDate >= startDate && itemEndDate <= endDate){
+            res.push(item);
+        }
+    }
+    return res;
+}

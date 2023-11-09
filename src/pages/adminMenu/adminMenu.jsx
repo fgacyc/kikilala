@@ -45,7 +45,7 @@ export default function AdminMenu() {
         },
         {
             title:"Attendance Management",
-            url:"/admin",
+            url:"/nb-attendance",
             description:"Admin manage attendance"
         },
         {
