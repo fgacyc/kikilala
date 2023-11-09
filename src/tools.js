@@ -82,3 +82,27 @@ export function downloadXLSX(data) {
     document.body.appendChild(a);
     a.click();
 }
+
+
+export function checkWeek(dateRange) {
+    // 将输入的日期范围拆分成开始日期和结束日期
+    const dates = dateRange.split('-');
+    const startDate = new Date(dates[0]);
+
+    // 获取今天的日期和当前星期的第一天
+    const today = new Date();
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+
+    // 获取上周的第一天
+    const lastWeekFirstDay = new Date(firstDayOfWeek);
+    lastWeekFirstDay.setDate(firstDayOfWeek.getDate() - 7);
+
+    // 检查开始日期是本周、上周还是其他时间段
+    if (startDate >= firstDayOfWeek) {
+        return 'This week';
+    } else if (startDate >= lastWeekFirstDay) {
+        return 'Last week';
+    } else {
+        return null;
+    }
+}

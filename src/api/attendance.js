@@ -54,3 +54,11 @@ export async function deleteAttend(docID) {
     if (res === false) return false;
     return res;
 }
+
+
+export async function checkDuplicate(date, cg_id) {
+    let queries = [["date", "==", date], ["cg_id", "==", cg_id]];
+    const doc = await queryDoc("attendance", queries);
+    if (doc === false) return true;
+    return doc.length > 0;
+}
