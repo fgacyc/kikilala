@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import {create} from 'zustand'
 import {get} from "idb-keyval";
 
 export const useFormStore = create((set) => ({
@@ -31,34 +31,71 @@ export const useFormStore = create((set) => ({
     user_email: "",
     user_sub: "",
 
-    setSatellite: (satellite) => set({ satellite }),
-    setPastoralTeam: (pastoral_team) => set({ pastoral_team }),
-    setCGLName: (cgl_name) => set({ cgl_name }),
-    setCGName: (cg_name) => set({ cg_name }),
-    setDate: (date) => set({ date }),
-    setTotalMembersNum: (total_members_num) => set({ total_members_num }),
-    setCGID: (cg_id) => set({ cg_id }),
+    setSatellite: (satellite) => set({satellite}),
+    setPastoralTeam: (pastoral_team) => set({pastoral_team}),
+    setCGLName: (cgl_name) => set({cgl_name}),
+    setCGName: (cg_name) => set({cg_name}),
+    setDate: (date) => set({date}),
+    setTotalMembersNum: (total_members_num) => set({total_members_num}),
+    setCGID: (cg_id) => set({cg_id}),
 
-    setCGOMNum: (cg_om_num) => set({ cg_om_num }),
-    setCGNBNum: (cg_nb_num) => set({ cg_nb_num }),
-    setCGNFNum: (cg_nf_num) => set({ cg_nf_num }),
-    setCGRNFNum: (cg_rnf_num) => set({ cg_rnf_num }),
-    setCGABSNum: (cg_abs_num) => set({ cg_abs_num }),
-    setCGACNum: (cg_ac_num) => set({ cg_ac_num }),
-    setCGAbsenceReason: (cg_absence_reason) => set({ cg_absence_reason }),
-    setServiceOMNum: (service_om_num) => set({ service_om_num }),
-    setServiceNBNum: (service_nb_num) => set({ service_nb_num }),
-    setServiceNFNum: (service_nf_num) => set({ service_nf_num }),
-    setServiceRNFNum: (service_rnf_num) => set({ service_rnf_num }),
-    setServiceABSNum: (service_abs_num) => set({ service_abs_num }),
-    setServiceACNum: (service_ac_num) => set({ service_ac_num }),
-    setServiceAbsenceReason: (service_absence_reason) => set({ service_absence_reason }),
-    setUserEmail: (user_email) => set({ user_email }),
-    setUserSub: (user_sub) => set({ user_sub }),
+    setCGOMNum: (cg_om_num) => {
+        if (cg_om_num < 0) set({cg_om_num: 0})
+        else set({cg_om_num})
+    },
+    setCGNBNum: (cg_nb_num) => {
+        if (cg_nb_num < 0) set({cg_nb_num: 0})
+        else set({cg_nb_num})
+    },
+    setCGNFNum: (cg_nf_num) => {
+        if (cg_nf_num < 0) set({cg_nf_num: 0})
+        else set({cg_nf_num})
+    },
+    setCGRNFNum: (cg_rnf_num) => {
+        if (cg_rnf_num < 0) set({cg_rnf_num: 0})
+        else set({cg_rnf_num})
+    },
+    setCGABSNum: (cg_abs_num) => {
+        if (cg_abs_num < 0) set({cg_abs_num: 0})
+        else set({cg_abs_num})
+    },
+    setCGACNum: (cg_ac_num) => {
+        if (cg_ac_num < 0) set({cg_ac_num: 0})
+        else set({cg_ac_num})
+    },
+    setCGAbsenceReason: (cg_absence_reason) => set({cg_absence_reason}),
+
+    setServiceOMNum: (service_om_num) => {
+        if (service_om_num < 0) set({service_om_num: 0})
+        else set({service_om_num})
+    },
+    setServiceNBNum: (service_nb_num) => {
+        if (service_nb_num < 0) set({service_nb_num: 0})
+        else set({service_nb_num})
+    },
+    setServiceNFNum: (service_nf_num) => {
+        if (service_nf_num < 0) set({service_nf_num: 0})
+        else set({service_nf_num})
+    },
+    setServiceRNFNum: (service_rnf_num) => {
+        if (service_rnf_num < 0) set({service_rnf_num: 0})
+        else set({service_rnf_num})
+    },
+    setServiceABSNum: (service_abs_num) => {
+        if (service_abs_num < 0) set({service_abs_num: 0})
+        else set({service_abs_num})
+    },
+    setServiceACNum: (service_ac_num) => {
+        if (service_ac_num < 0) set({service_ac_num: 0})
+        else set({service_ac_num})
+    },
+    setServiceAbsenceReason: (service_absence_reason) => set({service_absence_reason}),
+    setUserEmail: (user_email) => set({user_email}),
+    setUserSub: (user_sub) => set({user_sub}),
 
     initData: async () => {
         const data = await get("CGInfo");
-        if(data){
+        if (data) {
             set({
                 cgl_name: data.cgl_name || "",
                 pastoral_team: data.pastoral_team || "",
@@ -67,7 +104,7 @@ export const useFormStore = create((set) => ({
                 cg_name: data.cg_name || "",
                 cg_id: data.cg_id || ""
             })
-        }else{
+        } else {
             set({
                 cgl_name: "",
                 pastoral_team: "",

@@ -25,12 +25,30 @@ export const useHeadCountStore = create((set) => ({
     setDateTime: (dateTime) => set({dateTime}),
     setServiceType: (serviceType) => set({serviceType}),
     setHeadCount: (headCount) => set({headCount}),
-    setKidsNum: (kids_num) => set({kids_num}),
-    setCMNum: (cm_num) => set({cm_num}),
-    setParentsNum: (parents_num) => set({parents_num}),
-    setYWNum: (yw_num) => set({yw_num}),
-    setGSNum: (gs_num) => set({gs_num}),
-    setNFNum: (nf_num) => set({nf_num}),
+    setKidsNum: (kids_num) => {
+        if (kids_num < 0) set({kids_num: 0})
+        else set({kids_num})
+    },
+    setCMNum: (cm_num) =>{
+        if (cm_num < 0) set({cm_num: 0})
+    else set({cm_num})
+    },
+    setParentsNum: (parents_num) =>{
+        if (parents_num < 0) set({parents_num: 0})
+    else set({parents_num})
+    },
+    setYWNum: (yw_num) => {
+        if (yw_num < 0) set({yw_num: 0})
+    else set({yw_num})
+    },
+    setGSNum: (gs_num) => {
+        if (gs_num < 0) set({gs_num: 0})
+    else set({gs_num})
+    },
+    setNFNum: (nf_num) => {
+        if (nf_num < 0) set({nf_num: 0})
+    else set({nf_num})
+    },
     setComment: (comment) => set({comment}),
     setKey: (key) => set({key}),
 
