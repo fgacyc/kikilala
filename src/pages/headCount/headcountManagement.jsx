@@ -114,8 +114,8 @@ function HeadCountTable() {
         }
         ,
         {
-            title: 'YP',
-            dataIndex: 'yp_num',
+            title: 'NF',
+            dataIndex: 'nf_num',
             sorter: (a, b) => a.yp_num - b.yp_num,
         }
         ,
@@ -130,7 +130,7 @@ function HeadCountTable() {
             dataIndex: 'cm_num',
             sorter: (a, b) => a.cm_num - b.cm_num,
         }, {
-            title: "total",
+            title: "Total",
             dataIndex: "headCount",
             sorter: (a, b) => a.headCount - b.headCount,
         },
@@ -220,7 +220,7 @@ export default function HeadCountManagement() {
 
 
     return (
-        <div className={`h-full w-full sm:p-8 p-4`}>
+        <div className={`h-full w-full sm:px-8 px-2  py-4`}>
             <div className={"bg-white rounded-lg pb-2"}>
                 <HeadCountTable />
             </div>

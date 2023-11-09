@@ -3,23 +3,36 @@ import { Form, Input, Button, Checkbox } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
 import {pastoralTeamList, satelliteList} from "../../config.js";
 import {useEffect, useRef, useState} from "react";
-import {addCGL, updateCGL} from "../../api/CGLs.js";
+import {addCGL, CGStatusEnum, duplicateCheck, updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 
 export default function CGLsAddModal({ visible, setVisible }) {
     const formRef = useRef(null);
     const [form] = Form.useForm();
 
-    function  handleSubmit() {
+    async  function  handleSubmit() {
         const data = formRef.current.getFieldsValue();
+        //console.log(data)
+        const isCGNameDuplicate = await duplicateCheck(data.CG_name);
+        if(isCGNameDuplicate){
+            Message.warning('CG Name already exists!')
+            return;
+        }
+
+        data.CG_status = CGStatusEnum.active;
+
+        // console.log(data)
+        // return;
 
         addCGL(data).then((res) => {
             console.log(res)
             if (res!== false){
                 Message.success('Submitted successfully!')
                 PubSub.publish('updateCGLs');
+                setVisible(false);
             }
         })
     }
@@ -29,10 +42,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
         <Modal
             title="Add new CGLs"
             visible={visible}
-            onOk={() => {
-                setVisible(false)
-                handleSubmit()
-            }}
+            onOk={handleSubmit}
             onCancel={() => setVisible(false)}
             autoFocus={false}
             focusLock={true}
@@ -44,30 +54,23 @@ export default function CGLsAddModal({ visible, setVisible }) {
                   ref={formRef}
                   form={form}
                   autoComplete='off'>
-                <FormItem label='CG Leader'
+                <FormItem label='CGL name'
                           field={'CG_leader'}
                 >
                     <Input
-                           placeholder='please enter your username...' />
+                           placeholder='please enter CGL name...' />
+                </FormItem>
+                <FormItem label='CGL nickname'
+                          field={'nickname'}
+                >
+                    <Input
+                        placeholder='please enter CGL nickname...' />
                 </FormItem>
                 <FormItem label='CG Name'
                           field={'CG_name'}
                 >
                     <Input
-                            placeholder='please enter your post...' />
-                </FormItem>
-                <FormItem label='Pastoral Team'
-                          field={'pastoral_team'}
-                >
-                    <Select
-                        placeholder='Please select  pastoral team...'
-                    >
-                        {pastoralTeamList.map((option, index) => (
-                            <Option key={index} value={option.value}>
-                                {option.text}
-                            </Option>
-                        ))}
-                    </Select>
+                            placeholder='please enter CG name...' />
                 </FormItem>
                 <FormItem label='Satellite'
                           field={'satellite'}
@@ -82,6 +85,20 @@ export default function CGLsAddModal({ visible, setVisible }) {
                         ))}
                     </Select>
                 </FormItem>
+                <FormItem label='Pastoral Team'
+                          field={'pastoral_team'}
+                >
+                    <Select
+                        placeholder='Please select  pastoral team...'
+                    >
+                        {pastoralTeamList.map((option, index) => (
+                            <Option key={index} value={option.value}>
+                                {option.text}
+                            </Option>
+                        ))}
+                    </Select>
+                </FormItem>
+
             </Form>
         </Modal>
     );

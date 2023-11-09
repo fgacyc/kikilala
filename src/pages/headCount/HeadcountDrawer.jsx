@@ -26,7 +26,7 @@ export  default  function HeadCountDrawer({visible, setVisible}){
     ] = useHeadCountStore(state => [
         state.satellite, state.serviceType, state.dateTime,
         state.headCount,state.kids_num,state.cm_num,state.parents_num,
-        state.yw_num,state.gs_num,state.yp_num,state.comment,
+        state.yw_num,state.gs_num,state.nf_num,state.comment,
         state.key
     ])
 

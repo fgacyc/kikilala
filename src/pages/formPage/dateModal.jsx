@@ -4,8 +4,9 @@ import {getWeekDatesArray, validate} from "./data.js";
 import {useEffect, useState} from "react";
 import {useFormStore} from "../../store/formStore.js";
 import {addCGL} from "../../api/CGLs.js";
-import {addAttend} from "../../api/attendance.js";
+import {addAttend, checkDuplicate} from "../../api/attendance.js";
 import {set} from "idb-keyval";
+import {checkWeek} from "../../tools.js";
 
 function ButtonsGroup(){
     const [active,setActive] = useState(-1)
@@ -35,7 +36,10 @@ function ButtonsGroup(){
                                 }
                         rounded-[8px] px-[10px] py-[10px] my-[10px] mr-[10px] `}
                                 onClick={() => handleClick(index)}
-                        >{date}</button>
+                        >
+                            <span>{date}</span>
+                            <div>{checkWeek(date)}</div>
+                        </button>
                     )
                 })
             }
@@ -50,8 +54,13 @@ function DateModal({visible, setVisible}) {
 
     function submit() {
         const data = getFormData();
+
+        // checking duplicate
+        const isDuplicate =  checkDuplicate(data.date,data.cg_id);
+        if(isDuplicate) Message.warning("Your attendance has been submitted for the week you selected")
+
         // console.log(data);
-        // return;
+        //return;
 
         if(validate(data) === false) return;
         setVisible(false);

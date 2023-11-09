@@ -1,8 +1,23 @@
 import { Table, Input, Button, Popconfirm, Message, Space } from '@arco-design/web-react';
 import { useEffect, useRef, useState } from "react";
-import { deleteCGL, readAllCGLs } from "../../api/CGLs.js";
-import { convertCGLTableData } from "../formPage/data.js";
-import { IconDelete, IconDownload, IconEdit, IconPlus, IconSearch } from "@arco-design/web-react/icon";
+import {
+    CGStatusEnum,
+    closeCG,
+    deleteCGL,
+    duplicateCheck,
+    findDuplicateCGName,
+    openCG,
+    readAllCGLs
+} from "../../api/CGLs.js";
+import { convertTableData } from "../formPage/data.js";
+import {
+    IconArchive,
+    IconClose,
+    IconDownload,
+    IconEdit,
+    IconPlus,
+    IconSearch, IconUndo
+} from "@arco-design/web-react/icon";
 import CGLsInfoEditModal from "./CGLsInfoEditModal.jsx";
 import { useCGLStore } from "../../store/CGLStore.js";
 import { pastoralTeamList, satelliteList } from "../../config.js";
@@ -13,7 +28,7 @@ import CsvDownload from "react-csv-downloader";
 import { addRecord } from "../../api/records.js";
 import { useAuth0 } from "@auth0/auth0-react";
 
-function CGLTable({ setTableData, setVisible }) {
+function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
     const inputRef = useRef(null);
     const columns = [
         {
@@ -59,18 +74,18 @@ function CGLTable({ setTableData, setVisible }) {
             },
         },
         {
-            title: 'CG Name',
+            title: 'Nickname',
             width: 200,
             render: (_, record) => {
                 return (
                     <div className={"truncate"}>
                         {
-                            record.CG_name
+                            record.nickname
                         }
                     </div>
                 )
             },
-            sorter: (a, b) => a.CG_name.localeCompare(b.CG_name),
+            sorter: (a, b) => a?.nickname.localeCompare(b?.nickname),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
                 return (
@@ -92,7 +107,7 @@ function CGLTable({ setTableData, setVisible }) {
                 );
             },
             onFilter: (value, row) => {
-                return row.CG_name.toLowerCase().includes(value.toLowerCase());
+                return row.nickname.toLowerCase().includes(value.toLowerCase());
             },
             onFilterDropdownVisibleChange: (visible) => {
                 if (visible) {
@@ -140,59 +155,61 @@ function CGLTable({ setTableData, setVisible }) {
         },
         {
             title: "Operation",
-            width: 150,
+            width: 110,
             fixed: "right",
             dataIndex: "op",
             render: (_, record) => (
                 <div>
                     <Button icon={<IconEdit />}
-                        className={"mr-2"}
+                        className={`mr-2 ${type==="closed" && "hidden"}`}
                         onClick={() => {
                             setCGL(record);
-                            setVisible(true);
+                            setCGEditModalVisible(true);
                         }}
                         type="secondary"
                     ></Button>
                     <Popconfirm
                         focusLock
                         title='Confirm'
-                        content='Are you sure you want to delete?'
+                        content='Are you sure you want to close this CG?'
                         onOk={() => {
                             // console.log(record);
-                            deleteCGL(record.key);
-                            PubSub.publish('updateCGLs');
+                            closeCG(record.key).then((res) => {
+                                if(res!==false)PubSub.publish('updateCGLs');
+                            });
                         }}
                     >
-                        <Button icon={<IconDelete />}
+                        <Button icon={<IconClose />}
                             type="secondary"
+                            className={`${type==="closed" && "hidden"}`}
+                        ></Button>
+                        <Button icon={<IconUndo />}
+                                type="secondary"
+                                className={`${type==="active" && "hidden"}`}
+                                onClick={() => {
+                                    openCG(record.key).then((res) => {
+                                        if(res!==false)PubSub.publish('updateCGLs');
+                                    });
+                                }}
                         ></Button>
                     </Popconfirm>
                 </div>
             ),
         }
     ];
-    const [allCGLs, setAllCGLs] = useState([])
     const setCGL = useCGLStore(state => state.setCGL);
 
-    async function updateCGLs() {
-        const data = await readAllCGLs();
-        //console.log(convertCGLTableData(data))
-        setTableData(convertCGLTableData(data));
-        setAllCGLs(convertCGLTableData(data));
-    }
-
-
     useEffect(() => {
-        updateCGLs();
+        updateData();
         const subscription = PubSub.subscribe('updateCGLs', (msg, data) => {
-            updateCGLs();
+            updateData();
         });
         return () => PubSub.unsubscribe(subscription);
     }, []);
 
     return <Table
         columns={columns}
-        data={allCGLs}
+        data={tableData}
         renderPagination={(paginationNode) => (
             <div
                 style={{
@@ -202,7 +219,7 @@ function CGLTable({ setTableData, setVisible }) {
                 }}
             >
                 <Space>
-                    <span className={"ml-4"}>Items: {allCGLs.length}</span>
+                    <span className={"ml-4"}>Items: {tableData.length}</span>
                 </Space>
                 {paginationNode}
             </div>
@@ -219,7 +236,11 @@ export default function CGLsManagement() {
     const [editVisible, setEditVisible] = useState(false);
     const [addVisible, setAddVisible] = useState(false);
     const [tableData, setTableData] = useState([]);
+    const [closedCGLs, setClosedCGLs] = useState([]);
     const { loginWithRedirect, user, isLoading } = useAuth0();
+    const [isShowActive, setIsShowActive] = useState(true);
+    const [CGEditModalVisible, setCGEditModalVisible] = useState(false);
+
 
     useEffect(() => {
         if (isLoading) return;
@@ -233,30 +254,71 @@ export default function CGLsManagement() {
         loginWithRedirect();
     }, [isLoading])
 
+    async function updateCGLs() {
+        const data = await readAllCGLs();
+
+        // const openedList = data.filter((item) => item.CG_status === "open");
+        const allCGLs = convertTableData(data);
+        const activeCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.active);
+        const closedCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.closed);
+
+        console.log("closedCGLs", closedCGLs)
+        // setAllCGLs(activeCGLs);
+        setTableData(activeCGLs);
+        setClosedCGLs(closedCGLs);
+    }
+
+    useEffect(() => {
+
+    }, []);
+
 
     return (
-        <div className={"h-full w-full p-8"}>
+        <div className={"h-full w-full sm:px-8 px-2 py-4"}>
             <div className={"flex flex-row justify-between"}>
                 <Button type='secondary' className={"mb-2"}
                     icon={<IconPlus />}
                     onClick={() => setAddVisible(true)}
                 >Add New CGL</Button>
-                <Button type='secondary'
-                    icon={<IconDownload />}
-                    className={"mb-2"}>
-                    <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
-                        extension={".csv"}
-                        text={"Download"}
-                        datas={downloadCGLsData(tableData)} />
-                </Button>
-
+               <div>
+                   <Button type='secondary' icon={<IconArchive />}
+                           className={"mb-2 mr-2"}
+                        onClick={() => setIsShowActive(!isShowActive)}
+                   />
+                   <Button type='secondary'
+                           icon={<IconDownload  />}
+                           className={"mb-2"}>
+                       <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
+                                    extension={".csv"}
+                                    text={"Download"}
+                                    datas={downloadCGLsData(tableData)} />
+                   </Button>
+               </div>
+                {/*<Button type='secondary' onClick={() =>{*/}
+                {/*    duplicateCheck("The Blessing 2")*/}
+                {/*}}>*/}
+                {/*    Click*/}
+                {/*</Button>*/}
             </div>
             <div className={"bg-white rounded-lg pb-2"}>
-                <CGLTable
-                    setTableData={setTableData}
-                    setVisible={setEditVisible} />
+                {
+                    isShowActive
+                        ? <CGLTable
+                            tableData={tableData}
+                            updateData={updateCGLs}
+                            type={"active"}
+                            setCGEditModalVisible={setCGEditModalVisible}
+                        />
+                        : <CGLTable
+                            tableData={closedCGLs}
+                            updateData={updateCGLs}
+                            type={"closed"}
+                            setCGEditModalVisible={setCGEditModalVisible}
+                        />
+                }
+
             </div>
-            <CGLsInfoEditModal visible={editVisible} setVisible={setEditVisible} />
+            <CGLsInfoEditModal visible={CGEditModalVisible} setVisible={setCGEditModalVisible} />
             <CGLsAddModal visible={addVisible} setVisible={setAddVisible} />
         </div>
     )

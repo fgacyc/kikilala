@@ -12,7 +12,7 @@ export const useHeadCountStore = create((set) => ({
     parents_num: "",
     yw_num: "",
     gs_num: "",
-    yp_num: "",
+    nf_num: "",
     comment: "",
 
     // key ,for edit
@@ -27,7 +27,7 @@ export const useHeadCountStore = create((set) => ({
     setParentsNum: (parents_num) => set({parents_num}),
     setYWNum: (yw_num) => set({yw_num}),
     setGSNum: (gs_num) => set({gs_num}),
-    setYPNum: (yp_num) => set({yp_num}),
+    setNFNum: (nf_num) => set({nf_num}),
     setComment: (comment) => set({comment}),
     setKey: (key) => set({key}),
 
@@ -86,8 +86,8 @@ export const useHeadCountStore = create((set) => ({
             return false;
         }
 
-        if (useHeadCountStore.getState().yp_num === "") {
-            Message.warning("Please enter a YP number");
+        if (useHeadCountStore.getState().nf_num === "") {
+            Message.warning("Please enter a NF number");
             return false;
         }
 
@@ -117,7 +117,7 @@ export const useHeadCountStore = create((set) => ({
             parents_num: useHeadCountStore.getState().parents_num,
             yw_num: useHeadCountStore.getState().yw_num,
             gs_num: useHeadCountStore.getState().gs_num,
-            yp_num: useHeadCountStore.getState().yp_num,
+            nf_num: useHeadCountStore.getState().nf_num,
             comment: useHeadCountStore.getState().comment,
             user_sub: useFormStore.getState().user_sub,
             user_email: useFormStore.getState().user_email,
@@ -135,21 +135,32 @@ export const useHeadCountStore = create((set) => ({
         set({parents_num: data.parents_num});
         set({yw_num: data.yw_num});
         set({gs_num: data.gs_num});
-        set({yp_num: data.yp_num});
+        set({nf_num: data.nf_num});
         set({comment: data.comment});
         set({key: data.key});
-//         useHeadCountStore.getState().setSatellite(data.satellite);
-//         useHeadCountStore.getState().setDateTime(data.dateTime);
-//         useHeadCountStore.getState().setServiceType(data.serviceType);
-//         useHeadCountStore.getState().setHeadCount(data.headCount);
-//         useHeadCountStore.getState().setKidsNum(data.kids_num);
-//         useHeadCountStore.getState().setCMNum(data.cm_num);
-//         useHeadCountStore.getState().setParentsNum(data.parents_num);
-//         useHeadCountStore.getState().setYWNum(data.yw_num);
-//         useHeadCountStore.getState().setGSNum(data.gs_num);
-//         useHeadCountStore.getState().setYPNum(data.yp_num);
-//         useHeadCountStore.getState().setComment(data.comment);
-// useHeadCountStore.getState().setKey(data.key);
+        //  useHeadCountStore.getState().setSatellite(data.satellite);
+        //  useHeadCountStore.getState().setDateTime(data.dateTime);
+        //  useHeadCountStore.getState().setServiceType(data.serviceType);
+        //  useHeadCountStore.getState().setHeadCount(data.headCount);
+        //  useHeadCountStore.getState().setKidsNum(data.kids_num);
+        //  useHeadCountStore.getState().setCMNum(data.cm_num);
+        //  useHeadCountStore.getState().setParentsNum(data.parents_num);
+        //  useHeadCountStore.getState().setYWNum(data.yw_num);
+        //  useHeadCountStore.getState().setGSNum(data.gs_num);
+        //  useHeadCountStore.getState().setYPNum(data.yp_num);
+        //  useHeadCountStore.getState().setComment(data.comment);
+        //  useHeadCountStore.getState().setKey(data.key);
+    },
 
+    resetHeadCountData: () => {
+        set({headCount: 0});
+        set({kids_num: ""});
+        set({cm_num: ""});
+        set({parents_num: ""});
+        set({yw_num: ""});
+        set({gs_num: ""});
+        set({nf_num: ""});
+        set({comment: ""});
+        set({key: ""});
     },
 }))

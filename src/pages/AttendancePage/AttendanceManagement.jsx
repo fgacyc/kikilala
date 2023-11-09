@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input, Popconfirm, Select, Space, Switch, Table } from '@arco-design/web-react';
 import { deleteAttend, queryAttends, readAllAttends } from '../../api/attendance';
-import { convertCGLTableData, getWeekDatesArray } from '../formPage/data';
-import { IconDelete, IconEdit, IconSearch } from '@arco-design/web-react/icon';
+import { convertTableData, getWeekDatesArray } from '../formPage/data';
+import {IconDelete, IconDownload, IconEdit, IconSearch} from '@arco-design/web-react/icon';
 import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -11,6 +11,7 @@ import { getCGLNum } from "../../api/CGLs.js";
 import { useAttendanceStore } from "../../store/attendanceStore.js";
 import { get } from "idb-keyval";
 import useSelectedRowStore from '../../store/attendanceRecordStore.js';
+import AttendanceDownloadModal from "./AttendanceDownloadModal.jsx";
 
 
 const Option = Select.Option;
@@ -294,7 +295,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
 
         {
-            title: 'Total members',
+            title: 'Numbering',
             width: 180,
             render: (_, record) => {
                 return (
@@ -333,7 +334,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
         },
         {
             title: 'Operation',
-            width: 150,
+            width: 110,
             fixed: 'right',
             render: (_, record) => (
                 <div>
@@ -371,7 +372,7 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
     useEffect(() => {
         async function getAttendance() {
             const attendance_data = await queryAttends(currentWeek);
-            const updateattendanceData = convertCGLTableData(attendance_data).map((item) => {
+            const updateattendanceData = convertTableData(attendance_data).map((item) => {
                 if (selectedRow) {
                     if (item.id === selectedRow.id) {
                         return selectedRow;
@@ -427,6 +428,7 @@ const AttendanceManagement = () => {
     const { loginWithRedirect, user, isLoading } = useAuth0();
     const [initAttendData, currentWeek, setCurrentWeek, showSubmitted, setShowSubmitted] = useAttendanceStore(state => [
         state.initAttendData, state.currentWeek, state.setCurrentWeek, state.showSubmitted, state.setShowSubmitted]);
+    const [attendanceDownloadModalVisible, setAttendanceDownloadModalVisible] = useState(false);
 
     useEffect(() => {
         setDateArray(getWeekDatesArray(buttonsNumber));
@@ -464,21 +466,28 @@ const AttendanceManagement = () => {
     }
 
     return (
-        <div className={"h-full w-full sm:p-8 p-2"}>
+        <div className={"h-full w-full sm:px-8 px-2  py-4"}>
             {
                 dateArray && <div className={"flex flex-row justify-between mb-2"}>
-                    <Select placeholder='Please select' style={{ width: 250 }} allowClear
-                        value={currentWeek}
-                        onChange={(value) => {
-                            setCurrentWeek(value);
-                        }}
-                    >
-                        {dateArray.slice().reverse().map((option, index) => (
-                            <Option key={index} value={option}>
-                                {option}
-                            </Option>
-                        ))}
-                    </Select>
+                    <div>
+                        <Select placeholder='Please select' style={{ width: 250 }} allowClear
+                                value={currentWeek}
+                                onChange={(value) => {
+                                    setCurrentWeek(value);
+                                }}
+                        >
+                            {dateArray.slice().reverse().map((option, index) => (
+                                <Option key={index} value={option}>
+                                    {option}
+                                </Option>
+                            ))}
+                        </Select>
+                        <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
+                            onClick={() => {
+                                setAttendanceDownloadModalVisible(true);
+                            }}
+                        />
+                    </div>
 
                     <Switch
                         type='round'
@@ -515,6 +524,7 @@ const AttendanceManagement = () => {
                     attendanceRecord={attendanceRecord}
                 />
             }
+            <AttendanceDownloadModal setVisible={setAttendanceDownloadModalVisible} visible={attendanceDownloadModalVisible} />
         </div>
     )
 }
