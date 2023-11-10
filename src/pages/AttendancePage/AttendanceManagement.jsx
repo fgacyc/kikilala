@@ -7,7 +7,7 @@ import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
 import { useAuth0 } from "@auth0/auth0-react";
 import { addRecord } from "../../api/records.js";
-import { getCGLNum } from "../../api/CGLs.js";
+import {getCGLNum, readAllActiveCGLs} from "../../api/CGLs.js";
 import { useAttendanceStore } from "../../store/attendanceStore.js";
 import { get } from "idb-keyval";
 import useSelectedRowStore from '../../store/attendanceRecordStore.js';
@@ -148,15 +148,15 @@ function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
 
     async function findAbsentMembers() {
         if (!currentSubmitData) return;
-
         let submitCGLs = currentSubmitData.map((item) => item.cg_id);
         let absentCGLs = [];
         const allCGLs = await get("kikilala-CGLs")
-        for (let key in allCGLs) {
-            allCGLs[key].key = key;
-            if (!submitCGLs.includes(key)) {
-
-                absentCGLs.push(allCGLs[key]);
+        const allCGLsData = await readAllActiveCGLs();
+        for (let item of allCGLsData) {
+            const CG_id = item.CG_id;
+            item.key = CG_id;
+            if(!submitCGLs.includes(CG_id)){
+                absentCGLs.push(item);
             }
         }
         setTableData(absentCGLs);
@@ -373,16 +373,9 @@ const AttendanceTable = ({ onOpenModal, setAttendanceData, currentWeek, currentC
     useEffect(() => {
         async function getAttendance() {
             const attendance_data = await queryAttends(currentWeek);
-            const updateattendanceData = convertTableData(attendance_data).map((item) => {
-                if (selectedRow) {
-                    if (item.id === selectedRow.id) {
-                        return selectedRow;
-                    }
-                }
-                return item;
-            })
-            setAttendance(updateattendanceData);
-            setCurrentSubmitData(updateattendanceData);
+            const updateAttendanceData = convertTableData(attendance_data);
+            setAttendance(updateAttendanceData);
+            setCurrentSubmitData(updateAttendanceData);
         }
         getAttendance();
     }, [currentWeek, selectedRow])
@@ -435,7 +428,7 @@ const AttendanceManagement = () => {
     useEffect(() => {
         setDateArray(getWeekDatesArray(buttonsNumber));
         getCGLNum().then((res) => {
-            console.log(res)
+            // console.log(res)
             setCurrentCGNum(res);
         });
         initAttendData();

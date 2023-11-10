@@ -33,6 +33,26 @@ export async function readAllCGLs() {
     return docs;
 }
 
+export async function readAllActiveCGLs() {
+    let docs = await readAllDocs("CGLs");
+    if (docs === false) return false;
+    for (let key in docs) {
+        docs[key].CG_id = key;
+    }
+    const dataList = Object.keys(docs).map((key) => docs[key]);
+    return dataList.filter((item) => item.CG_status === CGStatusEnum.active);
+}
+
+export async function readAllClosedCGLs() {
+    let docs = await readAllDocs("CGLs");
+    if (docs === false) return false;
+    for (let key in docs) {
+        docs[key].CG_id = key;
+    }
+    const dataList = Object.keys(docs).map((key) => docs[key]);
+    return dataList.filter((item) => item.CG_status === CGStatusEnum.closed);
+}
+
 // update
 export async function updateCGL(docID, data) {
     let res = await updateDoc("CGLs", data, docID);
@@ -76,9 +96,8 @@ export async function readCGLNameByCGName(cg_name) {
 
 
 export  async  function  getCGLNum(){
-    const data = await readAllCGLs();
-    // console.log(Object.keys(data).length)
-    return Object.keys(data).length;
+    const data = await readAllActiveCGLs();
+    return data.length;
 }
 
 // temp

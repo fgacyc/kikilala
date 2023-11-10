@@ -6,8 +6,8 @@ import {
     deleteCGL,
     duplicateCheck,
     findDuplicateCGName,
-    openCG,
-    readAllCGLs
+    openCG, readAllActiveCGLs,
+    readAllCGLs, readAllClosedCGLs
 } from "../../api/CGLs.js";
 import { convertTableData } from "../formPage/data.js";
 import {
@@ -252,17 +252,17 @@ export default function CGLsManagement() {
     }, [isLoading])
 
     async function updateCGLs() {
-        const data = await readAllCGLs();
+        //const data = await readAllCGLs();
 
         // const openedList = data.filter((item) => item.CG_status === "open");
-        const allCGLs = convertTableData(data);
-        const activeCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.active);
-        const closedCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.closed);
+        ///const allCGLs = convertTableData(data);
+        ///const activeCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.active);
+        ///const closedCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.closed);
 
         // console.log("closedCGLs", closedCGLs)
         // setAllCGLs(activeCGLs);
-        setTableData(activeCGLs);
-        setClosedCGLs(closedCGLs);
+        setTableData(await readAllActiveCGLs());
+        setClosedCGLs(await readAllClosedCGLs());
     }
 
 
