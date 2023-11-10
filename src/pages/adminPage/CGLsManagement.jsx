@@ -218,9 +218,7 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                     marginTop: 10,
                 }}
             >
-                <Space>
-                    <span className={"ml-4"}>Items: {tableData.length}</span>
-                </Space>
+                <span className={"ml-4"}>Items: {tableData.length}</span>
                 {paginationNode}
             </div>
         )}
@@ -233,7 +231,6 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
 
 
 export default function CGLsManagement() {
-    const [editVisible, setEditVisible] = useState(false);
     const [addVisible, setAddVisible] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [closedCGLs, setClosedCGLs] = useState([]);
@@ -262,15 +259,11 @@ export default function CGLsManagement() {
         const activeCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.active);
         const closedCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.closed);
 
-        console.log("closedCGLs", closedCGLs)
+        // console.log("closedCGLs", closedCGLs)
         // setAllCGLs(activeCGLs);
         setTableData(activeCGLs);
         setClosedCGLs(closedCGLs);
     }
-
-    useEffect(() => {
-
-    }, []);
 
 
     return (

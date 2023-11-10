@@ -37,12 +37,12 @@ export const useCGLStore = create((set) => ({
 
     getForm: () => {
         return {
-            CG_leader: this.CG_leader,
-            CG_name: this.CG_name,
-            pastoral_team: this.pastoral_team,
-            satellite: this.satellite,
-            docId : this.docId,
-            nickname: this.nickname,
+            CG_leader: useCGLStore.getState().CG_leader,
+            CG_name: useCGLStore.getState().CG_name,
+            pastoral_team: useCGLStore.getState().pastoral_team,
+            satellite: useCGLStore.getState().satellite,
+            docId : useCGLStore.getState().docId,
+            nickname: useCGLStore.getState().nickname,
         }
     }
 }))

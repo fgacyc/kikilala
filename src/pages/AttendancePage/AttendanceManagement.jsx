@@ -472,9 +472,9 @@ const AttendanceManagement = () => {
         <div className={"h-full w-full sm:px-8 px-2  py-4 "}>
             <div className={"bg-white pt-2 rounded"}>
                 {
-                    dateArray && <div className={"flex flex-row justify-between mb-2 bg-white"}>
-                        <div>
-                            <Select placeholder='Please select' style={{ width: 250 }} allowClear
+                    dateArray && <div className={"flex flex-row justify-between bg-white"}>
+                        <div className={"flex flex-row flex-wrap"}>
+                            <Select placeholder='Please select' style={{ width: 250,marginBottom:8 }} allowClear
                                     value={currentWeek}
                                     onChange={(value) => {
                                         setCurrentWeek(value);
@@ -486,16 +486,18 @@ const AttendanceManagement = () => {
                                     </Option>
                                 ))}
                             </Select>
-                            <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
-                                    onClick={() => {
-                                        setAttendanceDownloadModalVisible(true);
-                                    }}
-                            />
-                            <Button type='secondary' icon={<IconNotification />} className={"ml-2"}
-                                    onClick={() => {
-                                        setReminderModalVisible(true);
-                                    }}
-                            />
+                            <div>
+                                <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
+                                        onClick={() => {
+                                            setAttendanceDownloadModalVisible(true);
+                                        }}
+                                />
+                                <Button type='secondary' icon={<IconNotification />} className={"ml-2"}
+                                        onClick={() => {
+                                            setReminderModalVisible(true);
+                                        }}
+                                />
+                            </div>
                         </div>
 
                         <Switch

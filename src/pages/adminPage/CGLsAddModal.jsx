@@ -50,7 +50,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
                 width: 600,
             }}
         >
-            <Form style={{ width: 550 }}
+            <Form
                   ref={formRef}
                   form={form}
                   autoComplete='off'>
