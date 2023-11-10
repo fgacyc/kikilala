@@ -142,15 +142,15 @@ export function validate(data) {
         return false;
     }
 
-    if (data.cg_abs_num ===0 && data.cg_absence_reason !== ""){
-        Message.warning("Please check the CG absence number")
-        return false;
-    }
-
-    if (data.service_abs_num === 0 && data.service_absence_reason !== ""){
-        Message.warning("Please check the Service absence number")
-        return false;
-    }
+    // if (data.cg_abs_num ===0 && data.cg_absence_reason !== ""){
+    //     Message.warning("Please check the CG absence number")
+    //     return false;
+    // }
+    //
+    // if (data.service_abs_num === 0 && data.service_absence_reason !== ""){
+    //     Message.warning("Please check the Service absence number")
+    //     return false;
+    // }
 
     if (data.total_members_num !== data.cg_om_num + data.cg_abs_num){
         Message.warning("Please check the OM number and CG absence number!")
