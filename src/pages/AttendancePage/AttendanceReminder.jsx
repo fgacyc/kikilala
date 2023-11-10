@@ -1,10 +1,9 @@
-import {Input, Message, Modal, Select} from '@arco-design/web-react';
-import {pastoralTeamList, satellite_pastoralTeam, satelliteNameList} from "../../config.js";
+import {Button, Input, Message, Modal, Select} from '@arco-design/web-react';
+import {pastoralTeamList, satelliteNameList} from "../../config.js";
 import {useEffect, useState} from "react";
-import {IconCopy} from "@arco-design/web-react/icon";
-import {get} from "idb-keyval";
+import {IconCheck, IconCopy} from "@arco-design/web-react/icon";
 import {useAttendanceStore} from "../../store/attendanceStore.js";
-import {readAllActiveCGLs} from "../../api/CGLs.js";
+import {Result} from "postcss";
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -15,34 +14,35 @@ export default function AttendanceReminder({visible, setVisible}) {
     const [pastoralTeam, setPastoralTeam] = useState("");
     const [absentCGLsNameList, setAbsentCGLsNameList] = useState([]);
     const [message, setMessage] = useState("");
+    const currentPendingData = useAttendanceStore(state => state.currentPendingData);
+    const [isShowSuccess, setIsShowSuccess] = useState(false);
 
-    async function getCGLNameListFromSateAndPastoral(satellite,pastoralTeam){
-        if(!satellite && !pastoralTeam) return [];
+    function getCGLNameListFromSateAndPastoral(satellite, pastoralTeam) {
+        if (!satellite && !pastoralTeam) return [];
 
-        let CGLs= await readAllActiveCGLs();
-        if (satellite && !pastoralTeam){
-           CGLs = CGLs.filter((item) => item.satellite === satellite);
+        let CGLs;
+        if (satellite && !pastoralTeam) {
+            CGLs = currentPendingData.filter((item) => item.satellite === satellite);
         }
 
-        if (satellite && pastoralTeam){
-            CGLs = CGLs.filter((item) => item.satellite === satellite && item.pastoral_team === pastoralTeam);
+        if (satellite && pastoralTeam) {
+            CGLs = currentPendingData.filter((item) => item.satellite === satellite && item.pastoral_team === pastoralTeam);
         }
-        return  CGLs;
+        if(CGLs.length === 0) setIsShowSuccess(true);
+        else setIsShowSuccess(false);
+        return CGLs;
     }
-
-
 
 
     async function updateData() {
         if (!satellite) return;
         // Kuchai must choose pastoral team, other satellite don't need to choose
-        if(satellite.includes("Kuchai") && !pastoralTeam) return;
+        if (satellite.includes("Kuchai") && !pastoralTeam) return;
+        const filterAbsentCGLsList = getCGLNameListFromSateAndPastoral(satellite, pastoralTeam);
+        //console.log(filterAbsentCGLsList)
+        const filterAbsentCGLsNameList = filterAbsentCGLsList.map((item) => item.CG_leader);
 
-        // get satellite's CGLs + pastoral team's CGLs
-        //currentPendingData
-        //console.log(currentPendingData)
-
-        //setAbsentCGLsNameList(absentCGLsNameList);
+        setAbsentCGLsNameList(filterAbsentCGLsNameList);
     }
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export default function AttendanceReminder({visible, setVisible}) {
     }, [absentCGLsNameList]);
 
     function generateMessage() {
-        let prefix = `*Attendance Reminder*\n\n${pastoralTeam}\n\n` +
+        let prefix = `*Attendance Reminder*\n\n${pastoralTeam ? satellite + "-" + pastoralTeam : satellite}\n\n` +
             "Hi, kindly remind below CG to submit attendance for last week:\n\n";
         let suffix = "\n\nThank you!";
         const message = prefix + absentCGLsNameList.join("\n") + suffix;
@@ -63,9 +63,9 @@ export default function AttendanceReminder({visible, setVisible}) {
     }
 
     useEffect(() => {
-        console.log(pastoralTeam,satellite)
+        console.log(pastoralTeam, satellite)
         updateData();
-    }, [pastoralTeam,satellite]);
+    }, [pastoralTeam, satellite]);
 
     return (
         <Modal
@@ -107,21 +107,33 @@ export default function AttendanceReminder({visible, setVisible}) {
                     </Select>
                 </div>
             }
-            <div className="relative">
-                <div className={"mb-2"}>Reminder Message:</div>
-                <TextArea
-                    className={"resize-none h-[100px]"}
-                    value={message}
-                />
-                <IconCopy className={"text-lg absolute bottom-2 right-4 cursor-pointer"}
-                          onClick={() => {
-                              navigator.clipboard.writeText(message).then(() =>
-                                  Message.success("Copied to clipboard")).catch(() => {
-                                  Message.error("Failed to copy to clipboard")
-                              })
-                          }}
-                />
-            </div>
+            {
+                absentCGLsNameList.length !== 0
+                    && <div className="relative">
+                        <div className={"mb-2"}>Reminder Message:</div>
+                        <TextArea
+                            className={"resize-none h-[100px]"}
+                            value={message}
+                        />
+                        <IconCopy className={"text-lg absolute bottom-2 right-4 cursor-pointer"}
+                                  onClick={() => {
+                                      navigator.clipboard.writeText(message).then(() =>
+                                          Message.success("Copied to clipboard")).catch(() => {
+                                          Message.error("Failed to copy to clipboard")
+                                      })
+                                  }}
+                        />
+                    </div>
+            }
+            {
+                isShowSuccess && <div className={"h-[130px] flex flex-col items-center justify-center"}>
+                    <div className={"w-[42px] h-[42px] bg-[#E8FFEA] rounded-full flex flex-row justify-center items-center mb-2"}>
+                        <IconCheck className={"text-xl"} />
+                    </div>
+                    <div>All CGs have submitted attendance</div>
+                </div>
+            }
+
         </Modal>
     )
 }
