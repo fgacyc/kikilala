@@ -67,6 +67,7 @@ export default function AttendanceReminder({visible, setVisible}) {
         updateData();
     }, [pastoralTeam, satellite]);
 
+
     return (
         <Modal
             title="Generate Reminder message"
@@ -81,7 +82,10 @@ export default function AttendanceReminder({visible, setVisible}) {
                 <Select
                     placeholder='Please select  pastoral team...'
                     value={satellite}
-                    onChange={setSatellite}
+                    onChange={(value)=>{
+                        setSatellite(value);
+                        setPastoralTeam("");
+                    }}
                 >
                     {satelliteNameList.map((option, index) => (
                         <Option key={index} value={option}>
