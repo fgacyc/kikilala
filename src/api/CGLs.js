@@ -152,3 +152,17 @@ export async function findDuplicateCGName() {
     }
     console.log(duplicate)
 }
+
+export async function absentCGLs(SubmitData){
+    let submitCGIDArray = SubmitData.map((item) => item.cg_id);
+    let absentCGLs = [];
+    const allCGLsData = await readAllActiveCGLs();
+    for (let item of allCGLsData) {
+        const CG_id = item.CG_id;
+        item.key = CG_id;
+        if(!submitCGIDArray.includes(CG_id)){
+            absentCGLs.push(item);
+        }
+    }
+    return absentCGLs;
+}

@@ -8,6 +8,7 @@ export  default  function UIInput({ type }) {
 
     function handleChange(e) {
         const val = e.target.value
+        if(val <0) return;
         if (!val) {
             setTotalMembersNum("")
             return;

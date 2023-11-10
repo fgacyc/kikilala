@@ -3,6 +3,7 @@ import {useFormStore} from "../../store/formStore.js";
 import {get} from "idb-keyval";
 import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGName} from "../formPage/data.js";
 import {Notification, Select} from "@arco-design/web-react";
+import {readAllActiveCGLs} from "../../api/CGLs.js";
 
 
 const Option = Select.Option;
@@ -29,8 +30,8 @@ export  default  function Selects({ data, statellite }) {
     useEffect(() => {
         async function getData(){
 
-            let data = await get("kikilala-CGLs");
-            if (!data) return;
+            // let data = await readAllActiveCGLs();
+            // if (!data) return;
             // set select 1 options
             //console.log(satellite, data)
             const allPastoralTeamNames = getAllPastoralTeamNames(satellite, data);

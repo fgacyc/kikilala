@@ -1,21 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useFormStore} from "../../store/formStore.js";
+import { satelliteNameList} from "../../config.js";
 
 export  default  function ButtonGroup({ setCurrentSatellite }) {
     const [active, setActive] = useState(-1)
     const [satellite, setSatellite] =
         useFormStore(state => [state.satellite,state.setSatellite])
-    const satellites = [
-        'Kuchai YW',
-        'Kuchai WK',
-        'Kuchai GS',
-        'Serdang',
-        'Kepong',
-        'USJ',
-        'Setapak',
-        'SG Long',
-        'Seremban'
-    ]
+    const satellites = satelliteNameList;
     async function getData() {
         if (!satellite) return;
         for (let i = 0; i < satellites.length; i++) {

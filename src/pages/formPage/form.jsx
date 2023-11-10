@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Select, Input, Notification, Icon, Message } from '@arco-design/web-react';
-import { readAllCGLs } from "../../api/CGLs.js";
+import {readAllActiveCGLs, readAllCGLs} from "../../api/CGLs.js";
 import {
     getAllPastoralTeamNames,
     getAllTeamLeaderNames,
@@ -133,14 +133,8 @@ export default function Form() {
 
     useEffect(() => {
         async function getData() {
-            const isExpire = await ifExpire();
-            const localData = await get("kikilala-CGLs");
-            if (localData && !isExpire) {
-                setAllCGLs(localData);
-                return;
-            }
-            readAllCGLs().then((data) => {
-                console.log(data);
+            readAllActiveCGLs().then((data) => {
+                // console.log(data);
                 setAllCGLs(data);
             })
         }

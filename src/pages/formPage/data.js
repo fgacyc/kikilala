@@ -1,5 +1,6 @@
 import {Message} from "@arco-design/web-react";
 import {get} from "idb-keyval";
+import {readAllActiveCGLs} from "../../api/CGLs.js";
 
 export function  getAllPastoralTeamNames(satellite,data){
     let teamNames = [];
@@ -183,16 +184,7 @@ export async function getCGInfo(key){
     return data[key];
 }
 
-export async function getSatelliteNames(){
-    const data = await get("kikilala-CGLs");
-    let satelliteNames = [];
-    for (let key in data){
-        if (!satelliteNames.includes(data[key].satellite)){
-            satelliteNames.push(data[key].satellite)
-        }
-    }
-    return satelliteNames;
-}
+
 
 export function convertTableData(data){
     let CGsList =[]
@@ -210,7 +202,7 @@ export function convertTableData(data){
 }
 
 export  async  function getCGName(CGLName){
-    const  data =await get("kikilala-CGLs");
+    const  data =await readAllActiveCGLs();
     for (let key in data){
         if (data[key].CG_leader === CGLName){
             // console.log(data[key])
