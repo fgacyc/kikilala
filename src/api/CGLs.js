@@ -38,6 +38,7 @@ export async function readAllActiveCGLs() {
     if (docs === false) return false;
     for (let key in docs) {
         docs[key].CG_id = key;
+        docs[key].key = key;
     }
     const dataList = Object.keys(docs).map((key) => docs[key]);
     return dataList.filter((item) => item.CG_status === CGStatusEnum.active);
@@ -48,6 +49,7 @@ export async function readAllClosedCGLs() {
     if (docs === false) return false;
     for (let key in docs) {
         docs[key].CG_id = key;
+        docs[key].key = key;
     }
     const dataList = Object.keys(docs).map((key) => docs[key]);
     return dataList.filter((item) => item.CG_status === CGStatusEnum.closed);
