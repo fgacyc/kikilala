@@ -28,7 +28,7 @@ export  function  getAllTeamLeaderNames(satellite,teamName,data){
     return teamLeaderNames;
 }
 
-export  function getWeekDates(num) {
+export  function getWeekDates1(num) {
     // 获取当前日期
     const currentDate = new Date();
 
@@ -49,11 +49,43 @@ export  function getWeekDates(num) {
     return `${formattedStartDate}-${formattedEndDate}`;
 }
 
+function getWeekDates(num) {
+    const formatDate = (date) => {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('/');
+    };
+
+    const getMonday = (date) => {
+        let day = date.getDay() || 7;
+        if (day !== 1)
+            date.setHours(-24 * (day - 1));
+        return date;
+    };
+
+    let currentWeekMonday = getMonday(new Date());
+    currentWeekMonday.setDate(currentWeekMonday.getDate() - 7 * num);
+
+    let weekStart = new Date(currentWeekMonday);
+    let weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    return formatDate(weekStart) + '-' + formatDate(weekEnd);
+}
+
 export  function getWeekDatesArray(num){
     let dateArray = [];
 
     for (let i = 0; i < num; i++) {
-        dateArray.push(getWeekDates(i * -1));
+        dateArray.push(getWeekDates(i));
     }
     dateArray.reverse();
     return dateArray;

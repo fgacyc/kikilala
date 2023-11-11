@@ -84,23 +84,49 @@ export function downloadXLSX(data) {
 }
 
 
-export function checkWeek(dateRange) {
-    // 将输入的日期范围拆分成开始日期和结束日期
-    const dates = dateRange.split('-');
-    const startDate = new Date(dates[0]);
+export function checkWeek(inputRange) {
+    const parseDate = (str) => {
+        const parts = str.split('/');
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+    };
 
-    // 获取今天的日期和当前星期的第一天
-    const today = new Date();
-    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    const getMonday = (date) => {
+        date = new Date(date);
+        const day = date.getDay() || 7;
+        if (day !== 1)
+            date.setHours(-24 * (day - 1));
+        return date;
+    };
 
-    // 获取上周的第一天
-    const lastWeekFirstDay = new Date(firstDayOfWeek);
-    lastWeekFirstDay.setDate(firstDayOfWeek.getDate() - 7);
+    const formatDate = (date) => {
+        let d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
 
-    // 检查开始日期是本周、上周还是其他时间段
-    if (startDate >= firstDayOfWeek) {
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('/');
+    };
+
+    const getWeekRange = (date) => {
+        const start = getMonday(date);
+        const end = new Date(start);
+        end.setDate(end.getDate() + 6);
+        return formatDate(start) + '-' + formatDate(end);
+    };
+
+    const [inputStart, inputEnd] = inputRange.split('-').map(parseDate);
+
+    const currentWeek = getWeekRange(new Date());
+    const lastWeek = getWeekRange(new Date(new Date().setDate(new Date().getDate() - 7)));
+
+    if (inputRange === currentWeek) {
         return 'This week';
-    } else if (startDate >= lastWeekFirstDay) {
+    } else if (inputRange === lastWeek) {
         return 'Last week';
     } else {
         return null;
