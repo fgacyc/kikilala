@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { readAttendByCGName } from '../../api/attendance';
 import {Button, Space, Table} from '@arco-design/web-react';
 import {IconArrowLeft, IconDownload, IconHistory} from "@arco-design/web-react/icon";
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { attendanceTypeList } from '../../config';
 import CsvDownload from "react-csv-downloader";
@@ -102,6 +102,7 @@ const CGLAttendance = () => {
         }
     ];
     const { loginWithRedirect,user,isLoading } = useAuth0();
+    const navigate = useNavigate();
 
     async function getCGLAttendance() {
         const attendance_data = await readAttendByCGName(params.cg_name);
@@ -169,7 +170,7 @@ const CGLAttendance = () => {
                      // onClick={() => viewHistory()}
                 >
                     <IconArrowLeft  fontSize={24} onClick={
-                        () => window.history.back()
+                        () => navigate("/")
                     } />
                 </div>
                <div>

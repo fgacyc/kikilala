@@ -14,9 +14,9 @@ import { get } from "idb-keyval";
 
 import { IconHistory } from "@arco-design/web-react/icon";
 import { useNavigate } from "react-router-dom";
-const IconFont = Icon.addFromIconFontCn({
-    src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
-});
+// const IconFont = Icon.addFromIconFontCn({
+//     src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
+// });
 import { useAuth0 } from "@auth0/auth0-react";
 import ButtonGroup from "../components/buttonGroup.jsx";
 import Selects from "../components/selects.jsx";

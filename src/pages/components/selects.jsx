@@ -4,6 +4,7 @@ import {get} from "idb-keyval";
 import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGName} from "../formPage/data.js";
 import {Notification, Select} from "@arco-design/web-react";
 import {readAllActiveCGLs} from "../../api/CGLs.js";
+import {IconInfoCircle} from "@arco-design/web-react/icon";
 
 
 const Option = Select.Option;
@@ -82,7 +83,7 @@ export  default  function Selects({ data, statellite }) {
                             if (!satellite) {
                                 Notification.warning({
                                     content: 'Please select Satellite first!',
-                                    icon: <IconFont type='icon-warning' />,
+                                    icon:<IconInfoCircle />,
                                     position: 'topLeft',
                                 });
                             }

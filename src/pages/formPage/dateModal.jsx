@@ -52,11 +52,12 @@ function DateModal({visible, setVisible}) {
         state.getFormData, state.resetForm
     ]);
 
-    function submit() {
+    async function  submit() {
         const data = getFormData();
 
         // checking duplicate
-        const isDuplicate =  checkDuplicate(data.date,data.cg_id);
+        const isDuplicate = await checkDuplicate(data.date,data.cg_id);
+        console.log(isDuplicate)
         if(isDuplicate) Message.warning("Your attendance has been submitted for the week you selected")
 
         // console.log(data);
