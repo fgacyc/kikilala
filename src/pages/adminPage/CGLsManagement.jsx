@@ -234,6 +234,7 @@ export default function CGLsManagement() {
     const [addVisible, setAddVisible] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [closedCGLs, setClosedCGLs] = useState([]);
+    const [allCGLs, setAllCGLs] = useState([]);
     const { loginWithRedirect, user, isLoading } = useAuth0();
     const [isShowActive, setIsShowActive] = useState(true);
     const [CGEditModalVisible, setCGEditModalVisible] = useState(false);
@@ -263,6 +264,7 @@ export default function CGLsManagement() {
         // setAllCGLs(activeCGLs);
         setTableData(await readAllActiveCGLs());
         setClosedCGLs(await readAllClosedCGLs());
+        setAllCGLs(await readAllCGLs());
     }
 
 
@@ -273,19 +275,20 @@ export default function CGLsManagement() {
                     icon={<IconPlus />}
                     onClick={() => setAddVisible(true)}
                 >Add New CGL</Button>
-               <div>
+               <div className={"flex flex-row"}>
                    <Button type='secondary' icon={<IconArchive />}
                            className={"mb-2 mr-2"}
                         onClick={() => setIsShowActive(!isShowActive)}
                    />
-                   <Button type='secondary'
-                           icon={<IconDownload  />}
-                           className={"mb-2"}>
-                       <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
-                                    extension={".csv"}
-                                    text={"Download"}
-                                    datas={downloadCGLsData(tableData)} />
-                   </Button>
+                   <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
+                                extension={".csv"}
+                                text={"Download"}
+                                datas={downloadCGLsData(allCGLs)} >
+                       <Button type='secondary'
+                               icon={<IconDownload  />}
+                               className={"mb-2"}>
+                       </Button>
+                   </CsvDownload>
                </div>
                 {/*<Button type='secondary' onClick={() =>{*/}
                 {/*    duplicateCheck("The Blessing 2")*/}

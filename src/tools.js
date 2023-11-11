@@ -7,13 +7,21 @@
 //     [ 4, 'Joe', 'Sixpack', '9875647890', 'Address' ],
 //     [ 5, 'Richard', 'Thomson', '8632547890', 'Address' ]
 // ];
-export function downloadCGLsData(data) {
-    let csv = [
-        ['CG leader', 'CG_name', 'pastoral_team', 'satellite'], // table header.
-    ]
+import {almostWhole} from "chart.js/helpers";
+import {readAllCGLs} from "./api/CGLs.js";
 
-    for (let item of data) {
-        csv.push([item.CG_leader, item.CG_name, item.pastoral_team, item.satellite])
+export async function downloadCGLsData(data) {
+    let csv = []
+    for (let key in data){
+        const item = data[key];
+        csv.push({
+            "CGL Name": `"${item.CG_leader}"`,
+            "CGL Nickname": `"${item.nickname}"`,
+            "CG name": `"${item.CG_name}"`,
+            "CG Status": `"${item.CG_status}"`,
+            "Pastoral team": `"${item.pastoral_team}"`,
+            "Satellite": `"${item.satellite}"`,
+        })
     }
     return csv
 }
