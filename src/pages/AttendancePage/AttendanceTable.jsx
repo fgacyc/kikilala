@@ -167,8 +167,11 @@ export const AttendanceTable = ({  currentWeek, currentCGNum, className }) => {
                         title='confirm'
                         content='Are you sure to delete this record?'
                         onOk={() => {
-                            deleteAttend(record.id);
-                            setAttendance(attendance.filter((item) => item.key !== record.key));
+                            deleteAttend(record.id).then((res) => {
+                                if (res === false) return;
+                                setCurrentSubmitData(currentSubmitData.filter((item) => item.key !== record.key));
+                            });
+
                         }}
                     >
                         <Button
