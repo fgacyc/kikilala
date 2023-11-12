@@ -207,7 +207,7 @@ export default function Form() {
                 <div className={"font-bold mt-5 mb-3"}>How many members attended your CG this week?
                 </div>
                 <InputPINs type={"activity"} />
-                <TextArea placeholder='Please enter remakrs, like absence reasons, new friends, etc...'
+                <TextArea placeholder='Please enter remarks, like absence reasons, new friends, etc...'
                           value={cg_absence_reason}
                     onChange={setCGAbsenceReason}
                     className={"w-full resize-none mt-2"} />
@@ -216,7 +216,7 @@ export default function Form() {
             <div>
                 <div className={"font-bold mt-5 mb-3"}>How many members attended service this week?</div>
                 <InputPINs type={"service"} />
-                <TextArea placeholder='Please enter remakrs, like absence reasons, new friends, etc...'
+                <TextArea placeholder='Please enter remarks, like absence reasons, new friends, etc...'
                     onChange={setServiceAbsenceReason}
                     value={service_absence_reason}
                     className={"w-full resize-none mt-2"} />
