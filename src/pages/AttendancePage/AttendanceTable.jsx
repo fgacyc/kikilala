@@ -8,7 +8,7 @@ import {useAttendanceStore} from "../../store/attendanceStore.js";
 import {convertTableData} from "../formPage/data.js";
 import AttendanceInfoEditModal from "./AttendanceInfoEditModal.jsx";
 
-export const AttendanceTable = ({  currentWeek, currentCGNum, className }) => {
+export const AttendanceTable = ({ className }) => {
     const inputRef = useRef(null);
     const [selectedRow,setSelectedRow] =
         useSelectedRowStore((state) => [
@@ -187,6 +187,8 @@ export const AttendanceTable = ({  currentWeek, currentCGNum, className }) => {
     const [currentSubmitData,setCurrentSubmitData] = useAttendanceStore(state => [
         state.currentSubmitData, state.setCurrentSubmitData
     ]);
+    const currentCGNumber  = useAttendanceStore(state => state.currentCGNumber);
+    const currentWeek= useAttendanceStore(state => state.currentWeek);
 
 
     useEffect(() => {
@@ -214,7 +216,7 @@ export const AttendanceTable = ({  currentWeek, currentCGNum, className }) => {
                             }}
                         >
                             <Space>
-                                <span className={"mx-4 text-end truncate"}>Items: {currentSubmitData.length} / {currentCGNum}</span>
+                                <span className={"mx-4 text-end truncate"}>Items: {currentSubmitData.length} / {currentCGNumber}</span>
                             </Space>
                             {paginationNode}
                         </div>

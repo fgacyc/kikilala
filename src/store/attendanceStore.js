@@ -5,6 +5,7 @@ export const useAttendanceStore = create((set) => ({
     currentSubmitData:null,
     currentPendingData:null,
     currentWeek:"",
+    currentCGNumber:0,
     showSubmitted:true,
 
     setCurrentSubmitData: (currentSubmitData) => set({ currentSubmitData }),
@@ -13,6 +14,7 @@ export const useAttendanceStore = create((set) => ({
         set({ currentWeek })
         localStorage.setItem("currentWeek",currentWeek)
     },
+    setCurrentCGNumber: (currentCGNumber) => set({ currentCGNumber }),
     setShowSubmitted: (showSubmitted) => {
         set({ showSubmitted })
         localStorage.setItem("showSubmitted",showSubmitted)

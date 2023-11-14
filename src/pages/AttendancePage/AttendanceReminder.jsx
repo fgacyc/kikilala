@@ -46,7 +46,7 @@ export default function AttendanceReminder({visible, setVisible}) {
     }
 
     useEffect(() => {
-        console.log(absentCGLsNameList, absentCGLsNameList.length)
+        // console.log(absentCGLsNameList, absentCGLsNameList.length)
         if (absentCGLsNameList.length === 0) {
             setMessage("");
             return;

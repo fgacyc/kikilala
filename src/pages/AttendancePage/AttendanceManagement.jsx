@@ -19,12 +19,13 @@ const Option = Select.Option;
 const AttendanceManagement = () => {
     const [dateArray, setDateArray] = useState([])
     const buttonsNumber = 4
-    const [currentCGNum, setCurrentCGNum] = useState(0)
     const { loginWithRedirect, user, isLoading } = useAuth0();
     const [initAttendData, currentWeek, setCurrentWeek, showSubmitted, setShowSubmitted] = useAttendanceStore(state => [
         state.initAttendData, state.currentWeek, state.setCurrentWeek, state.showSubmitted, state.setShowSubmitted]);
     const [attendanceDownloadModalVisible, setAttendanceDownloadModalVisible] = useState(false);
     const [reminderModalVisible, setReminderModalVisible] = useState(false);
+    const setCurrentCGNumber  =
+        useAttendanceStore(state =>state.setCurrentCGNumber)
 
 
     useEffect(() => {
@@ -35,7 +36,7 @@ const AttendanceManagement = () => {
             initAttendData();
             // get current num
             const num = await getCGLNum();
-            setCurrentCGNum(num);
+            setCurrentCGNumber(num);
         }
         void init();
     }, []);
@@ -101,13 +102,9 @@ const AttendanceManagement = () => {
 
                 <div className={"bg-white rounded-lg pb-2"}>
                     <AttendanceTable
-                        currentWeek={currentWeek}
-                        currentCGNum={currentCGNum}
                         className={showSubmitted === false ? 'hidden' : 'block'}
                     />
                     <AbsentCGLsTable
-                        currentWeek={currentWeek}
-                        currentCGNum={currentCGNum}
                         className={!showSubmitted === false ? 'hidden' : 'block'}
                     />
 

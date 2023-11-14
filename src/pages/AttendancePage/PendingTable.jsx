@@ -5,7 +5,7 @@ import {pastoralTeamList, satelliteList} from "../../config.js";
 import {useAttendanceStore} from "../../store/attendanceStore.js";
 import {absentCGLs} from "../../api/CGLs.js";
 
-export  function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
+export  function AbsentCGLsTable({ className }) {
     const inputRef = useRef(null);
     const columns = [
         {
@@ -135,6 +135,9 @@ export  function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
     const [currentPendingData,setCurrentPendingData] = useAttendanceStore(state => [
         state.currentPendingData, state.setCurrentPendingData
     ]);
+    const currentCGNumber  = useAttendanceStore(state => state.currentCGNumber);
+    const currentWeek= useAttendanceStore(state => state.currentWeek);
+
 
 
     async function findAbsentMembers() {
@@ -154,6 +157,7 @@ export  function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
 
 
 
+
     return (
         <>
             {
@@ -168,7 +172,7 @@ export  function AbsentCGLsTable({ currentWeek, currentCGNum, className }) {
                                         >
                                             <Space>
                                                 <span className={"mx-4 text-end truncate"}>
-                                                    Items: {currentPendingData.length} / {currentCGNum}
+                                                    Items: {currentPendingData.length} / {currentCGNumber}
                                                 </span>
                                             </Space>
                                             {paginationNode}
