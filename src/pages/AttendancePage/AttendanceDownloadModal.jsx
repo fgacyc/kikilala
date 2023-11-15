@@ -97,10 +97,12 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
     const [dataDuration, setDataDuration] = useState();
     const [downloadData, setDownloadData] = useState([]);
     const downloadBtnRef = useRef(null);
+    const pastoralTeamListAndAll = pastoralTeamList.concat([{text: "All", value: "all"}]);
 
     async function generateDownloadData(){
         if (!dataDuration||!pastoralTeam )return;
         const pastoralTeamAttendance = await getAttendByPastoralTeam(pastoralTeam);
+        // console.log(pastoralTeamAttendance)
 
         //return;
         const data = filterAttendByDate(pastoralTeamAttendance, dataDuration);
@@ -134,7 +136,7 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
                     value={pastoralTeam}
                     onChange={setPastoralTeam}
                 >
-                    {pastoralTeamList.map((option, index) => (
+                    {pastoralTeamListAndAll.map((option, index) => (
                         <Option key={index} value={option.value}>
                             {option.text}
                         </Option>
