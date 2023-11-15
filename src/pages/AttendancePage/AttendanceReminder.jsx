@@ -63,7 +63,7 @@ export default function AttendanceReminder({visible, setVisible}) {
     }
 
     useEffect(() => {
-        console.log(pastoralTeam, satellite)
+        // console.log(pastoralTeam, satellite)
         updateData();
     }, [pastoralTeam, satellite]);
 

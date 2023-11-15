@@ -30,6 +30,38 @@ export const AttendanceTable = ({ className }) => {
             },
             sorter: (a, b) => new Date(a.date.split('-')[0]) - new Date(b.date.split('-')[0]),
         },
+        // {
+        //     title: "CG ID",
+        //     dataIndex: 'cg_id',
+        //     filterIcon: <IconSearch />,
+        //     filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        //         return (
+        //             <div className='arco-table-custom-filter'>
+        //                 <Input.Search
+        //                     allowClear={true}
+        //                     ref={inputRef}
+        //                     searchButton
+        //                     placeholder='Please enter name'
+        //                     value={filterKeys[0] || ''}
+        //                     onChange={(value) => {
+        //                         setFilterKeys(value ? [value] : []);
+        //                     }}
+        //                     onSearch={() => {
+        //                         confirm();
+        //                     }}
+        //                 />
+        //             </div>
+        //         );
+        //     },
+        //     onFilter: (value, row) => {
+        //         return row.cg_id.toLowerCase().includes(value.toLowerCase());
+        //     },
+        //     onFilterDropdownVisibleChange: (visible) => {
+        //         if (visible) {
+        //             setTimeout(() => inputRef.current.focus(), 150);
+        //         }
+        //     }
+        // },
         {
             title: 'CG Leader',
             width: 200,

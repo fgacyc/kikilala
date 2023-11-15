@@ -73,6 +73,10 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                 }
             },
         },
+        // {
+        //     title: 'CGID',
+        //     dataIndex: 'CG_id',
+        // },
         {
             title: 'Nickname',
             width: 200,
@@ -183,14 +187,21 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                             type="secondary"
                             className={`${type==="closed" && "hidden"}`}
                         ></Button>
+                    </Popconfirm>
+                    <Popconfirm
+                        focusLock
+                        title='Confirm'
+                        content='Are you sure you want to close this CG?'
+                        onOk={() => {
+                            // console.log(record);
+                            openCG(record.key).then((res) => {
+                                if(res!==false)PubSub.publish('updateCGLs');
+                            });
+                        }}
+                    >
                         <Button icon={<IconUndo />}
                                 type="secondary"
                                 className={`${type==="active" && "hidden"}`}
-                                onClick={() => {
-                                    openCG(record.key).then((res) => {
-                                        if(res!==false)PubSub.publish('updateCGLs');
-                                    });
-                                }}
                         ></Button>
                     </Popconfirm>
                 </div>
@@ -266,6 +277,10 @@ export default function CGLsManagement() {
         setClosedCGLs(await readAllClosedCGLs());
         setAllCGLs(await readAllCGLs());
     }
+
+    useEffect(() => {
+        updateCGLs();
+    }, [isShowActive]);
 
 
     return (

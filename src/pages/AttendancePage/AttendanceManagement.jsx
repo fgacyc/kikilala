@@ -20,7 +20,8 @@ const AttendanceManagement = () => {
     const [dateArray, setDateArray] = useState([])
     const buttonsNumber = 4
     const { loginWithRedirect, user, isLoading } = useAuth0();
-    const [initAttendData, currentWeek, setCurrentWeek, showSubmitted, setShowSubmitted] = useAttendanceStore(state => [
+    const [initAttendData, currentWeek, setCurrentWeek, showSubmitted, setShowSubmitted] =
+        useAttendanceStore(state => [
         state.initAttendData, state.currentWeek, state.setCurrentWeek, state.showSubmitted, state.setShowSubmitted]);
     const [attendanceDownloadModalVisible, setAttendanceDownloadModalVisible] = useState(false);
     const [reminderModalVisible, setReminderModalVisible] = useState(false);
@@ -54,6 +55,36 @@ const AttendanceManagement = () => {
         loginWithRedirect();
     }, [isLoading])
 
+    async function check() {
+        const attendData = await  queryAttends("2023/10/30-2023/11/05")
+        const CGLs = await readAllActiveCGLs();
+        // console.log(attendData);
+        // console.log(CGLs);
+
+        const allCGID  = CGLs.map((cgl) => cgl.CG_id);
+        //console.log(allCGID);
+
+        const allCGAttendance = attendData.map((attend) => attend.cg_id);
+        //console.log(allCGAttendance);
+
+        // for (let id of allCGAttendance){
+        //     if (!allCGID.includes(id)){
+        //         console.log(id);
+        //     }
+        // }
+        // for (let item of attendData){
+        //     if (item.cg_id ==="MpkwSZ8YoyNXuOBT6aYY" || item.cg_id==="j84YmcgqsYfwOTfBykzQ"){
+        //         console.log(item);
+        //     }
+        // }
+
+        for (let item of attendData){
+            if (item.cg_id ==="MpkwSZ8YoyNXuOBT6aYY" || item.cg_id==="j84YmcgqsYfwOTfBykzQ"){
+                console.log(item);
+            }
+        }
+
+    }
 
     return (
         <div className={"h-full w-full sm:px-8 px-2  py-4 "}>
@@ -84,6 +115,12 @@ const AttendanceManagement = () => {
                                             setReminderModalVisible(true);
                                         }}
                                 />
+                                {/*<Button type='secondary' className={"ml-2"}*/}
+                                {/*        onClick={() => {*/}
+                                {/*            // setReminderModalVisible(true);*/}
+                                {/*            check();*/}
+                                {/*        }}*/}
+                                {/*>Click</Button>*/}
                             </div>
                         </div>
 
