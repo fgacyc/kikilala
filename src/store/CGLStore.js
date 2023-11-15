@@ -7,6 +7,7 @@ export const useCGLStore = create((set) => ({
     satellite:"",
     docId : "",
     nickname: "",
+    category: "",
 
     setCGLeader: (CG_leader) => set({ CG_leader }),
     setCGName: (CG_name) => set({ CG_name }),
@@ -14,6 +15,7 @@ export const useCGLStore = create((set) => ({
     setSatellite: (satellite) => set({ satellite }),
     setDocId: (docId) => set({ docId }),
     setNickname: (nickname) => set({ nickname }),
+    setCategory: (category) => set({ category }),
 
     setCGL:(CGL) => set(
         {
@@ -23,6 +25,7 @@ export const useCGLStore = create((set) => ({
             satellite:CGL.satellite,
             docId:CGL.key,
             nickname:CGL.nickname,
+            category:CGL.category,
         }
     ),
 
@@ -33,6 +36,7 @@ export const useCGLStore = create((set) => ({
         satellite:"",
         docId : "",
         nickname: "",
+        category: "",
     }),
 
     getForm: () => {
@@ -43,6 +47,7 @@ export const useCGLStore = create((set) => ({
             satellite: useCGLStore.getState().satellite,
             docId : useCGLStore.getState().docId,
             nickname: useCGLStore.getState().nickname,
+            category: useCGLStore.getState().category,
         }
     }
 }))

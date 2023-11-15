@@ -129,3 +129,31 @@ export const satellite_pastoralTeam = {
 }
 
 export const satelliteNameList =  Object.keys(satellite_pastoralTeam);
+
+
+export const CGCategoryList = [
+    {
+        text: "Secondary Students",
+        value: "secondary_students",
+    },
+    {
+        text: "College/University",
+        value: "college/university",
+    },
+    {
+        text: "Young Adults",
+        value: "young_adults",
+    },
+    {
+        text: "Married",
+        value: "married",
+    },
+    {
+        text: "Family",
+        value: "family",
+    },
+    {
+        text: "Entrepreneur",
+        value: "entrepreneur",
+    }
+];

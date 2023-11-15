@@ -158,6 +158,25 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
             filterMultiple: false,
         },
         {
+            title: 'Category',
+            width: 180,
+            render: (_, record) => {
+                return (
+                    <div className={"truncate"}>
+                        {
+                            record.hasOwnProperty("category") && record.category
+                        }
+                    </div>
+                )
+            },
+            sorter: (a, b) => a.category.localeCompare(b.category),
+            filters: satelliteList,
+            onFilter: (value, row) => {
+                return row.satellite === value;
+            },
+            filterMultiple: false,
+        },
+        {
             title: "Operation",
             width: 110,
             fixed: "right",

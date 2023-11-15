@@ -41,6 +41,12 @@ export async function readAllActiveCGLs() {
         docs[key].key = key;
     }
     const dataList = Object.keys(docs).map((key) => docs[key]);
+    // sort by updatedAt
+    dataList.sort((a, b) => {
+        return new Date(b.updatedAt.seconds) - new Date(a.updatedAt.seconds);
+    });
+
+
     return dataList.filter((item) => item.CG_status === CGStatusEnum.active);
 }
 

@@ -1,7 +1,7 @@
 import {Message, Modal, Select} from "@arco-design/web-react";
 import { Form, Input } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
-import {pastoralTeamList, satelliteList} from "../../config.js";
+import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
 import {useEffect, useRef} from "react";
 import {updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
@@ -18,6 +18,7 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
         satellite,
         docId,
         nickname,
+        category
     ] = useCGLStore(state => [
         state.CG_leader,
         state.CG_name,
@@ -25,6 +26,7 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
         state.satellite,
         state.docId,
         state.nickname,
+        state.category,
     ]);
     const [
         setCGLeader,
@@ -32,12 +34,14 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
         setPastoralTeam,
         setSatellite,
         setNickname,
+        setCategory
     ] = useCGLStore(state => [
         state.setCGLeader,
         state.setCGName,
         state.setPastoralTeam,
         state.setSatellite,
         state.setNickname,
+        state.setCategory
     ]);
 
     const getForm = useCGLStore(state => state.getForm);
@@ -124,6 +128,23 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                 >
                     {pastoralTeamList.map((option, index) => (
                         <Option key={index} value={option.value}>
+                            {option.text}
+                        </Option>
+                    ))}
+                </Select>
+            </div>
+            <div  className={"flex flex-row items-center mb-4"}>
+                <div className={"w-[20%] text-right pr-3 text-[#4E5969]"}>Category</div>
+                <Select
+                    // mode='multiple'
+                    placeholder='Please select group category...'
+                    value={category}
+                    defaultValue={category}
+                    onChange={setCategory}
+                    className={"w-[80%]"}
+                >
+                    {CGCategoryList.map((option) => (
+                        <Option key={option.value} value={option.value}>
                             {option.text}
                         </Option>
                     ))}

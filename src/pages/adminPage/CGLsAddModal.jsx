@@ -1,7 +1,7 @@
 import {Message, Modal, Select} from "@arco-design/web-react";
 import { Form, Input, Button, Checkbox } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
-import {pastoralTeamList, satelliteList} from "../../config.js";
+import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
 import {useEffect, useRef, useState} from "react";
 import {addCGL, CGStatusEnum, duplicateCheck, updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
@@ -28,7 +28,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
         // return;
 
         addCGL(data).then((res) => {
-            console.log(res)
+            // console.log(res)
             if (res!== false){
                 Message.success('Submitted successfully!')
                 PubSub.publish('updateCGLs');
@@ -98,7 +98,21 @@ export default function CGLsAddModal({ visible, setVisible }) {
                         ))}
                     </Select>
                 </FormItem>
-
+                <FormItem label='Category'
+                          field={'category'}
+                >
+                    <Select
+                        // mode='multiple'
+                        placeholder='Please select group category...'
+                        allowClear
+                    >
+                        {CGCategoryList.map((option) => (
+                            <Option key={option.value} value={option.value}>
+                                {option.text}
+                            </Option>
+                        ))}
+                    </Select>
+                </FormItem>
             </Form>
         </Modal>
     );
