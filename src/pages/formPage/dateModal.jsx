@@ -58,7 +58,10 @@ function DateModal({visible, setVisible}) {
         // checking duplicate
         const isDuplicate = await checkDuplicate(data.date,data.cg_id);
         console.log(isDuplicate)
-        if(isDuplicate) Message.warning("Your attendance has been submitted for the week you selected")
+        if(isDuplicate) {
+            Message.warning("Your attendance has been submitted for the week you selected")
+            return;
+        }
 
         // console.log(data);
         //return;
