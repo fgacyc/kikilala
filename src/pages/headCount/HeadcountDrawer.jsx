@@ -22,28 +22,28 @@ export  default  function HeadCountDrawer({visible, setVisible}){
     const [
         satellite,serviceType, dateTime,
         headCount,kids_num,cm_num,parents_num,
-        yw_num,gs_num,yp_num,comment,key
+        yw_num,gs_num,nf_num,comment,key,ac_num
     ] = useHeadCountStore(state => [
         state.satellite, state.serviceType, state.dateTime,
         state.headCount,state.kids_num,state.cm_num,state.parents_num,
         state.yw_num,state.gs_num,state.nf_num,state.comment,
-        state.key
+        state.key,state.ac_num
     ])
 
     const [
         setSatellite,setServiceType, setDateTime,
         setHeadCount,setKids_num,setCm_num,setParents_num,
-        setYw_num,setGs_num,setYp_num,setComment,getHeadCountData
+        setYw_num,setGs_num,setNf_num,setComment,getHeadCountData,setAc_num
     ] = useHeadCountStore(state => [
         state.setSatellite, state.setServiceType, state.setDateTime,
         state.setHeadCount,state.setKidsNum,state.setCMNum,state.setParentsNum,
-        state.setYWNum,state.setGSNum,state.setYPNum,state.setComment,
-        state.getHeadCountData
+        state.setYWNum,state.setGSNum,state.setNFNum,state.setComment,
+        state.getHeadCountData,state.setACNum
     ]);
 
     useEffect(() => {
-        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + yp_num)
-    }, [kids_num, cm_num, parents_num,yw_num, gs_num, yp_num])
+        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + nf_num)
+    }, [kids_num, cm_num, parents_num,yw_num, gs_num, nf_num])
 
     function submit(){
         const data =  getHeadCountData("drawer");
@@ -178,12 +178,21 @@ export  default  function HeadCountDrawer({visible, setVisible}){
                 />
             </div>
             <div className={"flex flex-row justify-between items-center py-2"}>
-                <span>YP:</span>
+                <span>AC:</span>
                 <InputNumber
                     min={0}
                     className={"w-[calc(100%-40px)] ml-2"}
-                    value={yp_num}
-                    onChange={setYp_num}
+                    value={ac_num}
+                    onChange={setAc_num}
+                />
+            </div>
+            <div className={"flex flex-row justify-between items-center py-2"}>
+                <span>NF:</span>
+                <InputNumber
+                    min={0}
+                    className={"w-[calc(100%-40px)] ml-2"}
+                    value={nf_num}
+                    onChange={setNf_num}
                 />
             </div>
 
