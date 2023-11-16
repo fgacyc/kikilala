@@ -129,6 +129,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 80,
             sorter: (a, b) => a.yw_num - b.yw_num,
         },
         {
@@ -140,6 +141,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 80,
             sorter: (a, b) => a.gs_num - b.gs_num,
         },
 
@@ -152,6 +154,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 90,
             sorter: (a, b) => a.kids_num - b.kids_num,
         },
         {
@@ -163,6 +166,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 80,
             sorter: (a, b) => a.cm_num - b.cm_num,
         },
         {
@@ -174,6 +178,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 110,
             sorter: (a, b) => a.cm_num - b.cm_num,
         },
         {
@@ -185,6 +190,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 80,
             sorter: (a, b) => a.yp_num - b.yp_num,
         },
         {
@@ -196,6 +202,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 80,
             sorter: (a, b) => a.yp_num - b.yp_num,
         },
         {
@@ -207,6 +214,7 @@ function HeadCountTable() {
                     </div>
                 );
             },
+            width: 100,
             sorter: (a, b) => a.headCount - b.headCount,
         },
         {
@@ -214,7 +222,7 @@ function HeadCountTable() {
             fixed: "right",
             dataIndex: "op",
             render: (_, record) => (
-                <div>
+                <div className={"flex flex-row"}>
                     <Button icon={<IconEdit />}
                         className={"mr-2"}
                         onClick={() => {

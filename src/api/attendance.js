@@ -106,13 +106,15 @@ export function filterAttendByDate(data,duration){
 }
 
 export function filterHeadcountByDate(data,duration){
+    console.log(data)
     const dates = duration.split('-');
-    const startDate = new Date(dates[0]);
-    const endDate = new Date(dates[1]);
+    const startDate = new Date(dates[0]+ " 00:00:00");
+    const endDate = new Date(dates[1]+ " 23:59:59");
+    // console.log(startDate)
+    // console.log(endDate)
     let res = [];
     for (let item of data){
         const itemDatetime = new Date(item.dateTime);
-        // console.log(itemDatetime)
         if (itemDatetime >= startDate && itemDatetime <= endDate){
             res.push(item);
         }
