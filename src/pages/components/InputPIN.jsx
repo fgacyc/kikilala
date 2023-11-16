@@ -27,6 +27,9 @@ export default function InputPIN({ name, setter,val ,className,range }) {
                    w-[32px] h-[32px] text-xl border rounded-lg
                    sm:w-[48px] sm:h-[48px] sm:text-2xl sm:border-2 sm:rounded-xl
                    my-0 inline-block  mx-[10px]`}
+                   style={{
+                       fontFamily: "Arial",
+                   }}
                    value={val}
                    onChange={handleChange}
             />
