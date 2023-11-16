@@ -27,14 +27,21 @@ export async function downloadCGLsData(data) {
 }
 
 export function downloadCGLAttendanceData(data) {
-    let csv = [
-        ['Date', 'Type', 'OM', 'NB', 'NF', 'RNF', 'AC', 'ABS', 'Total', 'Absence Reason'],
-    ]
-
+    console.log(data)
+    let csv = [];
     for (let item of data) {
-
-        csv.push([item.date, item.type, item.om_num, item.nb_num, item.nf_num, item.rnf_num,
-        item.ac_num, item.abs_num, item.total_num, item.absence_reason])
+        csv.push({
+            "Date": `"${item.date}"`,
+            "Type": `"${item.type}"`,
+            "OM": item.om_num,
+            "NB": item.nb_num,
+            "NF": item.nf_num,
+            "RNF": item.rnf_num,
+            "AC": item.ac_num,
+            "ABS": item.abs_num,
+            "Total": item.om_num + item.nb_num + item.nf_num + item.rnf_num + item.ac_num,
+            "Absence Reason": `"${item.absence_reason}"`,
+        })
     }
     return csv
 }
