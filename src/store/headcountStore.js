@@ -89,6 +89,13 @@ export const useHeadCountStore = create((set) => ({
             return false;
         }
 
+        // console.log(useHeadCountStore.getState().dateTime)
+        //console.log(useHeadCountStore.getState().dateTime.substring(11, 19))
+        if (useHeadCountStore.getState().dateTime.substring(11, 19) === "00:00:00") {
+            Message.warning("Please select service time");
+            return false;
+        }
+
         if (useFormStore.getState().kids_num === "") {
             useFormStore.getState().setKidsNum(0);
         }
