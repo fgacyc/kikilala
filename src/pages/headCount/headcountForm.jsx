@@ -35,8 +35,7 @@ export const serviceTypeOptions = [
 const TextArea = Input.TextArea;
 
 
-
-export default function HeadCountForm(){
+export default function HeadCountForm() {
     const [currentStatellite, setCurrentSatellite] = useState(null)
     const [
         setSatelliteH,
@@ -51,12 +50,12 @@ export default function HeadCountForm(){
 
     const [
         kids_num, cm_num, parents_num,
-        yw_num, gs_num, nf_num,key,
-        headCount,comment
+        yw_num, gs_num, nf_num, key,
+        headCount, comment
     ] = useHeadCountStore(state => [
         state.kids_num, state.cm_num, state.parents_num,
         state.yw_num, state.gs_num, state.nf_num,
-        state.key,state.headCount,state.comment
+        state.key, state.headCount, state.comment
     ])
 
     const [
@@ -75,57 +74,70 @@ export default function HeadCountForm(){
     ])
 
     const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason,
-        satellite,cg_absence_reason,service_absence_reason,
-        user_email,user_sub,setUserEmail,setUserSub] =
+        satellite, cg_absence_reason, service_absence_reason,
+        user_email, user_sub, setUserEmail, setUserSub] =
         useFormStore(state => [state.cg_name, state.cgl_name,
-            state.setCGAbsenceReason, state.setServiceAbsenceReason ,state.satellite
-            ,state.cg_absence_reason,state.service_absence_reason
-            ,state.user_email,state.user_sub,state.setUserEmail,state.setUserSub
+            state.setCGAbsenceReason, state.setServiceAbsenceReason, state.satellite
+            , state.cg_absence_reason, state.service_absence_reason
+            , state.user_email, state.user_sub, state.setUserEmail, state.setUserSub
         ])
     const navigate = useNavigate();
-    const { loginWithRedirect,logout,user } = useAuth0();
-    const getHeadCountData  = useHeadCountStore(state => state.getHeadCountData)
+    const {loginWithRedirect, logout, user} = useAuth0();
+    const getHeadCountData = useHeadCountStore(state => state.getHeadCountData)
     const resetHeadCountData = useHeadCountStore(state => state.resetHeadCountData)
+    const serviceType = useHeadCountStore(state => state.serviceType)
+    const [showTotalInput, setShowTotalInput] = useState(false);
 
     useEffect(() => {
-        if(!user) return;
+        if (!user) return;
         setUserEmail(user.email)
         setUserSub(user.sub)
-    }  ,[user])
+    }, [user])
 
     useEffect(() => {
-        if(satellite){
+        if (satellite) {
             //console.log(satellite)
             setCurrentSatellite(satellite)
             setSatelliteH(satellite)
         }
     }, [satellite])
 
+
+    useEffect(() => {
+        //console.log(serviceType)
+        if (serviceType !== "leaders_community") {
+            setShowTotalInput(false)
+        }else{
+            setShowTotalInput(true)
+        }
+    }, [serviceType]);
+
     useEffect(() => {
         setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + nf_num)
-    }, [kids_num, cm_num, parents_num,yw_num, gs_num, nf_num])
+    }, [kids_num, cm_num, parents_num, yw_num, gs_num, nf_num])
 
 
-    function  submitHandler(){
-        const data =  getHeadCountData("form");
+    function submitHandler() {
+        const data = getHeadCountData("form");
 
-        // console.log(data)
+        console.log(data)
         // return;
 
         if (!data) return;
         addHeadcount(data).then(res => {
-            if (res!== false) {
+            if (res !== false) {
+                Message.success("Submit successfully!");
                 resetHeadCountData();
-                Message.success("Submit successfully!")
+                setShowTotalInput(false);
             }
         })
     }
 
-    useEffect(() => {
-        console.log(key)
-    }, [key]);
+    // useEffect(() => {
+    //     console.log(key)
+    // }, [key]);
 
-    return(
+    return (
         <div>
             {
                 !user_email
@@ -138,17 +150,17 @@ export default function HeadCountForm(){
                     : <div className={"font-bold mt-0 mb-3"}>
                         <span>{user_email}</span>
                         <span className={"text-blue-500 cursor-pointer ml-2"}
-                              onClick={() =>{
-                                  logout({ returnTo: window.location.origin });
+                              onClick={() => {
+                                  logout({returnTo: window.location.origin});
                               }}
                         >Switch account</span>
                     </div>
             }
-            <hr className={"my-2"} />
+            <hr className={"my-2"}/>
             <div className={"font-bold mt-0 mb-3"}>
                 <div>Which Service Location are you logging for?</div>
             </div>
-            <ButtonGroup setCurrentSatellite={setCurrentSatellite} />
+            <ButtonGroup setCurrentSatellite={setCurrentSatellite}/>
             <div>
                 <div className={"font-bold mt-5 mb-3"}>What time did this service start?</div>
                 <DatePicker
@@ -157,9 +169,7 @@ export default function HeadCountForm(){
                         defaultValue: '00:00:00',
                     }}
                     format='YYYY-MM-DD HH:mm:ss'
-                    //onChange={onChange}
                     onSelect={setDateTime}
-                    //onOk={onOk}
                     dayStartOfWeek={1}
                 />
             </div>
@@ -167,53 +177,61 @@ export default function HeadCountForm(){
                 <div className={"font-bold mt-5 mb-1"}>Which type of service are you logging for?</div>
                 <Select
                     placeholder='Please select/enter service type...'
-                    style={{ width: "100%" }}
+                    style={{width: "100%"}}
                     onChange={setServiceType}
                     allowCreate={true}
                 >
                     {serviceTypeOptions.map((option, index) => (
-                        <Option key={option.text}  value={option.value}>
+                        <Option key={option.text} value={option.value}>
                             {option.text}
                         </Option>
                     ))}
                 </Select>
 
             </div>
-            {/*<div>*/}
-            {/*    <div className={"font-bold mt-5 mb-1"}>How many is the total headcount?</div>*/}
-            {/*    <UIInput type={"number"} />*/}
-            {/*</div>*/}
             <div>
                 <div className={"font-bold mt-5 mb-1"}>How many people attend this week?</div>
-                <div className={"flex flex-row justify-between items-start"}>
-                   <div className={"text-center"}>
-                       <div className={`flex flex-row justify-between bg-gray-100 rounded-xl 
+                {
+                    showTotalInput
+                        ? <InputNumber
+                            mode='button'
+                            defaultValue={headCount}
+                            style={{width: 160, margin: '10px 24px 10px 0'}}
+                            onChange={setHeadCount}
+                            type={"number"}
+                        />
+                        : <div className={"flex flex-row justify-between items-start"}>
+                            <div className={"text-center"}>
+                                <div className={`flex flex-row justify-between bg-gray-100 rounded-xl 
                                     sm:py-2 sm:px-4 py-2`}>
-                           <InputPIN name={"Kids"} setter={setKidsNum} val={kids_num} range={3} />
-                           <InputPIN name={"CM"} setter={setCMNum} val={cm_num} range={3} />
-                           <InputPIN name={"Parents"} setter={setParentsNum} val={parents_num} range={3} />
-                       </div>
-                       <div className={"mt-1"}>Wonder Kids</div>
-                   </div>
-                    <InputPIN name={"YW"} setter={setYWNum} val={yw_num} className={"py-2"} range={3} />
-                    <InputPIN name={"GS"} setter={setGSNum} val={gs_num} className={"py-2"}  range={3} />
-                    <InputPIN name={"NF"} setter={setNFNum} val={nf_num} className={"py-2"} range={3}  />
+                                    <InputPIN name={"Kids"} setter={setKidsNum} val={kids_num} range={3}/>
+                                    <InputPIN name={"CM"} setter={setCMNum} val={cm_num} range={3}/>
+                                    <InputPIN name={"Parents"} setter={setParentsNum} val={parents_num} range={3}/>
+                                </div>
+                                <div className={"mt-1"}>Wonder Kids</div>
+                            </div>
+                            <InputPIN name={"YW"} setter={setYWNum} val={yw_num} className={"py-2"} range={3}/>
+                            <InputPIN name={"GS"} setter={setGSNum} val={gs_num} className={"py-2"} range={3}/>
+                            <InputPIN name={"NF"} setter={setNFNum} val={nf_num} className={"py-2"} range={3}/>
+                        </div>
+                }
+            </div>
+            {
+                !showTotalInput && <div>
+                    <div className={"font-bold mt-5 mb-1"}>Total headcount:</div>
+                    <InputNumber
+                        mode='button'
+                        disabled
+                        value={headCount}
+                        style={{width: 160, margin: '10px 24px 10px 0'}}
+                    />
                 </div>
-            </div>
-            <div>
-                <div className={"font-bold mt-5 mb-1"}>Total headcount:</div>
-                <InputNumber
-                    mode='button'
-                    disabled
-                    value={headCount}
-                    style={{ width: 160, margin: '10px 24px 10px 0' }}
-                />
-            </div>
+            }
             <div>
                 <div className={"font-bold mt-5 mb-1"}>Do you have any comments?</div>
                 <TextArea
                     placeholder='Please enter comments...'
-                    style={{ marginTop:5, width: "100%" ,resize: "none" }}
+                    style={{marginTop: 5, width: "100%", resize: "none"}}
                     onChange={setComment}
                     value={comment}
                 />
@@ -223,16 +241,16 @@ export default function HeadCountForm(){
                     mt-8 flex flex-row justify-center w-[200px]`}
                         onClick={submitHandler}
                 >
-                    <SendIcon className={"scale-50"} />
+                    <SendIcon className={"scale-50"}/>
                     <span className={"ml-3"}
                     >Submit Headcount</span>
                 </button>
                 <div className={`w-[44px] h-[44px] bg-gray-200 rounded-[8px] 
                                 hover:bg-[#00B05C] hover:text-white cursor-pointer
                                 flex flex-row items-center justify-center mb-[10px]`}
-                     //onClick={() => viewHistory()}
+                    //onClick={() => viewHistory()}
                 >
-                    <IconHistory fontSize={24} />
+                    <IconHistory fontSize={24}/>
                 </div>
             </div>
         </div>

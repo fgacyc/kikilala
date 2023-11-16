@@ -106,37 +106,80 @@ function HeadCountTable() {
         },
         {
             title: 'YW',
-            dataIndex: 'yw_num',
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.yw_num === 0 ? "" : record.yw_num}
+                    </div>
+                );
+            },
             sorter: (a, b) => a.yw_num - b.yw_num,
         },
         {
             title: 'GS',
-            dataIndex: 'gs_num',
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.gs_num === 0 ? "" : record.gs_num}
+                    </div>
+                );
+            },
             sorter: (a, b) => a.gs_num - b.gs_num,
         },
-        {
-            title: 'NF',
-            dataIndex: 'nf_num',
-            sorter: (a, b) => a.yp_num - b.yp_num,
-        },
+
         {
             title: 'Kids',
-            dataIndex: 'kids_num',
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.kids_num === 0 ? "" : record.kids_num}
+                    </div>
+                );
+            },
             sorter: (a, b) => a.kids_num - b.kids_num,
         },
         {
-            title: 'Crew',
-            dataIndex: 'cm_num',
+            title: 'CM',
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.cm_num === 0 ? "" : record.cm_num}
+                    </div>
+                );
+            },
             sorter: (a, b) => a.cm_num - b.cm_num,
         },
         {
             title: 'Parents',
-            dataIndex: 'parents_num',
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.parents_num === 0 ? "" : record.parents_num}
+                    </div>
+                );
+            },
             sorter: (a, b) => a.cm_num - b.cm_num,
         },
         {
+            title: 'NF',
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.nf_num === 0 ? "" : record.nf_num}
+                    </div>
+                );
+            },
+            sorter: (a, b) => a.yp_num - b.yp_num,
+        },
+        {
             title: "Total",
-            dataIndex: "headCount",
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.headCount === 0 ? "" : record.headCount}
+                    </div>
+                );
+            },
             sorter: (a, b) => a.headCount - b.headCount,
         },
         {

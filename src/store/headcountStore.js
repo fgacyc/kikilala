@@ -3,7 +3,7 @@ import {useFormStore} from "./formStore.js";
 import {Message} from "@arco-design/web-react";
 
 export const useHeadCountStore = create((set) => ({
-    satellite:  "",
+    satellite: "",
     dateTime: "",
     serviceType: "",
     headCount: 0,
@@ -18,36 +18,39 @@ export const useHeadCountStore = create((set) => ({
     // key ,for edit
     key: "",
 
-    setSatellite: (satellite) =>{
+    setSatellite: (satellite) => {
         localStorage.setItem("headcount-satellite", satellite);
         set({satellite});
     },
     setDateTime: (dateTime) => set({dateTime}),
     setServiceType: (serviceType) => set({serviceType}),
-    setHeadCount: (headCount) => set({headCount}),
+    setHeadCount: (headCount) => {
+        if (headCount < 0) set({headCount: 0})
+        else set({headCount})
+    },
     setKidsNum: (kids_num) => {
         if (kids_num < 0) set({kids_num: 0})
         else set({kids_num})
     },
-    setCMNum: (cm_num) =>{
+    setCMNum: (cm_num) => {
         if (cm_num < 0) set({cm_num: 0})
-    else set({cm_num})
+        else set({cm_num})
     },
-    setParentsNum: (parents_num) =>{
+    setParentsNum: (parents_num) => {
         if (parents_num < 0) set({parents_num: 0})
-    else set({parents_num})
+        else set({parents_num})
     },
     setYWNum: (yw_num) => {
         if (yw_num < 0) set({yw_num: 0})
-    else set({yw_num})
+        else set({yw_num})
     },
     setGSNum: (gs_num) => {
         if (gs_num < 0) set({gs_num: 0})
-    else set({gs_num})
+        else set({gs_num})
     },
     setNFNum: (nf_num) => {
         if (nf_num < 0) set({nf_num: 0})
-    else set({nf_num})
+        else set({nf_num})
     },
     setComment: (comment) => set({comment}),
     setKey: (key) => set({key}),
@@ -75,16 +78,35 @@ export const useHeadCountStore = create((set) => ({
         }
 
 
-        if( useFormStore.getState().user_sub === "") {
+        if (useFormStore.getState().user_sub === "") {
             Message.warning("Please login again");
             return false;
         }
 
+        if (useFormStore.getState().kids_num === "") {
+            useFormStore.getState().setKidsNum(0);
+        }
+        if (useHeadCountStore.getState().cm_num === "") {
+            useHeadCountStore.getState().setCMNum(0);
+        }
+        if (useHeadCountStore.getState().parents_num === "") {
+            useHeadCountStore.getState().setParentsNum(0);
+        }
+        if (useHeadCountStore.getState().yw_num === "") {
+            useHeadCountStore.getState().setYWNum(0);
+        }
+        if (useHeadCountStore.getState().gs_num === "") {
+            useHeadCountStore.getState().setGSNum(0);
+        }
+        if (useHeadCountStore.getState().nf_num === "") {
+            useHeadCountStore.getState().setNFNum(0);
+        }
+        return true;
     },
 
 
     getHeadCountData: (type) => {
-        if( useHeadCountStore.getState().validateHeadCount(type) === false) return ;
+        if (useHeadCountStore.getState().validateHeadCount(type) === false) return;
         return {
             satellite: useHeadCountStore.getState().satellite,
             dateTime: useHeadCountStore.getState().dateTime,
