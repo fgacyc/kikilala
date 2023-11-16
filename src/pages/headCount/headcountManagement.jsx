@@ -7,7 +7,7 @@ import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
 import { deleteHeadcount, readAllHeadcounts } from "../../api/headcount.js";
 import { pastoralTeamList, satelliteList } from "../../config.js";
 import { serviceTypeOptions } from "./headcountForm.jsx";
-import { IconDelete, IconEdit, IconSearch } from "@arco-design/web-react/icon";
+import {IconDelete, IconDownload, IconEdit, IconNotification, IconSearch} from "@arco-design/web-react/icon";
 import { deleteCGL } from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 import HeadCountDrawer from "./HeadcountDrawer.jsx";
@@ -17,6 +17,8 @@ import WeekSelect from "../components/WeekSelect.jsx";
 import {filterAttendByDate, filterHeadcountByDate} from "../../api/attendance.js";
 import {getWeekDatesArray} from "../formPage/data.js";
 import HeadCountSummary from "./HeadcountSummary.jsx";
+import {downloadCGLAttendanceData, getTodayDateStr} from "../../tools.js";
+import CsvDownload from "react-csv-downloader";
 
 function HeadCountTable() {
     const [headcountTableData, setHeadcountTableData] = useState(null);
@@ -26,6 +28,7 @@ function HeadCountTable() {
     const [scrollX, setScrollX] = useState(window.innerWidth * 0.9);
     const setHeadCountData = useHeadCountStore(state => state.setHeadCountData)
     const [currentWeek, setCurrentWeek] = useState(getWeekDatesArray(4)[3]);
+    const [allHeadcountData, setAllHeadcountData] = useState(null);
 
     useEffect(() => {
         void setHeadcountData();
@@ -39,8 +42,21 @@ function HeadCountTable() {
             PubSub.unsubscribe(subscription);
         };
     }, []);
+
+    function formatData(data) {
+        // object to array
+        let res = Object.values(data);
+        for (let item of res) {
+            item.createdAt = new Date(item.createdAt.seconds * 1000).toLocaleString();
+            item.updatedAt = new Date(item.updatedAt.seconds * 1000).toLocaleString();
+        }
+        // console.log(res)
+        return res;
+    }
+
     async function setHeadcountData() {
-        const res = await readAllHeadcounts();
+        let res = await readAllHeadcounts();
+        setAllHeadcountData(formatData(res));
         let headData = [];
         for (let key in res) {
             res[key].key = key;
@@ -236,11 +252,37 @@ function HeadCountTable() {
     }, [currentWeek]);
 
     return <div className={"py-2"}>
-        <div className={"mb-2"}>
+        <div className={"mb-2 flex flex-row "}>
             <WeekSelect
                 currentWeek={currentWeek}
                 setCurrentWeek={setCurrentWeek}
             />
+            <div className={"flex flex-row"}>
+                <CsvDownload
+                    filename={`headcount_${getTodayDateStr()}`}
+                    extension={".csv"}
+                    text={"Download"}
+                    datas={allHeadcountData}
+                >
+                    <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
+                            onClick={() => {
+                                // setAttendanceDownloadModalVisible(true);
+                                console.log(allHeadcountData)
+                            }}
+                    />
+                </CsvDownload>
+                <Button type='secondary' icon={<IconNotification />} className={"ml-2"}
+                        onClick={() => {
+                            // setReminderModalVisible(true);
+                        }}
+                />
+                {/*<Button type='secondary' className={"ml-2"}*/}
+                {/*        onClick={() => {*/}
+                {/*            // setReminderModalVisible(true);*/}
+                {/*            check();*/}
+                {/*        }}*/}
+                {/*>Click</Button>*/}
+            </div>
         </div>
         {
             currentTableData && <Table columns={columns}
