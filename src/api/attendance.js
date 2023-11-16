@@ -65,11 +65,21 @@ export async function checkDuplicate(date, cg_id) {
 
 
 export async function getAttendByPastoralTeam(name){
+    console.log(name)
     if (!name) return false;
     if(name === "all"){
         const data = await readAllAttends();
         return Object.values(data);
     }
+
+    if(name === "kuchai_young_warrior"){
+        let data = await readAllAttends();
+        data = Object.values(data);
+        // console.log(data.filter(item => item.satellite === "Kuchai YW"))
+        return data.filter(item => item.satellite === "Kuchai YW");
+    }
+
+
     const query = ["pastoral_team", "==",name]
     const doc = await queryDoc("attendance", query);
     if (doc === false) return false;

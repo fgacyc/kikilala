@@ -67,6 +67,15 @@ export default function AttendanceReminder({visible, setVisible}) {
         updateData();
     }, [pastoralTeam, satellite]);
 
+    useEffect(() => {
+        if(!visible) return;
+        setSatellite("");
+        setPastoralTeam("");
+        setAbsentCGLsNameList([]);
+        setMessage("");
+        setIsShowSuccess(false);
+    }, [visible]);
+
 
     return (
         <Modal

@@ -97,7 +97,10 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
     const [dataDuration, setDataDuration] = useState();
     const [downloadData, setDownloadData] = useState([]);
     const downloadBtnRef = useRef(null);
-    const pastoralTeamListAndAll = pastoralTeamList.concat([{text: "All", value: "all"}]);
+    const pastoralTeamListAndAll = pastoralTeamList.concat([
+        {text: "Kuchai Young Warrior", value: "kuchai_young_warrior"},
+        {text: "All", value: "all"},
+    ]);
 
     async function generateDownloadData(){
         if (!dataDuration||!pastoralTeam )return;
@@ -113,6 +116,13 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
     useEffect(() => {
         generateDownloadData();
     }, [dataDuration,pastoralTeam]);
+
+    useEffect(() => {
+        if(!visible) return;
+        setPastoralTeam("");
+        setDataDuration("");
+        setDownloadData([]);
+    }, [visible]);
 
 
     return (
