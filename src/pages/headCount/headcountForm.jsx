@@ -51,11 +51,13 @@ export default function HeadCountForm() {
     const [
         kids_num, cm_num, parents_num,
         yw_num, gs_num, nf_num, key,
-        headCount, comment
+        headCount, comment,ac_num
     ] = useHeadCountStore(state => [
         state.kids_num, state.cm_num, state.parents_num,
         state.yw_num, state.gs_num, state.nf_num,
-        state.key, state.headCount, state.comment
+        state.key, state.headCount, state.comment,
+        state.ac_num
+
     ])
 
     const [
@@ -66,11 +68,13 @@ export default function HeadCountForm() {
         setGSNum,
         setNFNum,
         setComment,
-        setHeadCount
+        setHeadCount,
+        setACNum
     ] = useHeadCountStore(state => [
         state.setKidsNum, state.setCMNum, state.setParentsNum,
         state.setYWNum, state.setGSNum, state.setNFNum,
-        state.setComment, state.setHeadCount
+        state.setComment, state.setHeadCount,
+        state.setACNum
     ])
 
     const [cg_name, cgl_name, setCGAbsenceReason, setServiceAbsenceReason,
@@ -119,9 +123,6 @@ export default function HeadCountForm() {
 
     function submitHandler() {
         const data = getHeadCountData("form");
-
-        console.log(data)
-        // return;
 
         if (!data) return;
         addHeadcount(data).then(res => {
@@ -201,7 +202,7 @@ export default function HeadCountForm() {
                             type={"number"}
                         />
                         : <div className={"flex flex-row justify-between items-start"}>
-                            <div className={"text-center"}>
+                            <div className={"text-center w-[45%]"}>
                                 <div className={`flex flex-row justify-between bg-gray-100 rounded-xl 
                                     sm:py-2 sm:px-4 py-2`}>
                                     <InputPIN name={"Kids"} setter={setKidsNum} val={kids_num} range={3}/>
@@ -210,9 +211,12 @@ export default function HeadCountForm() {
                                 </div>
                                 <div className={"mt-1"}>Wonder Kids</div>
                             </div>
-                            <InputPIN name={"YW"} setter={setYWNum} val={yw_num} className={"py-2"} range={3}/>
-                            <InputPIN name={"GS"} setter={setGSNum} val={gs_num} className={"py-2"} range={3}/>
-                            <InputPIN name={"NF"} setter={setNFNum} val={nf_num} className={"py-2"} range={3}/>
+                           <div className={"flex flex-row justify-around  w-[55%]"}>
+                               <InputPIN name={"YW"} setter={setYWNum} val={yw_num} className={"py-2"} range={3}/>
+                               <InputPIN name={"GS"} setter={setGSNum} val={gs_num} className={"py-2"} range={3}/>
+                               <InputPIN name={"AC"} setter={setACNum} val={ac_num} className={"py-2"} range={3}/>
+                               <InputPIN name={"NF"} setter={setNFNum} val={nf_num} className={"py-2"} range={3}/>
+                           </div>
                         </div>
                 }
             </div>

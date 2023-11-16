@@ -14,6 +14,7 @@ export const useHeadCountStore = create((set) => ({
     gs_num: "",
     nf_num: "",
     comment: "",
+    ac_num: "",
 
     // key ,for edit
     key: "",
@@ -54,6 +55,11 @@ export const useHeadCountStore = create((set) => ({
     },
     setComment: (comment) => set({comment}),
     setKey: (key) => set({key}),
+
+    setACNum: (ac_num) => {
+        if (ac_num < 0) set({ac_num: 0})
+        else set({ac_num})
+    },
 
     validateHeadCount: () => {
         if (useHeadCountStore.getState().satellite === "") {
@@ -101,6 +107,9 @@ export const useHeadCountStore = create((set) => ({
         if (useHeadCountStore.getState().nf_num === "") {
             useHeadCountStore.getState().setNFNum(0);
         }
+        if (useHeadCountStore.getState().ac_num === "") {
+            useHeadCountStore.getState().setACNum(0);
+        }
         return true;
     },
 
@@ -121,6 +130,7 @@ export const useHeadCountStore = create((set) => ({
             comment: useHeadCountStore.getState().comment,
             user_sub: useFormStore.getState().user_sub,
             user_email: useFormStore.getState().user_email,
+            ac_num: useHeadCountStore.getState().ac_num,
         }
     },
 
@@ -138,6 +148,7 @@ export const useHeadCountStore = create((set) => ({
         set({nf_num: data.nf_num});
         set({comment: data.comment});
         set({key: data.key});
+        set({ac_num: data.ac_num});
     },
 
     resetHeadCountData: () => {
@@ -150,5 +161,6 @@ export const useHeadCountStore = create((set) => ({
         set({nf_num: ""});
         set({comment: ""});
         set({key: ""});
+        set({ac_num: ""});
     },
 }))

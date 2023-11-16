@@ -161,6 +161,17 @@ function HeadCountTable() {
             sorter: (a, b) => a.cm_num - b.cm_num,
         },
         {
+            title: 'AC',
+            render: (_, record) => {
+                return (
+                    <div>
+                        {record.ac_num === 0 ? "" : record.ac_num}
+                    </div>
+                );
+            },
+            sorter: (a, b) => a.yp_num - b.yp_num,
+        },
+        {
             title: 'NF',
             render: (_, record) => {
                 return (
