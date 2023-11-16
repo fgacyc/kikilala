@@ -19,6 +19,7 @@ import {getWeekDatesArray} from "../formPage/data.js";
 import HeadCountSummary from "./HeadcountSummary.jsx";
 import {downloadCGLAttendanceData, getTodayDateStr} from "../../tools.js";
 import CsvDownload from "react-csv-downloader";
+import HeadcountReminderModal from "./headcountReminderModal.jsx";
 
 function HeadCountTable() {
     const [headcountTableData, setHeadcountTableData] = useState(null);
@@ -29,6 +30,8 @@ function HeadCountTable() {
     const setHeadCountData = useHeadCountStore(state => state.setHeadCountData)
     const [currentWeek, setCurrentWeek] = useState(getWeekDatesArray(4)[3]);
     const [allHeadcountData, setAllHeadcountData] = useState(null);
+    const [reminderModalVisible, setReminderModalVisible] = useState(false);
+    const setCurrentHeadCountTableData = useHeadCountStore(state => state.setCurrentHeadCountTableData);
 
     useEffect(() => {
         void setHeadcountData();
@@ -257,6 +260,7 @@ function HeadCountTable() {
         // return;
         const currentData = filterHeadcountByDate(headcountTableData,currentWeek);
         setCurrentTableData(currentData);
+        setCurrentHeadCountTableData(currentData);
     }, [currentWeek]);
 
     return <div className={"py-2"}>
@@ -282,6 +286,7 @@ function HeadCountTable() {
                 <Button type='secondary' icon={<IconNotification />} className={"ml-2"}
                         onClick={() => {
                             // setReminderModalVisible(true);
+                            setReminderModalVisible(true);
                         }}
                 />
                 {/*<Button type='secondary' className={"ml-2"}*/}
@@ -317,6 +322,7 @@ function HeadCountTable() {
         }
         <HeadCountSummary data={currentTableData} />
         <HeadCountDrawer setVisible={setHeadCountDrawerVisible} visible={headCountDrawerVisible} />
+        <HeadcountReminderModal  visible={reminderModalVisible} setVisible={setReminderModalVisible} />
     </div>
 }
 

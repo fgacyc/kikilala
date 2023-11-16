@@ -81,7 +81,7 @@ function DateModal({visible, setVisible}) {
 
     async function saveCGInfoToLocal(){
         const data = getFormData();
-        console.log(data)
+        // console.log(data)
         await set("CGInfo",{
             "satellite": data.satellite,
             "pastoral_team": data.pastoral_team,

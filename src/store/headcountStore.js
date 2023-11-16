@@ -19,6 +19,9 @@ export const useHeadCountStore = create((set) => ({
     // key ,for edit
     key: "",
 
+    // for headcount management
+    currentHeadCountTableData: null,
+
     setSatellite: (satellite) => {
         localStorage.setItem("headcount-satellite", satellite);
         set({satellite});
@@ -60,6 +63,7 @@ export const useHeadCountStore = create((set) => ({
         if (ac_num < 0) set({ac_num: 0})
         else set({ac_num})
     },
+    setCurrentHeadCountTableData: (currentHeadCountTableData) => set({currentHeadCountTableData}),
 
     validateHeadCount: () => {
         if (useHeadCountStore.getState().satellite === "") {
