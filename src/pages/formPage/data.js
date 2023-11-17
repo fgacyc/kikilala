@@ -98,6 +98,7 @@ export function validate(data) {
         data.satellite === "" ||
         data.pastoral_team === "" ||
         data.cgl_name === "" ||
+        data.cg_id === "" ||
         data.date === ""
     ){
         Message.warning("Please fill in all the fields!")

@@ -137,7 +137,7 @@ export const CGCategoryList = [
         value: "secondary_students",
     },
     {
-        text: "College/University",
+        text: "College / University",
         value: "college/university",
     },
     {
@@ -151,6 +151,10 @@ export const CGCategoryList = [
     {
         text: "Family",
         value: "family",
+    },
+    {
+        text: "Adult / Golden Age",
+        value: "adult/golden_age",
     },
     {
         text: "Entrepreneur",
