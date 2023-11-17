@@ -53,6 +53,7 @@ export const AttendanceTable = ({ className }) => {
         //             </div>
         //         );
         //     },
+        //     sorter: (a, b) => a.cg_id.localeCompare(b.cg_id),
         //     onFilter: (value, row) => {
         //         return row.cg_id.toLowerCase().includes(value.toLowerCase());
         //     },

@@ -92,6 +92,39 @@ export  function AbsentCGLsTable({ className }) {
                 }
             },
         },
+        // {
+        //     title: "CG ID",
+        //     dataIndex: 'key',
+        //     filterIcon: <IconSearch />,
+        //     filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        //         return (
+        //             <div className='arco-table-custom-filter'>
+        //                 <Input.Search
+        //                     allowClear={true}
+        //                     ref={inputRef}
+        //                     searchButton
+        //                     placeholder='Please enter name'
+        //                     value={filterKeys[0] || ''}
+        //                     onChange={(value) => {
+        //                         setFilterKeys(value ? [value] : []);
+        //                     }}
+        //                     onSearch={() => {
+        //                         confirm();
+        //                     }}
+        //                 />
+        //             </div>
+        //         );
+        //     },
+        //     sorter: (a, b) => a.key.localeCompare(b.key),
+        //     onFilter: (value, row) => {
+        //         return row.key.toLowerCase().includes(value.toLowerCase());
+        //     },
+        //     onFilterDropdownVisibleChange: (visible) => {
+        //         if (visible) {
+        //             setTimeout(() => inputRef.current.focus(), 150);
+        //         }
+        //     }
+        // },
         {
             title: 'Pastoral Team',
             width: 200,

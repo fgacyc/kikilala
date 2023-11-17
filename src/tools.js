@@ -27,7 +27,7 @@ export async function downloadCGLsData(data) {
 }
 
 export function downloadCGLAttendanceData(data) {
-    console.log(data)
+    // console.log(data)
     let csv = [];
     for (let item of data) {
         csv.push({
