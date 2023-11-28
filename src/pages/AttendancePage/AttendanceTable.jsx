@@ -7,6 +7,7 @@ import {deleteAttend, queryAttends} from "../../api/attendance.js";
 import {useAttendanceStore} from "../../store/attendanceStore.js";
 import {convertTableData} from "../formPage/data.js";
 import AttendanceInfoEditModal from "./AttendanceInfoEditModal.jsx";
+import {dataCheck} from "../../tools.js";
 
 export const AttendanceTable = ({ className }) => {
     const inputRef = useRef(null);
@@ -232,6 +233,10 @@ export const AttendanceTable = ({ className }) => {
         }
         getAttendance();
     }, [currentWeek, selectedRow])
+
+    useEffect(() => {
+        dataCheck(currentSubmitData);
+    }, [currentSubmitData]);
 
     return (
         <div className={className}>

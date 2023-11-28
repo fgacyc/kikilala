@@ -7,8 +7,10 @@
 //     [ 4, 'Joe', 'Sixpack', '9875647890', 'Address' ],
 //     [ 5, 'Richard', 'Thomson', '8632547890', 'Address' ]
 // ];
-import {almostWhole} from "chart.js/helpers";
-import {readAllCGLs} from "./api/CGLs.js";
+//import {almostWhole} from "chart.js/helpers";
+//import {readAllCGLs} from "./api/CGLs.js";
+
+import {useDataCheckStore} from "./store/dataCheckStore.js";
 
 export async function downloadCGLsData(data) {
     let csv = []
@@ -207,4 +209,63 @@ export function attendObjToCSV(data){
     }
 
     return csvData
+}
+
+export function dataCheck(data){
+    console.log(data)
+    integrityChecking(data)
+    duplicateChecking(data)
+}
+
+function integrityChecking(data){
+    for (let item of data){
+        if(!data.cg_id || !data.cgl_name || !data.cg_name || !data.pastoral_team || !data.satellite || !data.user_sub){
+            useDataCheckStore.getState().addIncompleteRecord(item)
+        }
+    }
+}
+
+function duplicateChecking(data){
+    let duplicate = []
+    for (let item of data){
+        if(!duplicate.includes(item.cg_id)){
+            duplicate.push(item.cg_id)
+        }else{
+            useDataCheckStore.getState().addDuplicateRecord(item)
+        }
+    }
+}
+
+// createAtObj can early than endDate in weekDurationStr("2021/08/01-2021/08/07") 2 days
+
+function ifTimeCorrect(weekDurationStr, createAtObj){
+    for (let item of data){
+        const dateStr = item.date;
+        const timeStr = item.time;
+        const time = new Date(`${dateStr} ${timeStr}`);
+        const now = new Date();
+        if (time > now){
+            return true
+        }
+    }
+    return false
+}
+
+function timeChecking(data){
+    for (let item of data){
+        const dateStr = item.date;
+
+    }
+}
+
+
+export  function isDateInRange(targetDate,dateRange) {
+    const [rangeStart, rangeEnd] = dateRange.split('-');
+    // 将输入的日期字符串转换为日期对象
+    const targetDateTime = new Date(targetDate);
+    const startDateTime = new Date(rangeStart + ' 00:00:00');
+    const endDateTime = new Date(rangeEnd + ' 23:59:59');
+
+    // 判断目标日期是否在范围内
+    return targetDateTime >= startDateTime && targetDateTime <= endDateTime;
 }

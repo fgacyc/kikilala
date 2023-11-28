@@ -20,6 +20,7 @@ import HeadCountSummary from "./HeadcountSummary.jsx";
 import {downloadCGLAttendanceData, getTodayDateStr} from "../../tools.js";
 import CsvDownload from "react-csv-downloader";
 import HeadcountReminderModal from "./headcountReminderModal.jsx";
+import HeadcountDownloadModal from "./HeadcountDownloadModal.jsx";
 
 function HeadCountTable() {
     const [headcountTableData, setHeadcountTableData] = useState(null);
@@ -27,11 +28,12 @@ function HeadCountTable() {
     const inputRef = useRef(null);
     const [headCountDrawerVisible, setHeadCountDrawerVisible] = useState(false);
     const [scrollX, setScrollX] = useState(window.innerWidth * 0.9);
-    const setHeadCountData = useHeadCountStore(state => state.setHeadCountData)
+    const setHeadCountDataStore = useHeadCountStore(state => state.setHeadCountData)
     const [currentWeek, setCurrentWeek] = useState(getWeekDatesArray(4)[3]);
     const [allHeadcountData, setAllHeadcountData] = useState(null);
     const [reminderModalVisible, setReminderModalVisible] = useState(false);
     const setCurrentHeadCountTableData = useHeadCountStore(state => state.setCurrentHeadCountTableData);
+    const [downloadModalVisible, setDownloadModalVisible] = useState(false);
 
     useEffect(() => {
         void setHeadcountData();
@@ -68,6 +70,10 @@ function HeadCountTable() {
         setHeadcountTableData(headData);
         headData = filterHeadcountByDate(headData,currentWeek);
         setCurrentTableData(headData);
+        if(headData){
+            setHeadCountDataStore(headData);
+        }
+
     }
     const columns = [
         {
@@ -270,19 +276,12 @@ function HeadCountTable() {
                 setCurrentWeek={setCurrentWeek}
             />
             <div className={"flex flex-row"}>
-                <CsvDownload
-                    filename={`headcount_${getTodayDateStr()}`}
-                    extension={".csv"}
-                    text={"Download"}
-                    datas={allHeadcountData}
-                >
-                    <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
-                            onClick={() => {
-                                // setAttendanceDownloadModalVisible(true);
-                                console.log(allHeadcountData)
-                            }}
-                    />
-                </CsvDownload>
+                <Button type='secondary' icon={<IconDownload />} className={"ml-2"}
+                        onClick={() => {
+                            // setReminderModalVisible(true);
+                            setDownloadModalVisible(true);
+                        }}
+                />
                 <Button type='secondary' icon={<IconNotification />} className={"ml-2"}
                         onClick={() => {
                             // setReminderModalVisible(true);
@@ -322,7 +321,10 @@ function HeadCountTable() {
         }
         <HeadCountSummary data={currentTableData} />
         <HeadCountDrawer setVisible={setHeadCountDrawerVisible} visible={headCountDrawerVisible} />
-        <HeadcountReminderModal  visible={reminderModalVisible} setVisible={setReminderModalVisible} />
+        {
+            currentTableData&& currentTableData.length>0 && <HeadcountReminderModal  visible={reminderModalVisible} setVisible={setReminderModalVisible} />
+        }
+        <HeadcountDownloadModal  visible={downloadModalVisible} setVisible={setDownloadModalVisible} />
     </div>
 }
 
