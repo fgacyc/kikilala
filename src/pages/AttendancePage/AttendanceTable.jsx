@@ -234,9 +234,9 @@ export const AttendanceTable = ({ className }) => {
         getAttendance();
     }, [currentWeek, selectedRow])
 
-    useEffect(() => {
-        dataCheck(currentSubmitData);
-    }, [currentSubmitData]);
+    // useEffect(() => {
+    //     dataCheck(currentSubmitData);
+    // }, [currentSubmitData]);
 
     return (
         <div className={className}>

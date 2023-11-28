@@ -145,9 +145,9 @@ const AttendanceManagement = () => {
                         className={!showSubmitted === false ? 'hidden' : 'block'}
                     />
                 </div>
-                <div>
-                    Warning: If you want to delete a record, please make sure that the record is not submitted.
-                </div>
+                {/*<div>*/}
+                {/*    Warning: If you want to delete a record, please make sure that the record is not submitted.*/}
+                {/*</div>*/}
             </div>
             <AttendanceDownloadModal setVisible={setAttendanceDownloadModalVisible} visible={attendanceDownloadModalVisible} />
             <AttendanceReminder setVisible={setReminderModalVisible} visible={reminderModalVisible} />

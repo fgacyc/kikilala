@@ -78,6 +78,7 @@ function HeadCountTable() {
     const columns = [
         {
             title: 'Service Location',
+            width: 100,
             dataIndex: "satellite",
             sorter: (a, b) => a.satellite.localeCompare(b.satellite),
             filters: satelliteList,
@@ -98,6 +99,7 @@ function HeadCountTable() {
         },
         {
             title: 'Date time',
+            width: 150,
             dataIndex: 'dateTime',
             sorter: (a, b) => a.dateTime.localeCompare(b.dateTime),
             filterIcon: <IconSearch />,
