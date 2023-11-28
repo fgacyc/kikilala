@@ -24,8 +24,8 @@ export default  function HeadcountDownloadModal({ visible, setVisible }){
     }, []);
 
     useEffect(() => {
-        console.log(currentWeekData)
-        console.log(allHeadCountData)
+        //console.log(currentWeekData)
+        //console.log(allHeadCountData)
         setCurrentWeekData([])
         if(allHeadCountData === null) return;
         for (let item of allHeadCountData) {
@@ -33,7 +33,7 @@ export default  function HeadcountDownloadModal({ visible, setVisible }){
                 setCurrentWeekData((currentWeekData) => [...currentWeekData, item])
             }
         }
-        console.log(currentWeekData)
+        //console.log(currentWeekData)
     }, [currentWeek])
 
     function formatData(data){
@@ -83,7 +83,7 @@ export default  function HeadcountDownloadModal({ visible, setVisible }){
                 ))}
             </Select>
             <CsvDownload
-                filename={`headcount_${getTodayDateStr()}`}
+                filename={`headcount_${currentWeek}`}
                 extension={".csv"}
                 text={"Download"}
                 datas={formatData(currentWeekData)}
