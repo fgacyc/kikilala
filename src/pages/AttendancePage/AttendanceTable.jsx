@@ -218,7 +218,7 @@ export const AttendanceTable = ({ className }) => {
             ),
         }
     ];
-    const [attendance, setAttendance] = useState([])
+    // const [attendance, setAttendance] = useState([])
     const [currentSubmitData,setCurrentSubmitData] = useAttendanceStore(state => [
         state.currentSubmitData, state.setCurrentSubmitData
     ]);
@@ -243,11 +243,11 @@ export const AttendanceTable = ({ className }) => {
     //     dataCheck(currentSubmitData);
     // }, [currentSubmitData]);
 
-    useEffect(() => {
-        if (duplicateRecordsList.length > 0 ) {
-            console.log("duplicateRecordsList",duplicateRecordsList);
-        }
-    }, [duplicateRecordsList]);
+    // useEffect(() => {
+    //     if (duplicateRecordsList.length > 0 ) {
+    //         console.log("duplicateRecordsList",duplicateRecordsList);
+    //     }
+    // }, [duplicateRecordsList]);
 
     return (
         <div className={className}>
