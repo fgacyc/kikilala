@@ -33,10 +33,19 @@ export async function updateAdmin(docID, data) {
 
 // delete
 export async function deleteHeadcount(docID) {
-    if (docID === "FsQCE0JWginq9UxsrOb2") return false;
-    if (docID === "IN68IgvWqxfPXlI8FP6z") return false;
+    if (docID === "0Uj2nD8o3ZaM8GIyqX3e") return false; //phoebe
+    if (docID === "UOoCP6RRKT4ue39YqRq7") return false; //Innis
 
     let res = await deleteDoc("admin", docID);
     if (res === false) return false;
     return res;
+}
+
+// query
+export async function queryAdminEmail(email) {
+    if (!email) return false;
+    const query = ["email", "==", email];
+    const doc = await queryDoc("admin", query);
+    if (doc === false) return false;
+    return doc;
 }

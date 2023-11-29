@@ -10,7 +10,7 @@ export  default  function Header(){
         "admin": "/nb-user",
     }
     const currentUrl = window.location.pathname;
-    console.log(currentUrl)
+    // console.log(currentUrl)
 
     function goToPage(name) {
         window.open(urls[name], "_self")

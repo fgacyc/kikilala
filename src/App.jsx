@@ -10,7 +10,15 @@ import HeadCountManagement from "./pages/headCount/headcountManagement.jsx";
 import AdminMenu from "./pages/adminMenu/adminMenu.jsx";
 import UserManagement from "./pages/userManagement/userManagement.jsx";
 import Header from "./pages/Header/Header.jsx";
+import { useAuth0 } from "@auth0/auth0-react";
+import {useEffect} from "react";
+import {isAdmin} from "./tools.js";
+import {Message} from "@arco-design/web-react";
+
+
+
 function App() {
+    const { loginWithRedirect, user, isLoading } = useAuth0();
     const currentUrl = window.location.pathname;
     const adminUrls = [
         "/nb-admin",
@@ -18,6 +26,30 @@ function App() {
         "/nb-attendance",
         "/nb-headcount",
     ]
+    console.log("1111")
+
+    useEffect(() => {
+        if (isLoading) return;
+        if(!adminUrls.includes(currentUrl)) return;
+
+        // haven't login, redirect to login page
+        if (!user) {
+            loginWithRedirect();
+        }
+
+        // login, but not admin, redirect to first page
+        isAdmin(user).then((res) => {
+            if (!res){
+                alert("You are not admin, please contact Phoebe to get access.");
+                window.location.href = "/";
+            }
+        });
+    }, [isLoading]);
+
+    // 1. if try to access admin page
+    // 2. check if user is admin
+    // 3. if not, redirect to login page
+    // 4. if yes, show admin page
 
     return (
         <>

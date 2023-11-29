@@ -10,6 +10,7 @@ export default function UserManagement() {
     const [tableData, setTableData] = useState([]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [remark, setRemark] = useState("");
     useEffect(() => {
         getAdmins();
     }, [])
@@ -26,7 +27,8 @@ export default function UserManagement() {
         }
         const data = {
             name: name,
-            email: email
+            email: email,
+            remark: remark
         }
 
         addAdmin(data).then((res) => {
@@ -35,6 +37,7 @@ export default function UserManagement() {
 
         setName("");
         setEmail("");
+        setRemark("");
     }
 
     const columns = [
@@ -45,6 +48,10 @@ export default function UserManagement() {
         {
             title: 'Email',
             dataIndex: 'email'
+        },
+        {
+            title: 'Remark',
+            dataIndex: 'remark'
         },
         {
             title: "Operation",
@@ -78,17 +85,23 @@ export default function UserManagement() {
         <div className={"h-full w-full sm:px-8 px-2 py-4"}>
             <div className={"bg-white rounded pb-2 pt-2"}>
                 <div className={"my-0 flex flex-row flex-wrap justify-between"}>
-                   <div>
-                       <Input className={"w-1/3 mr-2 mb-2 min-w-[300px]"}  allowClear
+                   <div className={"flex flex-row flex-wrap"}>
+                       <Input  className={"w-1/4 mr-2 mb-2 min-w-[300px]"}  allowClear
+                               placeholder='Please Enter Remark...'
+                               onChange={setRemark}
+                               value={remark}
+                       />
+                       <Input className={"w-1/4 mr-2 mb-2 min-w-[300px]"}  allowClear
                               placeholder='Please Enter Name...'
                               onChange={setName}
                               value={name}
                        />
-                       <Input  className={"w-1/3 mr-2 mb-2 min-w-[300px]"}  allowClear
+                       <Input  className={"w-1/4 mr-2 mb-2 min-w-[300px]"}  allowClear
                                placeholder='Please Enter Email...'
                                onChange={setEmail}
                                  value={email}
                        />
+
                    </div>
                     <Button type='secondary'
                             className={"mr-4 w-[80px]"}

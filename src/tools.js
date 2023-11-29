@@ -11,6 +11,7 @@
 //import {readAllCGLs} from "./api/CGLs.js";
 
 import {useDataCheckStore} from "./store/dataCheckStore.js";
+import {queryAdminEmail} from "./api/admin.js";
 
 export async function downloadCGLsData(data) {
     let csv = []
@@ -281,4 +282,11 @@ export  function isDateInRange(targetDate,dateRange) {
 
     // 判断目标日期是否在范围内
     return targetDateTime >= startDateTime && targetDateTime <= endDateTime;
+}
+
+export async function isAdmin(user){
+    // console.log(user)
+    const email = user.email;
+    const res =await queryAdminEmail(email);
+    return res.length > 0;
 }
