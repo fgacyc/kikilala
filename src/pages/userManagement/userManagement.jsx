@@ -76,8 +76,8 @@ export default function UserManagement() {
 
     return(
         <div className={"h-full w-full sm:px-8 px-2 py-4"}>
-            <div className={"bg-white rounded-lg pb-2 pt-2"}>
-                <div className={"my-4 flex flex-row flex-wrap justify-between"}>
+            <div className={"bg-white rounded pb-2 pt-2"}>
+                <div className={"my-0 flex flex-row flex-wrap justify-between"}>
                    <div>
                        <Input className={"w-1/3 mr-2 mb-2 min-w-[300px]"}  allowClear
                               placeholder='Please Enter Name...'
@@ -90,7 +90,7 @@ export default function UserManagement() {
                                  value={email}
                        />
                    </div>
-                    <Button type='primary'
+                    <Button type='secondary'
                             className={"mr-4 w-[80px]"}
                             onClick={addUser}
                     >Add</Button>

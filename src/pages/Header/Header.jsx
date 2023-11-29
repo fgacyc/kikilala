@@ -18,7 +18,7 @@ export  default  function Header(){
 
     return (
         <div className={"w-full h-[80px] bg-[#33CC99] sm:px-8 py-4 px-2 relative"}>
-           <div className={"bg-[#00D97C] flex flex-row justify-between items-center py-2 rounded-xl"}>
+           <div className={"bg-[#00D97C] flex flex-row justify-between items-center py-2 rounded-xl shadow-lg"}>
                <div className={"text-white text-2xl font-bold ml-2"}>Numbers</div>
                <div className={"sm:flex flex-row justify-between items-center hidden"}>
                    <div className={`text-white text-lg mr-8 cursor-pointer hover:underline

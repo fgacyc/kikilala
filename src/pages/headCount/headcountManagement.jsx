@@ -7,7 +7,7 @@ import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
 import { deleteHeadcount, readAllHeadcounts } from "../../api/headcount.js";
 import { pastoralTeamList, satelliteList } from "../../config.js";
 import { serviceTypeOptions } from "./headcountForm.jsx";
-import {IconDelete, IconDownload, IconEdit, IconNotification, IconSearch} from "@arco-design/web-react/icon";
+import {IconDelete, IconDownload, IconEdit, IconHome, IconNotification, IconSearch} from "@arco-design/web-react/icon";
 import { deleteCGL } from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 import HeadCountDrawer from "./HeadcountDrawer.jsx";
@@ -89,6 +89,7 @@ function HeadCountTable() {
         },
         {
             title: 'Type',
+            width: 100,
             dataIndex: 'serviceType',
             sorter: (a, b) => a.serviceType.localeCompare(b.serviceType),
             filters: serviceTypeOptions,
@@ -288,6 +289,11 @@ function HeadCountTable() {
                         onClick={() => {
                             // setReminderModalVisible(true);
                             setReminderModalVisible(true);
+                        }}
+                />
+                <Button type='secondary' icon={<IconHome />} className={"ml-2"}
+                        onClick={() => {
+                            window.open("/headcount", "_self");
                         }}
                 />
                 {/*<Button type='secondary' className={"ml-2"}*/}

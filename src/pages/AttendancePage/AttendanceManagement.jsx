@@ -2,7 +2,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input, Popconfirm, Select, Space, Switch, Table } from '@arco-design/web-react';
 import { deleteAttend, queryAttends, readAllAttends } from '../../api/attendance';
 import { convertTableData, getWeekDatesArray } from '../formPage/data';
-import {IconDelete, IconDownload, IconEdit, IconNotification, IconSearch} from '@arco-design/web-react/icon';
+import {
+    IconDelete,
+    IconDownload,
+    IconEdit, IconHome,
+    IconNotification,
+    IconPlusCircle,
+    IconSearch
+} from '@arco-design/web-react/icon';
 import { pastoralTeamList, satelliteList } from '../../config';
 import AttendanceInfoEditModal from './AttendanceInfoEditModal';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -113,6 +120,11 @@ const AttendanceManagement = () => {
                                 <Button type='secondary' icon={<IconNotification />} className={"ml-2"}
                                         onClick={() => {
                                             setReminderModalVisible(true);
+                                        }}
+                                />
+                                <Button type='secondary' icon={<IconHome />} className={"ml-2"}
+                                        onClick={() => {
+                                            window.open("/", "_self");
                                         }}
                                 />
                                 {/*<Button type='secondary' className={"ml-2"}*/}

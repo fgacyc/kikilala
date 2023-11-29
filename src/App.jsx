@@ -11,9 +11,19 @@ import AdminMenu from "./pages/adminMenu/adminMenu.jsx";
 import UserManagement from "./pages/userManagement/userManagement.jsx";
 import Header from "./pages/Header/Header.jsx";
 function App() {
+    const currentUrl = window.location.pathname;
+    const adminUrls = [
+        "/nb-admin",
+        "/nb-user",
+        "/nb-attendance",
+        "/nb-headcount",
+    ]
+
     return (
         <>
-            <Header />
+            {
+                adminUrls.includes(currentUrl) ? <Header /> : <></>
+            }
             <Router>
                 <Routes>
                     {/*<Route path="/login" element={<Login/>}/>*/}

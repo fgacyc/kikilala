@@ -306,8 +306,8 @@ export default function CGLsManagement() {
 
 
     return (
-        <div className={"h-full w-full sm:px-8 px-2 py-4"}>
-            <div className={"flex flex-row justify-between"}>
+        <div className={"h-full w-full sm:px-8 px-2 py-4 "}>
+            <div className={"flex flex-row justify-between bg-white py-2 rounded-t"}>
                 <Button type='secondary' className={"mb-2"}
                     icon={<IconPlus />}
                     onClick={() => setAddVisible(true)}
@@ -327,13 +327,8 @@ export default function CGLsManagement() {
                        </Button>
                    </CsvDownload>
                </div>
-                {/*<Button type='secondary' onClick={() =>{*/}
-                {/*    duplicateCheck("The Blessing 2")*/}
-                {/*}}>*/}
-                {/*    Click*/}
-                {/*</Button>*/}
             </div>
-            <div className={"bg-white rounded-lg pb-2"}>
+            <div className={"bg-white rounded-b pb-2"}>
                 {
                     isShowActive
                         ? <CGLTable
