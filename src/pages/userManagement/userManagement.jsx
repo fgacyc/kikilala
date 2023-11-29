@@ -2,17 +2,26 @@ import {Button, Input, Popconfirm, Table} from '@arco-design/web-react';
 import {useEffect, useState} from "react";
 import {addAdmin, deleteHeadcount, readAllAdmins} from "../../api/admin.js";
 import {convertTableData} from "../formPage/data.js";
-import {IconDelete} from "@arco-design/web-react/icon";
+import {IconDelete, IconEdit} from "@arco-design/web-react/icon";
 import {closeCG} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
+import AdminUserInfoModifyModal from "./adminUserInfoModifyModal.jsx";
+import {useAdminUserStore} from "../../store/adminUserStore.js";
 
 export default function UserManagement() {
     const [tableData, setTableData] = useState([]);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [remark, setRemark] = useState("");
+    const [adminUserInfoModifyModalVisible, setAdminUserInfoModifyModalVisible] = useState(false);
+    const setAdminUser = useAdminUserStore(state => state.setAdminUser);
+
     useEffect(() => {
         getAdmins();
+        PubSub.subscribe('updateAdmins', () => {
+            getAdmins();
+        });
+        return () => {PubSub.unsubscribe('updateAdmins');}
     }, [])
 
     async function getAdmins(){
@@ -27,7 +36,7 @@ export default function UserManagement() {
         }
         const data = {
             name: name,
-            email: email,
+            email: email.trim(),
             remark: remark
         }
 
@@ -43,15 +52,22 @@ export default function UserManagement() {
     const columns = [
         {
             title: 'Name',
-            dataIndex: 'name'
+            dataIndex: 'name',
+            width: 150,
         },
         {
             title: 'Email',
-            dataIndex: 'email'
+            width: 300,
+            render: (_, record) => (
+                <div className={"flex flex-row"}>
+                    <span className={"mr-2"}>{record.email}</span>
+                </div>
+            )
         },
         {
             title: 'Remark',
-            dataIndex: 'remark'
+            dataIndex: 'remark',
+            width: 300,
         },
         {
             title: "Operation",
@@ -59,7 +75,16 @@ export default function UserManagement() {
             fixed: "right",
             dataIndex: "op",
             render: (_, record) => (
-                <div className={"text-right"}>
+                <div className={"text-right flex flex-row"}>
+                    <Button icon={<IconEdit />}
+                            className={`mr-2`}
+                            onClick={() => {
+                                // console.log(record)
+                                setAdminUser(record);
+                                setAdminUserInfoModifyModalVisible(true);
+                            }}
+                            type="secondary"
+                    ></Button>
                     <Popconfirm
                         focusLock
                         title='Confirm'
@@ -108,8 +133,16 @@ export default function UserManagement() {
                             onClick={addUser}
                     >Add</Button>
                 </div>
-                <Table columns={columns} data={tableData} />
+                <Table columns={columns} data={tableData}
+                       scroll={{
+                           x: window.innerWidth * 0.9,
+                           y: window.innerHeight,
+                       }}
+                />
             </div>
+            <AdminUserInfoModifyModal
+                visible={adminUserInfoModifyModalVisible}
+                setVisible={setAdminUserInfoModifyModalVisible} />
         </div>
     )
 }

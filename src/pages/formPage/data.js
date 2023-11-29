@@ -224,6 +224,7 @@ export function convertTableData(data){
     for (let key in data){
         const item = data[key];
         item.key = key;
+        item.id=key;
         CGsList.push(item);
     }
     // sort by createdAt
