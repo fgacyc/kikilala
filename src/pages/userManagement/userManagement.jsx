@@ -111,11 +111,7 @@ export default function UserManagement() {
             <div className={"bg-white rounded pb-2 pt-2"}>
                 <div className={"my-0 flex flex-row flex-wrap justify-between"}>
                    <div className={"flex flex-row flex-wrap"}>
-                       <Input  className={"w-1/4 mr-2 mb-2 min-w-[300px]"}  allowClear
-                               placeholder='Please Enter Remark...'
-                               onChange={setRemark}
-                               value={remark}
-                       />
+
                        <Input className={"w-1/4 mr-2 mb-2 min-w-[300px]"}  allowClear
                               placeholder='Please Enter Name...'
                               onChange={setName}
@@ -126,7 +122,11 @@ export default function UserManagement() {
                                onChange={setEmail}
                                  value={email}
                        />
-
+                       <Input  className={"w-1/4 mr-2 mb-2 min-w-[300px]"}  allowClear
+                               placeholder='Please Enter Remark...'
+                               onChange={setRemark}
+                               value={remark}
+                       />
                    </div>
                     <Button type='secondary'
                             className={"mr-4 w-[80px]"}
