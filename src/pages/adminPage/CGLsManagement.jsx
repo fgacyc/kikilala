@@ -20,7 +20,7 @@ import {
 } from "@arco-design/web-react/icon";
 import CGLsInfoEditModal from "./CGLsInfoEditModal.jsx";
 import { useCGLStore } from "../../store/CGLStore.js";
-import { pastoralTeamList, satelliteList } from "../../config.js";
+import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
 import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
 import { downloadCGLsData, downloadXLSX, getTodayDateStr } from "../../tools.js";
@@ -169,10 +169,13 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                     </div>
                 )
             },
-            sorter: (a, b) => a.category.localeCompare(b.category),
-            filters: satelliteList,
+            sorter: (a, b) => {
+                if (a.category === undefined) return 1;
+                return a.category.localeCompare(b.category);
+            },
+            filters: CGCategoryList,
             onFilter: (value, row) => {
-                return row.satellite === value;
+                return row.category === value;
             },
             filterMultiple: false,
         },
