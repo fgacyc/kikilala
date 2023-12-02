@@ -16,7 +16,7 @@ export default function AttendanceReminder({visible, setVisible}) {
     const [message, setMessage] = useState("");
     const currentPendingData = useAttendanceStore(state => state.currentPendingData);
     const [isShowSuccess, setIsShowSuccess] = useState(false);
-
+    const satelliteNameList1 = satelliteNameList.concat("All");
     function getCGLNameListFromSateAndPastoral(satellite, pastoralTeam) {
         if (!satellite && !pastoralTeam) return [];
 
@@ -38,6 +38,15 @@ export default function AttendanceReminder({visible, setVisible}) {
         if (!satellite) return;
         // Kuchai must choose pastoral team, other satellite don't need to choose
         if (satellite.includes("Kuchai") && !pastoralTeam) return;
+
+        if (satellite === "All") {
+            const CGLs = currentPendingData;
+            const filterAbsentCGLsNameList = CGLs.map((item) => item.CG_leader);
+            setAbsentCGLsNameList(filterAbsentCGLsNameList);
+            return;
+        }
+
+
         const filterAbsentCGLsList = getCGLNameListFromSateAndPastoral(satellite, pastoralTeam);
         //console.log(filterAbsentCGLsList)
         const filterAbsentCGLsNameList = filterAbsentCGLsList.map((item) => item.CG_leader);
@@ -58,6 +67,10 @@ export default function AttendanceReminder({visible, setVisible}) {
         let prefix = `*Attendance Reminder*\n\n${pastoralTeam ? satellite + "-" + pastoralTeam : satellite}\n\n` +
             "Hi, kindly remind below CG to submit attendance for last week:\n\n";
         let suffix = "\n\nThank you!";
+        // absentCGLsNameList sort al
+        absentCGLsNameList.sort();
+
+
         const message = prefix + absentCGLsNameList.join("\n") + suffix;
         setMessage(message);
     }
@@ -96,7 +109,7 @@ export default function AttendanceReminder({visible, setVisible}) {
                         setPastoralTeam("");
                     }}
                 >
-                    {satelliteNameList.map((option, index) => (
+                    {satelliteNameList1.map((option, index) => (
                         <Option key={index} value={option}>
                             {option}
                         </Option>
