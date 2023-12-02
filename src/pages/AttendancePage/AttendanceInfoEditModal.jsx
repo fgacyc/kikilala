@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Message, Divider, InputNumber, Drawer, Input, Select } from '@arco-design/web-react';
-import { updateAttend } from '../../api/attendance';
+import {checkDuplicate, updateAttend} from '../../api/attendance';
 import useSelectedRowStore from '../../store/attendanceRecordStore';
 import { getWeekDatesArray } from '../formPage/data';
 
@@ -140,8 +140,15 @@ const AttendanceInfoEditModal = ({ visible, setVisible }) => {
         let fieldsValue = form.getFieldsValue();
         fieldsValue.total_members_num = calculateTotal(fieldsValue);
 
-        await updateAttend(attendanceRecord.id,
-            { ...fieldsValue, date: valueRange }).then((res) => {
+        const data = { ...fieldsValue, date: valueRange };
+        const duplicate = await  checkDuplicate(data.date, attendanceRecord.cg_id);
+
+        if (duplicate) {
+            Message.warning('This attendance has been submitted for the week you selected');
+            return;
+        }
+
+        await updateAttend(attendanceRecord.id,data).then((res) => {
                 if (res) {
                     setAttendanceRecord({ ...attendanceRecord, ...fieldsValue, date: valueRange });
                     Message.success('Updated successfully!');

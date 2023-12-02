@@ -64,6 +64,8 @@ export async function checkDuplicate(date, cg_id) {
 }
 
 
+
+
 export async function getAttendByPastoralTeam(name){
     console.log(name)
     if (!name) return false;
