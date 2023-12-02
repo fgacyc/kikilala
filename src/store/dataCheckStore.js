@@ -8,6 +8,9 @@ export const useDataCheckStore = create((set) => ({
         const incompleteRecordsList = [...state.incompleteRecordsList, record]
         return {incompleteRecordsList}
     }),
+    setDuplicateRecordsList: (list) => set(state => {
+        return {duplicateRecordsList: list}
+    }),
     addDuplicateRecord: (record) => set(state => {
         const duplicateRecordsList = [...state.duplicateRecordsList, record]
         return {duplicateRecordsList}

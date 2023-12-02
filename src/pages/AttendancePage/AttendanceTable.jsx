@@ -8,6 +8,7 @@ import {useAttendanceStore} from "../../store/attendanceStore.js";
 import {convertTableData} from "../formPage/data.js";
 import AttendanceInfoEditModal from "./AttendanceInfoEditModal.jsx";
 import {dataCheck} from "../../tools.js";
+import {useDataCheckStore} from "../../store/dataCheckStore.js";
 
 export const AttendanceTable = ({ className }) => {
     const inputRef = useRef(null);
@@ -223,12 +224,16 @@ export const AttendanceTable = ({ className }) => {
     ]);
     const currentCGNumber  = useAttendanceStore(state => state.currentCGNumber);
     const currentWeek= useAttendanceStore(state => state.currentWeek);
+    const [incompleteRecordsList,duplicateRecordsList] = useDataCheckStore(
+        state => [state.incompleteRecordsList,state.duplicateRecordsList]
+    )
 
 
     useEffect(() => {
         async function getAttendance() {
             const attendance_data = await queryAttends(currentWeek);
             const updateAttendanceData = convertTableData(attendance_data);
+            dataCheck(updateAttendanceData);
             setCurrentSubmitData(updateAttendanceData);
         }
         getAttendance();
@@ -237,6 +242,12 @@ export const AttendanceTable = ({ className }) => {
     // useEffect(() => {
     //     dataCheck(currentSubmitData);
     // }, [currentSubmitData]);
+
+    useEffect(() => {
+        if (duplicateRecordsList.length > 0 ) {
+            console.log("duplicateRecordsList",duplicateRecordsList);
+        }
+    }, [duplicateRecordsList]);
 
     return (
         <div className={className}>
@@ -265,6 +276,23 @@ export const AttendanceTable = ({ className }) => {
                     }}
                 />
             }
+            {
+                duplicateRecordsList &&  duplicateRecordsList.length >0 && <div className={"mx-4 border rounded p-2 my-4"}>
+                    <div className={"text-red-500 text-lg font-bold"}>Warning: </div>
+                    <div className={"text-black"}>Duplicate records: {duplicateRecordsList.length}</div>
+                    <ul>
+                        {
+                            duplicateRecordsList.map((item) => {
+                                return (
+                                    <li className={"text-black list-disc list-inside"}>{item.cgl_name}</li>
+                                )
+                            })
+                        }
+                    </ul>
+                </div>
+            }
+
+
             <AttendanceInfoEditModal
                 visible={editModalVisible}
                 setVisible={setEditModalVisible}

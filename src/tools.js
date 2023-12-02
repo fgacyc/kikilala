@@ -212,8 +212,8 @@ export function attendObjToCSV(data){
 }
 
 export function dataCheck(data){
-    console.log(data)
-    integrityChecking(data)
+    // console.log(data)
+    //integrityChecking(data)
     duplicateChecking(data)
 }
 
@@ -227,13 +227,15 @@ function integrityChecking(data){
 
 function duplicateChecking(data){
     let duplicate = []
+    let duplicateRecord = []
     for (let item of data){
         if(!duplicate.includes(item.cg_id)){
             duplicate.push(item.cg_id)
         }else{
-            useDataCheckStore.getState().addDuplicateRecord(item)
+            duplicateRecord.push(item)
         }
     }
+    useDataCheckStore.getState().setDuplicateRecordsList(duplicateRecord)
 }
 
 // createAtObj can early than endDate in weekDurationStr("2021/08/01-2021/08/07") 2 days
