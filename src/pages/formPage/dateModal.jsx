@@ -6,7 +6,7 @@ import {useFormStore} from "../../store/formStore.js";
 import {addCGL} from "../../api/CGLs.js";
 import {addAttend, checkDuplicate} from "../../api/attendance.js";
 import {set} from "idb-keyval";
-import {checkWeek} from "../../tools.js";
+import {checkWeek, timeDetect} from "../../tools.js";
 
 function ButtonsGroup(){
     const [active,setActive] = useState(-1)
@@ -57,14 +57,21 @@ function DateModal({visible, setVisible}) {
 
         // checking duplicate
         const isDuplicate = await checkDuplicate(data.date,data.cg_id);
-        console.log(isDuplicate)
+        // console.log(isDuplicate)
         if(isDuplicate) {
             Message.warning("Your attendance has been submitted for the week you selected")
             return;
         }
 
+        // check it this week start
+        const ifStart = timeDetect(data.date, new Date());
+        if(!ifStart){
+            Message.warning("You can only submit attendance for last week, this week has not started yet")
+            return;
+        }
+
         // console.log(data);
-        //return;
+        // return;
 
         if(validate(data) === false) return;
         setVisible(false);
