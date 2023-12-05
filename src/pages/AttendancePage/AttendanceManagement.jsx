@@ -22,6 +22,7 @@ import AttendanceDownloadModal from "./AttendanceDownloadModal.jsx";
 import AttendanceReminder from "./AttendanceReminder.jsx";
 import {AttendanceTable} from "./AttendanceTable.jsx";
 import {AbsentCGLsTable} from "./PendingTable.jsx";
+import {generateAllWeeklyRanges} from "../../tools.js";
 const Option = Select.Option;
 const AttendanceManagement = () => {
     const [dateArray, setDateArray] = useState([])
@@ -39,7 +40,7 @@ const AttendanceManagement = () => {
     useEffect(() => {
         async  function init(){
             // init data for date selection
-            setDateArray(getWeekDatesArray(buttonsNumber));
+            setDateArray(generateAllWeeklyRanges());
             // load local storage data for date and showSubmitted
             initAttendData();
             // get current num
@@ -47,6 +48,7 @@ const AttendanceManagement = () => {
             setCurrentCGNumber(num);
         }
         void init();
+
     }, []);
 
     // log operation
@@ -62,37 +64,6 @@ const AttendanceManagement = () => {
         loginWithRedirect();
     }, [isLoading])
 
-    async function check() {
-        const attendData = await  queryAttends("2023/10/30-2023/11/05")
-        const CGLs = await readAllActiveCGLs();
-        // console.log(attendData);
-        // console.log(CGLs);
-
-        const allCGID  = CGLs.map((cgl) => cgl.CG_id);
-        //console.log(allCGID);
-
-        const allCGAttendance = attendData.map((attend) => attend.cg_id);
-        //console.log(allCGAttendance);
-
-        // for (let id of allCGAttendance){
-        //     if (!allCGID.includes(id)){
-        //         console.log(id);
-        //     }
-        // }
-        // for (let item of attendData){
-        //     if (item.cg_id ==="MpkwSZ8YoyNXuOBT6aYY" || item.cg_id==="j84YmcgqsYfwOTfBykzQ"){
-        //         console.log(item);
-        //     }
-        // }
-
-        for (let item of attendData){
-            if (item.cg_id ==="MpkwSZ8YoyNXuOBT6aYY" || item.cg_id==="j84YmcgqsYfwOTfBykzQ"){
-                console.log(item);
-            }
-        }
-
-    }
-
     return (
         <div className={"h-full w-full sm:px-8 px-2  py-4 "}>
             <div className={"bg-white pt-2 rounded"}>
@@ -105,7 +76,7 @@ const AttendanceManagement = () => {
                                         setCurrentWeek(value);
                                     }}
                             >
-                                {dateArray.slice().reverse().map((option, index) => (
+                                {dateArray.map((option, index) => (
                                     <Option key={index} value={option}>
                                         {option}
                                     </Option>

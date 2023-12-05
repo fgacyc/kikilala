@@ -290,3 +290,49 @@ export async function isAdmin(user){
     const res =await queryAdminEmail(email);
     return res.length > 0;
 }
+
+export  function generateAllWeeklyRanges() {
+    const startDate = new Date('2023-10-16'); // 固定起始日期
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    const ranges = [];
+
+    // 函数：获取指定日期所在周的周一和周日
+    function getWeekRange(date) {
+        const dayOfWeek = date.getDay();
+        const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // 周日特殊处理
+        const sundayOffset = 7 - dayOfWeek;
+
+        const monday = new Date(date.getTime() + mondayOffset * oneDayMs);
+        const sunday = new Date(date.getTime() + sundayOffset * oneDayMs);
+
+        return {
+            start: monday,
+            end: sunday
+        };
+    }
+
+    // 函数：格式化日期为 YYYY/MM/DD
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}/${month}/${day}`;
+    }
+
+    let currentWeek = getWeekRange(startDate);
+
+    while (true) {
+        const rangeStr = `${formatDate(currentWeek.start)}-${formatDate(currentWeek.end)}`;
+        ranges.push(rangeStr);
+
+        // 检查是否到达当前周
+        if (currentWeek.end >= new Date()) {
+            break;
+        }
+
+        // 移动到下一周
+        currentWeek = getWeekRange(new Date(currentWeek.start.getTime() + 7 * oneDayMs));
+    }
+
+    return ranges.reverse();
+}

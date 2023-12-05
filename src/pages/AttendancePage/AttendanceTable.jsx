@@ -234,6 +234,7 @@ export const AttendanceTable = ({ className }) => {
             const attendance_data = await queryAttends(currentWeek);
             const updateAttendanceData = convertTableData(attendance_data);
             dataCheck(updateAttendanceData);
+            // console.log("updateAttendanceData",updateAttendanceData)
             setCurrentSubmitData(updateAttendanceData);
         }
         getAttendance();
@@ -252,7 +253,7 @@ export const AttendanceTable = ({ className }) => {
     return (
         <div className={className}>
             {
-                currentSubmitData &&
+                currentSubmitData && currentSubmitData.length > 0 &&
                 <Table
                     columns={columns}
                     data={currentSubmitData}
@@ -292,12 +293,13 @@ export const AttendanceTable = ({ className }) => {
                 </div>
             }
 
+             <AttendanceInfoEditModal
+                    visible={editModalVisible}
+                    setVisible={setEditModalVisible}
+                    attendanceRecord={selectedRow}
+                />
 
-            <AttendanceInfoEditModal
-                visible={editModalVisible}
-                setVisible={setEditModalVisible}
-                attendanceRecord={selectedRow}
-            />
+
         </div>
     );
 }

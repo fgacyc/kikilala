@@ -26,7 +26,6 @@ function App() {
         "/nb-attendance",
         "/nb-headcount",
     ]
-    console.log("1111")
 
     useEffect(() => {
         if (isLoading) return;
