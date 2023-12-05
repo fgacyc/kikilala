@@ -74,7 +74,7 @@ export async function deleteDoc(collection, docid) {
 // query
 export async function queryDoc(collection, query) {
     try {
-        let res = await fbStore.query(collection, query);
+        let res = await fbStore.queryDoc(collection, query);
         return res;
     } catch (err) {
         console.log(err);

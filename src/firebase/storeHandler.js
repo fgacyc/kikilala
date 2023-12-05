@@ -139,7 +139,7 @@ export class FBStore {
     });
   }
 
-  query(collectionName, queries, order) {
+  queryDoc(collectionName, queries, order) {
     if (arguments.length !== 2 && arguments.length !== 3)
       throw new Error(
         "Invalid number of arguments, expected 2 or 3, got " + arguments.length
@@ -183,8 +183,14 @@ export class FBStore {
       getDocs(q)
         .then((querySnapshot) => {
           const data = this.snapshotToArray(querySnapshot);
+          // console.log("queryDoc",data)
+          const result = [];
+          querySnapshot.forEach((doc) => {
+            result.push({ ...doc.data(), id: doc.id });
+          });
+          // console.log("queryDoc", result)
           if (this.debug) console.log(`collect ${collectionName} data: `, data);
-          resolve(data);
+          resolve(result);
         })
         .catch((error) => {
           console.error(`Error reading collection: ${collectionName}`, error);

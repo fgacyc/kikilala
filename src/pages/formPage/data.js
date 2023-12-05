@@ -224,6 +224,10 @@ export function convertTableData(data){
     for (let key in data){
         const item = data[key];
         item.key = key;
+        if (item.hasOwnProperty("id")){
+            CGsList.push(item);
+            continue;
+        }
         item.id=key;
         CGsList.push(item);
     }

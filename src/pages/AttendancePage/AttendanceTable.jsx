@@ -203,7 +203,10 @@ export const AttendanceTable = ({ className }) => {
                         content='Are you sure to delete this record?'
                         onOk={() => {
                             deleteAttend(record.id).then((res) => {
-                                if (res === false) return;
+                                if (res === false) {
+                                    console.log(`delete ${record.id} failed`);
+                                    return;
+                                }
                                 setCurrentSubmitData(currentSubmitData.filter((item) => item.key !== record.key));
                             });
 
@@ -232,6 +235,7 @@ export const AttendanceTable = ({ className }) => {
     useEffect(() => {
         async function getAttendance() {
             const attendance_data = await queryAttends(currentWeek);
+            // console.log("attendance_data",attendance_data)
             const updateAttendanceData = convertTableData(attendance_data);
             dataCheck(updateAttendanceData);
             // console.log("updateAttendanceData",updateAttendanceData)

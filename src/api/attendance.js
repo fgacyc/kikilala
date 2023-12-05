@@ -38,6 +38,7 @@ export  async  function queryAttends(date){
     const query = ["date", "==",date]
     const doc = await queryDoc("attendance", query);
     if (doc === false) return false;
+    // console.log(doc)
     return doc;
 }
 
