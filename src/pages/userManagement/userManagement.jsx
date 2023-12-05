@@ -1,8 +1,8 @@
 import {Button, Input, Popconfirm, Table} from '@arco-design/web-react';
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {addAdmin, deleteHeadcount, readAllAdmins} from "../../api/admin.js";
 import {convertTableData} from "../formPage/data.js";
-import {IconDelete, IconEdit} from "@arco-design/web-react/icon";
+import {IconDelete, IconEdit, IconSearch} from "@arco-design/web-react/icon";
 import {closeCG} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 import AdminUserInfoModifyModal from "./adminUserInfoModifyModal.jsx";
@@ -15,6 +15,7 @@ export default function UserManagement() {
     const [remark, setRemark] = useState("");
     const [adminUserInfoModifyModalVisible, setAdminUserInfoModifyModalVisible] = useState(false);
     const setAdminUser = useAdminUserStore(state => state.setAdminUser);
+    const inputRef = useRef(null);
 
     useEffect(() => {
         getAdmins();
@@ -54,6 +55,36 @@ export default function UserManagement() {
             title: 'Name',
             dataIndex: 'name',
             width: 150,
+            sorter: (a, b) => a?.name.localeCompare(b?.name),
+            filterIcon: <IconSearch />,
+            filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+                return (
+                    <div className='arco-table-custom-filter'>
+                        <Input.Search
+                            allowClear={true}
+                            ref={inputRef}
+                            searchButton
+                            placeholder='Please enter name'
+                            value={filterKeys[0] || ''}
+                            onChange={(value) => {
+                                setFilterKeys(value ? [value] : []);
+                            }}
+                            onSearch={() => {
+                                confirm();
+                            }}
+                        />
+                    </div>
+                );
+            },
+            onFilter: (value, row) => {
+                return row.name.toLowerCase().includes(value.toLowerCase());
+            },
+            onFilterDropdownVisibleChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => inputRef.current.focus(), 150);
+                }
+            },
+
         },
         {
             title: 'Email',
@@ -62,7 +93,36 @@ export default function UserManagement() {
                 <div className={"flex flex-row"}>
                     <span className={"mr-2"}>{record.email}</span>
                 </div>
-            )
+            ),
+            sorter: (a, b) => a?.email.localeCompare(b?.email),
+            filterIcon: <IconSearch />,
+            filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+                return (
+                    <div className='arco-table-custom-filter'>
+                        <Input.Search
+                            allowClear={true}
+                            ref={inputRef}
+                            searchButton
+                            placeholder='Please enter name'
+                            value={filterKeys[0] || ''}
+                            onChange={(value) => {
+                                setFilterKeys(value ? [value] : []);
+                            }}
+                            onSearch={() => {
+                                confirm();
+                            }}
+                        />
+                    </div>
+                );
+            },
+            onFilter: (value, row) => {
+                return row.email.toLowerCase().includes(value.toLowerCase());
+            },
+            onFilterDropdownVisibleChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => inputRef.current.focus(), 150);
+                }
+            },
         },
         {
             title: 'Remark',
