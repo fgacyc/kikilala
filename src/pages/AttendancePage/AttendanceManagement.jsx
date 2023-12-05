@@ -1,23 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Button, Input, Popconfirm, Select, Space, Switch, Table } from '@arco-design/web-react';
-import { deleteAttend, queryAttends, readAllAttends } from '../../api/attendance';
-import { convertTableData, getWeekDatesArray } from '../formPage/data';
+import React, { useEffect, useState } from 'react'
+import { Button, Select, Switch } from '@arco-design/web-react';
 import {
-    IconDelete,
-    IconDownload,
-    IconEdit, IconHome,
+    IconDownload,IconHome,
     IconNotification,
-    IconPlusCircle,
-    IconSearch
 } from '@arco-design/web-react/icon';
-import { pastoralTeamList, satelliteList } from '../../config';
-import AttendanceInfoEditModal from './AttendanceInfoEditModal';
 import { useAuth0 } from "@auth0/auth0-react";
 import { addRecord } from "../../api/records.js";
-import {getCGLNum, readAllActiveCGLs} from "../../api/CGLs.js";
+import {getCGLNum} from "../../api/CGLs.js";
 import { useAttendanceStore } from "../../store/attendanceStore.js";
-import { get } from "idb-keyval";
-import useSelectedRowStore from '../../store/attendanceRecordStore.js';
 import AttendanceDownloadModal from "./AttendanceDownloadModal.jsx";
 import AttendanceReminder from "./AttendanceReminder.jsx";
 import {AttendanceTable} from "./AttendanceTable.jsx";

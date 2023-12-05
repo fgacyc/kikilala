@@ -1,4 +1,4 @@
-import { FBStore } from '../firebase/storeHandler.js';
+import {FBStore} from '../firebase/storeHandler.js';
 
 const fbStore = new FBStore();
 
@@ -7,8 +7,7 @@ export async function addDoc(collection, document) {
     document.createdAt = new Date();
     document.updatedAt = new Date();
     try {
-        let docid = await fbStore.write(collection, document);
-        return docid;
+        return await fbStore.write(collection, document);
     } catch (err) {
         console.log(err);
         return false;

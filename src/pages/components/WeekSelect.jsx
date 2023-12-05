@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Select} from "@arco-design/web-react";
-import {getWeekDatesArray} from "../formPage/data.js";
 import {generateAllWeeklyRanges} from "../../tools.js";
 const Option = Select.Option;
 
 
 export default function WeekSelect({currentWeek,setCurrentWeek}) {
     const [dateArray, setDateArray] = useState([])
-    const buttonsNumber = 4
 
     useEffect(() => {
         // console.log(getWeekDatesArray(buttonsNumber))

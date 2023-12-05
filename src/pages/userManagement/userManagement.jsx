@@ -3,7 +3,6 @@ import {useEffect, useRef, useState} from "react";
 import {addAdmin, deleteHeadcount, readAllAdmins} from "../../api/admin.js";
 import {convertTableData} from "../formPage/data.js";
 import {IconDelete, IconEdit, IconSearch} from "@arco-design/web-react/icon";
-import {closeCG} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 import AdminUserInfoModifyModal from "./adminUserInfoModifyModal.jsx";
 import {useAdminUserStore} from "../../store/adminUserStore.js";
