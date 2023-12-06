@@ -24,6 +24,7 @@ function App() {
         "/nb-user",
         "/nb-attendance",
         "/nb-headcount",
+        "/submit",
     ]
 
     useEffect(() => {
@@ -52,12 +53,14 @@ function App() {
     return (
         <>
             {
+                currentUrl !== "/submit" &&
                 adminUrls.includes(currentUrl) ? <Header /> : <></>
             }
             <Router>
                 <Routes>
                     {/*<Route path="/login" element={<Login/>}/>*/}
                     <Route path="/" element={<Submit />} />
+                    <Route path="/submit" element={<Submit />} />
                     <Route path="history/:cg_name" element={<CGLAttendance />} />
                     <Route path="headcount" element={<HeadCount />} />
                     <Route path="admin" element={<AdminMenu />} />

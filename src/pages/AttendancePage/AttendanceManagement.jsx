@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Select, Switch } from '@arco-design/web-react';
 import {
-    IconDownload,IconHome,
-    IconNotification,
+    IconDownload, IconHome,
+    IconNotification, IconPlus, IconThunderbolt,
 } from '@arco-design/web-react/icon';
 import { useAuth0 } from "@auth0/auth0-react";
 import { addRecord } from "../../api/records.js";
@@ -13,6 +13,7 @@ import AttendanceReminder from "./AttendanceReminder.jsx";
 import {AttendanceTable} from "./AttendanceTable.jsx";
 import {AbsentCGLsTable} from "./PendingTable.jsx";
 import {generateAllWeeklyRanges} from "../../tools.js";
+import {useNavigate} from "react-router-dom";
 const Option = Select.Option;
 const AttendanceManagement = () => {
     const [dateArray, setDateArray] = useState([])
@@ -25,6 +26,7 @@ const AttendanceManagement = () => {
     const [reminderModalVisible, setReminderModalVisible] = useState(false);
     const setCurrentCGNumber  =
         useAttendanceStore(state =>state.setCurrentCGNumber)
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -86,6 +88,18 @@ const AttendanceManagement = () => {
                                 <Button type='secondary' icon={<IconHome />} className={"ml-2"}
                                         onClick={() => {
                                             window.open("/", "_self");
+                                        }}
+                                />
+                                <Button type='secondary' icon={<IconPlus />} className={"ml-2"}
+                                        onClick={() => {
+                                            navigate("/submit");
+
+                                        }}
+                                />
+                                <Button type='secondary' icon={<IconThunderbolt />} className={"ml-2"}
+                                        onClick={() => {
+
+                                            // window.open("/", "_self");
                                         }}
                                 />
                                 {/*<Button type='secondary' className={"ml-2"}*/}

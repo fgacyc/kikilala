@@ -1,12 +1,15 @@
-import {Modal, Button, Message} from '@arco-design/web-react';
+import {Modal, Button, Message, Select} from '@arco-design/web-react';
 import {IconClose} from "@arco-design/web-react/icon";
 import {getWeekDatesArray, validate} from "./data.js";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useFormStore} from "../../store/formStore.js";
 import {addCGL} from "../../api/CGLs.js";
 import {addAttend, checkDuplicate} from "../../api/attendance.js";
 import {set} from "idb-keyval";
-import {checkWeek, timeDetect} from "../../tools.js";
+import {checkWeek, generateAllWeeklyRanges, timeDetect} from "../../tools.js";
+import { useLocation } from 'react-router-dom';
+import {useAttendanceStore} from "../../store/attendanceStore.js";
+const Option = Select.Option;
 
 function ButtonsGroup(){
     const [active,setActive] = useState(-1)
@@ -48,12 +51,20 @@ function ButtonsGroup(){
 }
 
 function DateModal({visible, setVisible}) {
-    const [getFormData,resetForm] = useFormStore(state => [
+    const [date,setDate, getFormData,resetForm] = useFormStore(state => [
+        state.date, state.setDate,
         state.getFormData, state.resetForm
     ]);
 
+    const {pathname} = useLocation();
+    const dateArray = generateAllWeeklyRanges();
+
+
     async function  submit() {
         const data = getFormData();
+
+        // console.log(data)
+        // return;
 
         // checking duplicate
         const isDuplicate = await checkDuplicate(data.date,data.cg_id);
@@ -126,9 +137,27 @@ function DateModal({visible, setVisible}) {
                     </div>
                 </div>
                 <hr/>
-                <div  className={"p-4 text-center flex flex-row flex-wrap justify-around"}>
-                    <ButtonsGroup />
-                </div>
+                {
+                    pathname === "/submit"
+                        ? <div className={"p-4 text-center"}>
+                            <Select placeholder='Please select' style={{ width: 250,marginBottom:8 }} allowClear
+                                    value={date}
+                                    onChange={(value) => {
+                                        setDate(value);
+                                    }}
+                            >
+                                {dateArray.map((option, index) => (
+                                    <Option key={index} value={option}>
+                                        {option}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </div>
+                        :<div  className={"p-4 text-center flex flex-row flex-wrap justify-around"}>
+                            <ButtonsGroup />
+                        </div>
+                }
+
                 <hr/>
                 <div className={"p-3 flex flex-row justify-end"}>
                     <Button type='secondary' className={"mr-3"}
