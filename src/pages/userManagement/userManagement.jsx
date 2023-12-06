@@ -87,6 +87,9 @@ export default function UserManagement() {
         },
         {
             title: 'Email',
+
+
+
             width: 150,
             render: (_, record) => (
                 <div className={"flex flex-row"}>

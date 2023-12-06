@@ -141,12 +141,12 @@ const AttendanceInfoEditModal = ({ visible, setVisible }) => {
         fieldsValue.total_members_num = calculateTotal(fieldsValue);
 
         const data = { ...fieldsValue, date: valueRange };
-        const duplicate = await  checkDuplicate(data.date, attendanceRecord.cg_id);
-
-        if (duplicate) {
-            Message.warning('This attendance has been submitted for the week you selected');
-            return;
-        }
+        // const duplicate = await  checkDuplicate(data.date, attendanceRecord.cg_id);
+        //
+        // if (duplicate) {
+        //     Message.warning('This attendance has been submitted for the week you selected');
+        //     return;
+        // }
 
         await updateAttend(attendanceRecord.id,data).then((res) => {
                 if (res) {
