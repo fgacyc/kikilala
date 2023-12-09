@@ -336,3 +336,43 @@ export  function generateAllWeeklyRanges() {
 
     return ranges.reverse();
 }
+
+export function generateMonthlyRanges() {
+    const startYear = 2023;
+    const startMonth = 10; // 10 表示 10 月
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1; // getMonth() 返回 0-11 表示 1-12 月
+
+    let year = startYear;
+    let month = startMonth;
+    const ranges = [];
+
+    // 函数：格式化月份为 YYYY/MM
+    function formatMonth(year, month) {
+        const monthStr = month.toString().padStart(2, '0');
+        return `${year}/${monthStr}`;
+    }
+
+    while (year < currentYear || (year === currentYear && month <= currentMonth)) {
+        ranges.push(formatMonth(year, month));
+
+        // 更新年和月
+        if (month === 12) {
+            month = 1;
+            year++;
+        } else {
+            month++;
+        }
+    }
+
+    return ranges.reverse();
+}
+
+export function  getCoachOptions(data){
+    let coachOptions = [];
+    for (let item of data){
+        coachOptions.push(item.coach_name)
+    }
+    return coachOptions
+}

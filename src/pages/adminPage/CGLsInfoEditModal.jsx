@@ -18,7 +18,8 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
         satellite,
         docId,
         nickname,
-        category
+        category,
+        coach_name
     ] = useCGLStore(state => [
         state.CG_leader,
         state.CG_name,
@@ -27,6 +28,7 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
         state.docId,
         state.nickname,
         state.category,
+        state.coach_name
     ]);
     const [
         setCGLeader,
@@ -34,17 +36,20 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
         setPastoralTeam,
         setSatellite,
         setNickname,
-        setCategory
+        setCategory,
+        setCoachName
     ] = useCGLStore(state => [
         state.setCGLeader,
         state.setCGName,
         state.setPastoralTeam,
         state.setSatellite,
         state.setNickname,
-        state.setCategory
+        state.setCategory,
+        state.setCoachName
     ]);
 
     const getForm = useCGLStore(state => state.getForm);
+    const coachOptions = useCGLStore(state => state.coachOptions);
 
 
     function  handleSubmit() {
@@ -134,6 +139,24 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                 </Select>
             </div>
             <div  className={"flex flex-row items-center mb-4"}>
+                <div className={"w-[20%] text-right pr-3 text-[#4E5969]"}>Coach Name</div>
+                <Select
+                    // mode='multiple'
+                    placeholder='Please select coach name...'
+                    className={"w-[80%]"}
+                    allowCreate
+                    value={coach_name}
+                    defaultValue={coach_name}
+                    onChange={setCoachName}
+                >
+                    {coachOptions.map((option) => (
+                        <Option key={option} value={option}>
+                            {option}
+                        </Option>
+                    ))}
+                </Select>
+            </div>
+            <div  className={"flex flex-row items-center mb-4"}>
                 <div className={"w-[20%] text-right pr-3 text-[#4E5969]"}>Category</div>
                 <Select
                     // mode='multiple'
@@ -150,63 +173,6 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                     ))}
                 </Select>
             </div>
-
-            {/*<hr/>*/}
-
-            {/*<Form*/}
-            {/*      ref={formRef}*/}
-            {/*      form={form}*/}
-            {/*      autoComplete='off'>*/}
-            {/*    <FormItem label='CG Leader'*/}
-            {/*        field={'CG_leader'}*/}
-            {/*    >*/}
-            {/*        <Input value={CG_leader}*/}
-            {/*               defaultValue={CG_leader}*/}
-            {/*            placeholder='please enter CGL name...' />*/}
-            {/*    </FormItem>*/}
-            {/*    <FormItem label='CGL nickname'*/}
-            {/*              field={'nickname'}*/}
-            {/*    >*/}
-            {/*        <Input*/}
-            {/*            placeholder='please enter CGL nickname...' />*/}
-            {/*    </FormItem>*/}
-            {/*    <FormItem label='CG Name'*/}
-            {/*        field={'CG_name'}*/}
-            {/*    >*/}
-            {/*        <Input  value={CG_name}*/}
-            {/*                defaultValue={CG_name}*/}
-            {/*            placeholder='please enter CG name...' />*/}
-            {/*    </FormItem>*/}
-            {/*    <FormItem label='Satellite'*/}
-            {/*              field={'satellite'}*/}
-            {/*    >*/}
-            {/*        <Select*/}
-            {/*            placeholder='Please select satellite...'*/}
-            {/*            value={satellite}*/}
-            {/*        >*/}
-            {/*            {satelliteList.map((option, index) => (*/}
-            {/*                <Option key={index} value={option.value}>*/}
-            {/*                    {option.text}*/}
-            {/*                </Option>*/}
-            {/*            ))}*/}
-            {/*        </Select>*/}
-            {/*    </FormItem>*/}
-            {/*    <FormItem label='Pastoral Team'*/}
-            {/*        field={'pastoral_team'}*/}
-            {/*    >*/}
-            {/*        <Select*/}
-            {/*            placeholder='Please select  pastoral team...'*/}
-            {/*            value={pastoral_team}*/}
-            {/*        >*/}
-            {/*            {pastoralTeamList.map((option, index) => (*/}
-            {/*                <Option key={index} value={option.value}>*/}
-            {/*                    {option.text}*/}
-            {/*                </Option>*/}
-            {/*            ))}*/}
-            {/*        </Select>*/}
-            {/*    </FormItem>*/}
-
-            {/*</Form>*/}
         </Modal>
     );
 }

@@ -14,6 +14,7 @@ import {AttendanceTable} from "./AttendanceTable.jsx";
 import {AbsentCGLsTable} from "./PendingTable.jsx";
 import {generateAllWeeklyRanges} from "../../tools.js";
 import {useNavigate} from "react-router-dom";
+import DataInsightModal from "./DataInsightModal.jsx";
 const Option = Select.Option;
 const AttendanceManagement = () => {
     const [dateArray, setDateArray] = useState([])
@@ -24,6 +25,7 @@ const AttendanceManagement = () => {
         state.initAttendData, state.currentWeek, state.setCurrentWeek, state.showSubmitted, state.setShowSubmitted]);
     const [attendanceDownloadModalVisible, setAttendanceDownloadModalVisible] = useState(false);
     const [reminderModalVisible, setReminderModalVisible] = useState(false);
+    const [dataInsightModalVisible, setDataInsightModalVisible] = useState(false);
     const setCurrentCGNumber  =
         useAttendanceStore(state =>state.setCurrentCGNumber)
     const navigate = useNavigate();
@@ -98,8 +100,7 @@ const AttendanceManagement = () => {
                                 />
                                 <Button type='secondary' icon={<IconThunderbolt />} className={"ml-2"}
                                         onClick={() => {
-
-                                            // window.open("/", "_self");
+                                            setDataInsightModalVisible(true);
                                         }}
                                 />
                                 {/*<Button type='secondary' className={"ml-2"}*/}
@@ -135,6 +136,7 @@ const AttendanceManagement = () => {
             </div>
             <AttendanceDownloadModal setVisible={setAttendanceDownloadModalVisible} visible={attendanceDownloadModalVisible} />
             <AttendanceReminder setVisible={setReminderModalVisible} visible={reminderModalVisible} />
+            <DataInsightModal  setVisible={setDataInsightModalVisible} visible={dataInsightModalVisible} />
         </div>
     )
 }

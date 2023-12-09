@@ -12,6 +12,7 @@ const Option = Select.Option;
 export default function CGLsAddModal({ visible, setVisible }) {
     const formRef = useRef(null);
     const [form] = Form.useForm();
+    const coachOptions = useCGLStore(state => state.coachOptions);
 
     async  function  handleSubmit() {
         const data = formRef.current.getFieldsValue();
@@ -94,6 +95,21 @@ export default function CGLsAddModal({ visible, setVisible }) {
                         {pastoralTeamList.map((option, index) => (
                             <Option key={index} value={option.value}>
                                 {option.text}
+                            </Option>
+                        ))}
+                    </Select>
+                </FormItem>
+                <FormItem label='Coach Name'
+                          field={'coach_name'}
+                >
+                    <Select
+                        // mode='multiple'
+                        placeholder='Please select coach name...'
+                        allowCreate
+                    >
+                        {coachOptions.map((option) => (
+                            <Option key={option} value={option}>
+                                {option}
                             </Option>
                         ))}
                     </Select>

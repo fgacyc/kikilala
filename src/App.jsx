@@ -63,7 +63,6 @@ function App() {
                     <Route path="/submit" element={<Submit />} />
                     <Route path="history/:cg_name" element={<CGLAttendance />} />
                     <Route path="headcount" element={<HeadCount />} />
-                    <Route path="admin" element={<AdminMenu />} />
                     <Route path="nb-admin" element={<CGLsManagement />} />
                     <Route path="nb-user" element={<UserManagement />} />
                     <Route path="nb-attendance" element={<AttendanceManagement />} />

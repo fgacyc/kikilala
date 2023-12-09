@@ -23,7 +23,7 @@ import { useCGLStore } from "../../store/CGLStore.js";
 import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
 import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
-import { downloadCGLsData, downloadXLSX, getTodayDateStr } from "../../tools.js";
+import {downloadCGLsData, downloadXLSX, getCoachOptions, getTodayDateStr} from "../../tools.js";
 import CsvDownload from "react-csv-downloader";
 import { addRecord } from "../../api/records.js";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -112,6 +112,51 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
             },
             onFilter: (value, row) => {
                 return row.nickname.toLowerCase().includes(value.toLowerCase());
+            },
+            onFilterDropdownVisibleChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => inputRef.current.focus(), 150);
+                }
+            },
+        },
+        {
+            title: 'Coach',
+            width: 180,
+            render: (_, record) => {
+                return (
+                    <div className={"truncate"}>
+                        {
+                            record.hasOwnProperty("coach_name") && record.coach_name
+                        }
+                    </div>
+                )
+            },
+            sorter: (a, b) => {
+                if (a.category === undefined) return 1;
+                return a.category.localeCompare(b.category);
+            },
+            filterIcon: <IconSearch />,
+            filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+                return (
+                    <div className='arco-table-custom-filter'>
+                        <Input.Search
+                            allowClear={true}
+                            ref={inputRef}
+                            searchButton
+                            placeholder='Please enter name'
+                            value={filterKeys[0] || ''}
+                            onChange={(value) => {
+                                setFilterKeys(value ? [value] : []);
+                            }}
+                            onSearch={() => {
+                                confirm();
+                            }}
+                        />
+                    </div>
+                );
+            },
+            onFilter: (value, row) => {
+                return row.coach_name?.toLowerCase().includes(value.toLowerCase());
             },
             onFilterDropdownVisibleChange: (visible) => {
                 if (visible) {
@@ -271,6 +316,7 @@ export default function CGLsManagement() {
     const { loginWithRedirect, user, isLoading } = useAuth0();
     const [isShowActive, setIsShowActive] = useState(true);
     const [CGEditModalVisible, setCGEditModalVisible] = useState(false);
+    const setCoachOptions = useCGLStore(state => state.setCoachOptions);
 
 
     useEffect(() => {
@@ -303,6 +349,11 @@ export default function CGLsManagement() {
     useEffect(() => {
         updateCGLs();
     }, [isShowActive]);
+
+    // tableData is active CGLs
+    useEffect(() => {
+        setCoachOptions(getCoachOptions(tableData));
+    }, [tableData]);
 
 
     return (

@@ -8,6 +8,7 @@ export const useCGLStore = create((set) => ({
     docId : "",
     nickname: "",
     category: "",
+    coach_name: "",
 
     setCGLeader: (CG_leader) => set({ CG_leader }),
     setCGName: (CG_name) => set({ CG_name }),
@@ -16,6 +17,7 @@ export const useCGLStore = create((set) => ({
     setDocId: (docId) => set({ docId }),
     setNickname: (nickname) => set({ nickname }),
     setCategory: (category) => set({ category }),
+    setCoachName: (coach_name) => set({ coach_name }),
 
     setCGL:(CGL) => set(
         {
@@ -26,6 +28,7 @@ export const useCGLStore = create((set) => ({
             docId:CGL.key,
             nickname:CGL.nickname,
             category:CGL.category,
+            coach_name:CGL.coach_name,
         }
     ),
 
@@ -37,6 +40,7 @@ export const useCGLStore = create((set) => ({
         docId : "",
         nickname: "",
         category: "",
+        coach_name: "",
     }),
 
     getForm: () => {
@@ -48,6 +52,11 @@ export const useCGLStore = create((set) => ({
             docId : useCGLStore.getState().docId,
             nickname: useCGLStore.getState().nickname,
             category: useCGLStore.getState().category,
+            coach_name: useCGLStore.getState().coach_name,
         }
-    }
+    },
+
+    // for coach options
+    coachOptions: [],
+    setCoachOptions: (coachOptions) => set({ coachOptions }),
 }))
