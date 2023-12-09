@@ -104,7 +104,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
                 >
                     <Select
                         // mode='multiple'
-                        placeholder='Please select coach name...'
+                        placeholder='Please select/enter coach name...'
                         allowCreate
                     >
                         {coachOptions.map((option) => (

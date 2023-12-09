@@ -142,7 +142,7 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                 <div className={"w-[20%] text-right pr-3 text-[#4E5969]"}>Coach Name</div>
                 <Select
                     // mode='multiple'
-                    placeholder='Please select coach name...'
+                    placeholder='Please select/enter coach name...'
                     className={"w-[80%]"}
                     allowCreate
                     value={coach_name}
