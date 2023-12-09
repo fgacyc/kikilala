@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import {Message} from "@arco-design/web-react";
 
 export const useCGLStore = create((set) => ({
     CG_leader:"",
@@ -17,7 +18,13 @@ export const useCGLStore = create((set) => ({
     setDocId: (docId) => set({ docId }),
     setNickname: (nickname) => set({ nickname }),
     setCategory: (category) => set({ category }),
-    setCoachName: (coach_name) => set({ coach_name }),
+    setCoachName: (coach_name) => {
+        if (coach_name.match(/^\s+$/)) {
+            Message.warning("Coach name is required")
+            return;
+        }
+        set({ coach_name })
+    },
 
     setCGL:(CGL) => set(
         {
