@@ -151,7 +151,11 @@ export default function DataInsight(){
                 })
             }
         }
-        console.log(pastoralTeamMap)
+        // console.log(pastoralTeamMap)
+        // sort pastoralTeamMap by key (pastoral_team)
+        pastoralTeamMap = new Map([...pastoralTeamMap.entries()].sort());
+
+
         setPastoralTeamAttendMap(pastoralTeamMap)
     }, [currentMonthCGLData]);
 
