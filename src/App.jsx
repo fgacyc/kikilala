@@ -13,6 +13,7 @@ import Header from "./pages/Header/Header.jsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import {useEffect} from "react";
 import {isAdmin} from "./tools.js";
+import DataInsight from "./pages/dataInsight/DataInsight.jsx";
 
 
 
@@ -67,6 +68,7 @@ function App() {
                     <Route path="nb-user" element={<UserManagement />} />
                     <Route path="nb-attendance" element={<AttendanceManagement />} />
                     <Route path="nb-headcount" element={<HeadCountManagement />} />
+                    <Route path="nb-data-insight/:year/:month" element={<DataInsight />} />
                 </Routes>
             </Router>
         </>

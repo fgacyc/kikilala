@@ -339,7 +339,7 @@ export  function generateAllWeeklyRanges() {
 
 export function generateMonthlyRanges() {
     const startYear = 2023;
-    const startMonth = 10; // 10 表示 10 月
+    const startMonth = 11; // 10 表示 10 月
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1; // getMonth() 返回 0-11 表示 1-12 月
