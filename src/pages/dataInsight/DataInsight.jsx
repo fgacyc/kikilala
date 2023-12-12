@@ -164,7 +164,7 @@ export default function DataInsight(){
         <div>
             {/*<Header />*/}
             <div className={"mx-6"}>
-                <div className={"grid grid-cols-3 gap-2"}>
+                <div className={"grid lg:grid-cols-3 sm:grid-cols-2 gap-2 grid-cols-1"}>
                     {
                         submitTimes !== 0 && pastoralTeamAttendMap !== null && Array.from(pastoralTeamAttendMap).map(([key, value], index) => (
                             <AttendanceRateCard key={index} team={key} data={value} submitTimes={submitTimes}/>
