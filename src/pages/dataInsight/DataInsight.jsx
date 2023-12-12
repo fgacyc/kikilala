@@ -131,13 +131,14 @@ export default function DataInsight(){
         //console.log(timeDateList)
         setSubmitTimes(timeDateList.length)
 
-        // group by pastoral_team use map
+        // group by pastoral_team use map ❌
+        // group by satellite use map ✅
         let pastoralTeamMap = new Map();
         for (let item of currentMonthCGLData){
-            if (pastoralTeamMap.has(item.pastoral_team)){
-                pastoralTeamMap.get(item.pastoral_team).push(item)
+            if (pastoralTeamMap.has(item.satellite)){
+                pastoralTeamMap.get(item.satellite).push(item)
             }else{
-                pastoralTeamMap.set(item.pastoral_team, [item])
+                pastoralTeamMap.set(item.satellite, [item])
             }
         }
         // console.log(pastoralTeamMap)
