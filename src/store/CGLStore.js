@@ -35,7 +35,7 @@ export const useCGLStore = create((set) => ({
             docId:CGL.key,
             nickname:CGL.nickname,
             category:CGL.category,
-            coach_name:CGL.coach_name,
+            coach_name:CGL.coach_name || "",
         }
     ),
 
