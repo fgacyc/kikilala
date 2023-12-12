@@ -204,6 +204,7 @@ export function attendObjToCSV(data){
             "Service Remarks": `"${item.service_absence_reason}"`,
             "Numbering": item.total_members_num,
             "Total": getTotal(item),
+            "Date": `"${item.date}"`,
             "created_at": `"${new Date(item.createdAt.seconds * 1000).toLocaleString()}"`,
             "updated_at": `"${new Date(item.updatedAt.seconds * 1000).toLocaleString()}"`,
         })
@@ -372,6 +373,7 @@ export function generateMonthlyRanges() {
 export function  getCoachOptions(data){
     let coachOptions = [];
     for (let item of data){
+        if(item.coach_name === "") continue;
         coachOptions.push(item.coach_name)
     }
     return coachOptions

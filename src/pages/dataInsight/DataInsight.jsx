@@ -78,6 +78,7 @@ function AttendanceRateCard({team,data,submitTimes}){
                         <div key={index} className={"flex flex-row justify-between"}>
                             <div className={"truncate w-[80%]"}>{item.CG_leader}</div>
                             <div>{item.attendance.length} / {submitTimes}</div>
+                            {/*<div>{item.CG_id}</div>*/}
                         </div>
                     ))
                 }

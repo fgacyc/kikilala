@@ -74,7 +74,7 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
             },
         },
         // {
-        //     title: 'CGID',
+        //     title: 'CG_ID',
         //     dataIndex: 'CG_id',
         // },
         {
@@ -132,8 +132,8 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                 )
             },
             sorter: (a, b) => {
-                if (a.category === undefined) return 1;
-                return a.category.localeCompare(b.category);
+                if (!a.coach_name) return 1;
+                return a.coach_name.localeCompare(b.coach_name);
             },
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {

@@ -50,6 +50,8 @@ export async function readAllDocs(collection) {
 // update
 export async function updateDoc(collection, document, docid) {
     document.updatedAt = new Date();
+    // console.log(document)
+    // return;
     try {
         let res = await fbStore.update(collection, document, docid);
         return res;
