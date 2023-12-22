@@ -165,6 +165,20 @@ export function validate(data) {
         return true;
     }
 
+    // Temporary code, only for Christmas week,  need to be removed later #TODO
+    if (
+        data.service_om_num  === 0 &&
+        data.service_nb_num  === 0 &&
+        data.service_nf_num  === 0 &&
+        data.service_rnf_num  === 0 &&
+        data.service_ac_num  === 0 &&
+        data.service_abs_num  === 0
+    )
+    {
+        //Message.warning("If there is no CG, please fill in the absence reason!")
+        return true;
+    }
+
     if (data.cg_abs_num >0 && data.cg_absence_reason === ""){
         Message.warning("Please fill in the absence reason!")
         return false;

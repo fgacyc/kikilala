@@ -66,6 +66,11 @@ function DateModal({visible, setVisible}) {
         // console.log(data)
         // return;
 
+        // validate
+        if(validate(data) === false) return;
+        // console.log(data);
+        // return;
+
         // checking duplicate
         const isDuplicate = await checkDuplicate(data.date,data.cg_id);
         // console.log(isDuplicate)
@@ -81,10 +86,6 @@ function DateModal({visible, setVisible}) {
             return;
         }
 
-        // console.log(data);
-        // return;
-
-        if(validate(data) === false) return;
         setVisible(false);
         addAttend(data).then((res) => {
             if (res!==false){
