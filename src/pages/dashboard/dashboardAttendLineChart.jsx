@@ -75,22 +75,23 @@ export default function DashboardAttendLineChart({data,type}) {
                     type === "Attend Num" &&   <Line dataKey="CG Attendance" stroke="#3399CC" strokeWidth={2}  type="monotone" />
                 }
                 {
-                    type === "Attend Num" && <Line dataKey="Service Attendance" stroke="#33CC66" strokeWidth={2}  type="monotone" />
-                }
-                {
-                    type === "Attend Num" &&  <Line dataKey="Total Members" stroke="#9966CC" strokeWidth={2} type="monotone"  />
-                }
-                {
                     type === "Attend Num" &&   <Line dataKey="CG Attendance Trend Line" stroke="#3399CC" strokeWidth={2}
                                                      strokeDasharray="5 5" // 设置虚线样式
                                                      dot={{ stroke: '#3399CC', strokeWidth: 2, r: 0 }} // 添加点
                     />
+                }
+
+                {
+                    type === "Attend Num" && <Line dataKey="Service Attendance" stroke="#33CC66" strokeWidth={2}  type="monotone" />
                 }
                 {
                     type === "Attend Num" && <Line dataKey="Service Attendance Trend Line" stroke="#33CC66" strokeWidth={2}
                                                    strokeDasharray="5 5" // 设置虚线样式
                                                    dot={{ stroke: '#33CC66', strokeWidth: 2, r: 0 }} // 添加点
                     />
+                }
+                {
+                    type === "Attend Num" &&  <Line dataKey="Total Members" stroke="#9966CC" strokeWidth={2} type="monotone"  />
                 }
                 {
                     type === "Attend Num" &&  <Line dataKey="Total Members Trend Line" stroke="#9966CC" strokeWidth={2}
@@ -104,14 +105,13 @@ export default function DashboardAttendLineChart({data,type}) {
                     type === "Members Num" &&  <Line dataKey="New Friends" stroke="#CC3399" strokeWidth={2} type="monotone"  />
                 }
                 {
-                    type === "Members Num" &&  <Line dataKey="AC Num" stroke="#CC9933" strokeWidth={2} type="monotone"  />
-                }
-
-                {
                     type === "Members Num" &&  <Line dataKey="New Friends Trend Line" stroke="#CC3399" strokeWidth={2}
                                                      strokeDasharray="5 5" // 设置虚线样式
                                                      dot={{ stroke: '#CC3399', strokeWidth: 2, r: 0 }} // 添加点
                     />
+                }
+                {
+                    type === "Members Num" &&  <Line dataKey="AC Num" stroke="#CC9933" strokeWidth={2} type="monotone"  />
                 }
                 {
                     type === "Members Num" &&  <Line dataKey="AC Num Trend Line" stroke="#CC9933" strokeWidth={2}
