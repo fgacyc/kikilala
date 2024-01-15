@@ -145,6 +145,9 @@ export const kuchaGSPastoralTeams = [
     "GS - Ps Melvin Zone",
 ]
 
+export const kuchaYWPastoralTeams = satellite_pastoralTeam["Kuchai YW"];
+
+
 export const satelliteNameList =  Object.keys(satellite_pastoralTeam);
 
 

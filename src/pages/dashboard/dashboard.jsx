@@ -1,32 +1,53 @@
 import {generateMonthlyRanges} from "../../tools.js";
 import {useEffect, useState} from "react";
 import {readAllAttends} from "../../api/attendance.js";
-import {Select, Spin} from "@arco-design/web-react";
-import {kuchaGSPastoralTeams, pastoralTeams} from "../../config.js";
+import {Button, Select, Spin} from "@arco-design/web-react";
+import {kuchaGSPastoralTeams, kuchaYWPastoralTeams, pastoralTeams} from "../../config.js";
 import DashboardAttendLineChart from "./dashboardAttendLineChart.jsx";
 import {culChartData, getCurrentMonthCGLsNum} from "./data.js";
 import {readAllActiveCGLs} from "../../api/CGLs.js";
+import {IconClose} from "@arco-design/web-react/icon";
 const Option = Select.Option;
 
-
-function Statistic({type,num,num1}) {
+function AttendanceSubmitSum({num, num1}){
+    const percent = Math.round(num / num1 * 100)
 
     return (
-        <div>
-            { type === "Attendance Submit Sum"
-                ? <div className={"shadow h-[100px] m-5 rounded flex flex-col justify-center items-center"}>
+        <div className={"flex flex-row items-end relative"}>
+            <div className={"text-4xl font-bold mr-2"}>{num}</div>
+            <div title={" Submission Rate"} className={"absolute right-[-30px]"} >
+                {
+                    percent >= 100 && <div className={"text-[12px] font-bold text-green-500"}>100%</div>
+                }
+                {
+                    percent< 100 && percent >= 80 && <div className={"text-[12px] font-bold text-green-500"}>{percent}%</div>
+                }
+                {
+                    percent< 80 &&percent >= 60 && <div className={"text-[12px] font-bold text-orange-500"}>{percent}%</div>
+                }
+                {
+                    percent < 60 && <div className={"text-[12px] font-bold text-red-500"}>{percent}%</div>
+                }
+            </div>
+        </div>
+    )
+}
+
+function Statistic({type, num, num1}) {
+
+    return (
+        <div className={"text-center"}>
+            {type === "Attendance Submit Sum"
+                ? <div className={"shadow h-[100px] sm:m-5 m-2 rounded flex flex-col justify-center items-center"}>
                     {
-                        num && num1 ? <div className={"flex flex-row items-end"}>
-                                <div className={"text-4xl font-bold mr-2"}>{num}</div>
-                                <div className={"text-[12px]"} title={"Submission Rate"}>{Math.round(num / num1 *100)}%</div>
-                            </div>
+                        (num || num===0) && num1 ? <AttendanceSubmitSum num={num} num1={num1}/>
                             : <Spin/>
                     }
                     <div className={"mt-2 font-semibold"}>{type}</div>
                 </div>
-                : <div className={"shadow h-[100px] m-5 rounded flex flex-col justify-center items-center"}>
+                : <div className={"shadow h-[100px] sm:m-5 m-2 rounded flex flex-col justify-center items-center"}>
                     {
-                        num ? <div className={"text-4xl font-bold"}>{num}</div>
+                        (num || num===0) ? <div className={"text-4xl font-bold"}>{num}</div>
                             : <Spin/>
                     }
                     <div className={"mt-2 font-semibold"}>{type}</div>
@@ -85,7 +106,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (!allAttendanceData) return;
-        if(currentPastoralTeam !== "Kuchai GS")  setCurrentKuchaiGSPastoralTeam("")
+        if(currentPastoralTeam !== "Kuchai GS" &&  currentPastoralTeam !== "Kuchai YW")  setCurrentKuchaiGSPastoralTeam("")
 
         const records = Object.values(allAttendanceData);
         if (currentPastoralTeam === "All"){
@@ -99,13 +120,20 @@ export default function Dashboard() {
             //console.log(currentMonthData)
             setFilteredAttendanceData(currentMonthData)
         }
+        else if (currentPastoralTeam === "Kuchai YW" && currentKuchaiGSPastoralTeam !== ""){
+            const currentMonthData =records.filter((item) =>
+                item.date.includes(currentMonth) && item.pastoral_team === currentKuchaiGSPastoralTeam);
+            //console.log(currentMonthData)
+            setFilteredAttendanceData(currentMonthData)
+        }
         else{
             const currentMonthData = records.filter((item) => item.date.includes(currentMonth) && item.satellite === currentPastoralTeam);
             //console.log(currentMonthData)
             setFilteredAttendanceData(currentMonthData)
         }
 
-    }, [currentMonth, currentPastoralTeam,currentKuchaiGSPastoralTeam]);
+    }, [currentMonth, currentPastoralTeam,
+        currentKuchaiGSPastoralTeam]);
 
     const cardType = [
         "Attendance Submit Sum",
@@ -127,6 +155,7 @@ export default function Dashboard() {
         setCardData(calculateData(filteredAttendanceData))
         // cal chart data
         setChartData(culChartData(filteredAttendanceData))
+
 
 
         getCurrentMonthCGLsNum(allActiveCGLs,currentMonth,currentPastoralTeam,currentKuchaiGSPastoralTeam)
@@ -180,12 +209,12 @@ export default function Dashboard() {
         return [attendanceSubmit,cgAttendanceAve,serviceAttendanceAve,newFriends,acNum,totalMembersAve]
     }
 
-    useEffect(() => {
-        console.log(dateNum)
-    }, [dateNum]);
+    // useEffect(() => {
+    //     console.log(dateNum)
+    // }, [dateNum]);
 
     return (
-        <div className={"h-full w-full sm:px-8 px-2 py-4 "}>
+        <div className={"h-full w-full sm:px-8 px-2 py-4 rounded"}>
             <div className={"flex flex-row  bg-white py-2 rounded-t"}>
                 <Select placeholder='Please select month' className={"w-[150px] mr-2"}
                         value={currentMonth}
@@ -215,27 +244,57 @@ export default function Dashboard() {
 
                 {
                     currentPastoralTeam === "Kuchai GS" &&
-                    <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
-                            value={currentKuchaiGSPastoralTeam}
-                            onChange={(value) => {
-                                setCurrentKuchaiGSPastoralTeam(value);
-                            }}
-                    >
-                        {kuchaGSPastoralTeams.map((option, index) => (
-                            <Option key={index} value={option}>
-                                {option}
-                            </Option>
-                        ))}
-                    </Select>
+                   <div>
+                       <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
+                               value={currentKuchaiGSPastoralTeam}
+                               onChange={(value) => {
+                                   setCurrentKuchaiGSPastoralTeam(value);
+                               }}
+                       >
+                           {kuchaGSPastoralTeams.map((option, index) => (
+                               <Option key={index} value={option}>
+                                   {option}
+                               </Option>
+                           ))}
+                       </Select>
+                       <Button shape='circle' type='secondary' icon={<IconClose />}
+                         onClick={() => {
+                             setCurrentKuchaiGSPastoralTeam("")
+                         }}
+                       />
+                   </div>
+                }
+
+                {
+                    currentPastoralTeam === "Kuchai YW" &&
+                    <div>
+                        <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
+                                value={currentKuchaiGSPastoralTeam}
+                                onChange={(value) => {
+                                    setCurrentKuchaiGSPastoralTeam(value);
+                                }}
+                        >
+                            {kuchaYWPastoralTeams.map((option, index) => (
+                                <Option key={index} value={option}>
+                                    {option}
+                                </Option>
+                            ))}
+                        </Select>
+                        <Button shape='circle' type='secondary' icon={<IconClose />}
+                                onClick={() => {
+                                    setCurrentKuchaiGSPastoralTeam("")
+                                }}
+                        />
+                    </div>
                 }
 
             </div>
-            <div className={"bg-white p-2"}>
-                <div className={"shadow-xl m-2 bg-white"}>
+            <div className={"bg-white p-2 rounded pb-2"}>
+                <div className={"shadow-xl sm:m-2 m-1 bg-white"}>
                     <div className={"text-center text-2xl font-bold bg-white py-2 rounded-b"}>
                         Overall Statistics
                     </div>
-                    <div className={"grid grid-cols-3 gap-4 bg-white"}>
+                    <div className={"grid sm:grid-cols-3 sm:gap-4 grid-cols-2 gap-0 bg-white"}>
                         {
                             cardData.map((item, index) => (
                                 <Statistic key={index} type={cardType[index]} num={cardData[index]} num1={currentCGLNum * dateNum } />
