@@ -39,7 +39,7 @@ function isBeforeLastDayOfMonth(month, seconds) {
     return res;
 }
 
-function filterCGLByMonth(currentMonth,connectGroupData){
+export function filterCGLByMonth(currentMonth,connectGroupData){
     // console.log(currentMonth, connectGroupData)
     if(!connectGroupData) return;
     let connectGroupDataList = [];
@@ -117,6 +117,7 @@ export default function DataInsight(){
 
     useEffect(() => {
         setCurrentMonthAttendanceData(filterAttendanceByMonth(currentMonth,attendanceData))
+        // console.log(currentMonth)
         setCurrentMonthCGLData(filterCGLByMonth(currentMonth,connectGroupData))
     }, [attendanceData,connectGroupData]);
 

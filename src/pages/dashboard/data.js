@@ -1,3 +1,6 @@
+import {readAllActiveCGLs} from "../../api/CGLs.js";
+import {filterCGLByMonth} from "../dataInsight/DataInsight.jsx";
+
 export function culChartData(data){
     let dateGroup = {};
     for (let record of data){
@@ -46,4 +49,32 @@ export function culChartData(data){
         })
     }
     return newData
+}
+
+export async function getCurrentMonthCGLsNum(CGLSData,currentMonth,location,pastoralTeam){
+    if(!CGLSData) return ;
+
+    if(!location || location==="All") location = null;
+    if(!pastoralTeam) pastoralTeam = null;
+
+    // console.log(currentMonth,CGLSData)
+    const currentMonthCGLs = filterCGLByMonth(currentMonth,CGLSData)
+
+    if(location === null && pastoralTeam === null){
+        return currentMonthCGLs.length
+    }
+
+    if(location !== null && pastoralTeam === null){
+        const filterCGLs = currentMonthCGLs.filter((cgl) => {
+            return cgl.satellite === location
+        } )
+        return filterCGLs.length
+    }
+
+    if(location !== null && pastoralTeam !== null){
+        const filterCGLs = currentMonthCGLs.filter((cgl) => {
+            return cgl.satellite === location && cgl.pastoral_team === pastoralTeam
+        } )
+        return filterCGLs.length
+    }
 }

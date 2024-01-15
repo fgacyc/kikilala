@@ -1,40 +1,85 @@
 import {generateMonthlyRanges} from "../../tools.js";
 import {useEffect, useState} from "react";
 import {readAllAttends} from "../../api/attendance.js";
-import {Select} from "@arco-design/web-react";
+import {Select, Spin} from "@arco-design/web-react";
 import {kuchaGSPastoralTeams, pastoralTeams} from "../../config.js";
 import DashboardAttendLineChart from "./dashboardAttendLineChart.jsx";
-import {culChartData} from "./data.js";
+import {culChartData, getCurrentMonthCGLsNum} from "./data.js";
+import {readAllActiveCGLs} from "../../api/CGLs.js";
 const Option = Select.Option;
 
 
-function Statistic({type,num}){
+function Statistic({type,num,num1}) {
+
     return (
-        <div className={"shadow h-[100px] m-5 rounded flex flex-col justify-center items-center"}>
-            <div className={"text-4xl font-bold"}>{num}</div>
-            <div className={"mt-2 font-semibold"}>{type}</div>
+        <div>
+            { type === "Attendance Submit Sum"
+                ? <div className={"shadow h-[100px] m-5 rounded flex flex-col justify-center items-center"}>
+                    {
+                        num && num1 ? <div className={"flex flex-row items-end"}>
+                                <div className={"text-4xl font-bold mr-2"}>{num}</div>
+                                <div className={"text-[12px]"} title={"Submission Rate"}>{Math.round(num / num1 *100)}%</div>
+                            </div>
+                            : <Spin/>
+                    }
+                    <div className={"mt-2 font-semibold"}>{type}</div>
+                </div>
+                : <div className={"shadow h-[100px] m-5 rounded flex flex-col justify-center items-center"}>
+                    {
+                        num ? <div className={"text-4xl font-bold"}>{num}</div>
+                            : <Spin/>
+                    }
+                    <div className={"mt-2 font-semibold"}>{type}</div>
+                </div>
+            }
         </div>
-    )
+)
 }
 
 export default function Dashboard() {
     const [allAttendanceData, setAllAttendanceData] = useState(null);
     const [filteredAttendanceData, setFilteredAttendanceData] = useState(null);
-    const monthRanges =generateMonthlyRanges();
+    const monthRanges = generateMonthlyRanges();
     pastoralTeams.unshift("All")
     const [currentMonth, setCurrentMonth] = useState(monthRanges[0])
     const [currentPastoralTeam, setCurrentPastoralTeam] = useState("All")
     const [currentKuchaiGSPastoralTeam, setCurrentKuchaiGSPastoralTeam] = useState("")
     const [chartData, setChartData] = useState(null)
-
+    const [currentCGLNum, setCurrentCGLNum] = useState(0)
+    const [allActiveCGLs, setAllActiveCGLs] = useState(null)
+    const [dateNum, setDateNum] = useState(0)
 
     useEffect(() => {
+        async  function fetchData() {
+            const res = await readAllAttends();
+            setAllAttendanceData(res);
+            const currentMonthData = Object.values(res).filter((item) => item.date.includes(currentMonth));
+            setFilteredAttendanceData(currentMonthData)
+            // console.log(currentMonthData)
+
+            setAllActiveCGLs(await readAllActiveCGLs())
+
+            setCurrentCGLNum(await  getCurrentMonthCGLsNum(allActiveCGLs,currentMonth,currentPastoralTeam,currentKuchaiGSPastoralTeam))
+
+            setDateNum(findDateNum(currentMonthData))
+        }
+
+
         readAllAttends().then((res) => {
             setAllAttendanceData(res);
             const currentMonthData = Object.values(res).filter((item) => item.date.includes(currentMonth));
             setFilteredAttendanceData(currentMonthData)
             // console.log(currentMonthData)
         });
+
+        readAllActiveCGLs().then((res) => {
+            setAllActiveCGLs(res);
+        })
+
+        getCurrentMonthCGLsNum(allActiveCGLs,currentMonth,currentPastoralTeam,currentKuchaiGSPastoralTeam)
+            .then((res) => {
+                setCurrentCGLNum(res)
+            })
     }, []);
 
 
@@ -74,25 +119,39 @@ export default function Dashboard() {
     const [cardData,setCardData] = useState([0,0,0,0,0,0] )
 
 
+
+
     useEffect(() => {
         if (!filteredAttendanceData) return;
         // cal card data
         setCardData(calculateData(filteredAttendanceData))
         // cal chart data
         setChartData(culChartData(filteredAttendanceData))
+
+
+        getCurrentMonthCGLsNum(allActiveCGLs,currentMonth,currentPastoralTeam,currentKuchaiGSPastoralTeam)
+            .then((res) => {
+            setCurrentCGLNum(res)
+        })
+
+        setDateNum(findDateNum(filteredAttendanceData))
+
     }, [filteredAttendanceData]);
 
-
-
-    function calculateData(data){
-        const attendanceSubmit = data.length;
+    function findDateNum(data){
         let dateList = [];
         for (let record of data){
             if (!dateList.includes(record.date)){
                 dateList.push(record.date)
             }
         }
-        const dateNum = dateList.length;
+        return dateList.length;
+    }
+
+
+    function calculateData(data){
+        const attendanceSubmit = data.length;
+        const dateNum = findDateNum(data)
 
         const cgAttendance = data.reduce((acc, cur) => {
             return acc + cur.cg_om_num + cur.cg_nb_num + cur.cg_nf_num + cur.cg_rnf_num + cur.cg_ac_num;
@@ -121,6 +180,9 @@ export default function Dashboard() {
         return [attendanceSubmit,cgAttendanceAve,serviceAttendanceAve,newFriends,acNum,totalMembersAve]
     }
 
+    useEffect(() => {
+        console.log(dateNum)
+    }, [dateNum]);
 
     return (
         <div className={"h-full w-full sm:px-8 px-2 py-4 "}>
@@ -176,7 +238,7 @@ export default function Dashboard() {
                     <div className={"grid grid-cols-3 gap-4 bg-white"}>
                         {
                             cardData.map((item, index) => (
-                                <Statistic key={index} type={cardType[index]} num={cardData[index]}/>
+                                <Statistic key={index} type={cardType[index]} num={cardData[index]} num1={currentCGLNum * dateNum } />
                             ))
                         }
                     </div>
