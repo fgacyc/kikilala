@@ -14,6 +14,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
     const [form] = Form.useForm();
     const coachOptions = useCGLStore(state => state.coachOptions);
 
+
     async  function  handleSubmit() {
         const data = formRef.current.getFieldsValue();
         //console.log(data)

@@ -352,7 +352,9 @@ export default function CGLsManagement() {
 
     // tableData is active CGLs
     useEffect(() => {
-        setCoachOptions(getCoachOptions(tableData));
+        let coaches = getCoachOptions(tableData);
+        coaches.unshift("None");
+        setCoachOptions(coaches);
     }, [tableData]);
 
 
