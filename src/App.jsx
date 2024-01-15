@@ -14,6 +14,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {useEffect} from "react";
 import {isAdmin} from "./tools.js";
 import DataInsight from "./pages/dataInsight/DataInsight.jsx";
+import Dashboard from "./pages/dashboard/dashboard.jsx";
 
 
 
@@ -26,6 +27,7 @@ function App() {
         "/nb-attendance",
         "/nb-headcount",
         "/submit",
+        "/nb-dashboard",
     ]
 
     useEffect(() => {
@@ -69,6 +71,7 @@ function App() {
                     <Route path="nb-attendance" element={<AttendanceManagement />} />
                     <Route path="nb-headcount" element={<HeadCountManagement />} />
                     <Route path="nb-data-insight/:year/:month" element={<DataInsight />} />
+                    <Route path="nb-dashboard" element={<Dashboard />} />
                 </Routes>
             </Router>
         </>

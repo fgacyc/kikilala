@@ -6,7 +6,7 @@ export default function AttendanceLineChart({data,type}) {
     let newData = [];
     for (let record of data){
         newData.push({
-            name: record.date,
+            name: record.date.substring(16,21),
             OM: record.om_num,
             NB: record.nb_num,
             NF: record.nf_num,
@@ -34,6 +34,7 @@ export default function AttendanceLineChart({data,type}) {
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis type="number" />
+                <XAxis dataKey="name" type="category"  angle={0} textAnchor="end" />
                 <Tooltip />
                 <Legend />
                 <Line dataKey="OM" stroke="#33CC99" strokeWidth={2} />

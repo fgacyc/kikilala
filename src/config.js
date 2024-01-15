@@ -128,6 +128,23 @@ export const satellite_pastoralTeam = {
     "Seremban": ["Young Warrior"]
 }
 
+export const pastoralTeams =[
+    "Kuchai YW",
+    "Kuchai GS",
+    "Serdang",
+    "Kepong",
+    "USJ",
+    "Setapak",
+    "SG Long",
+    "Seremban",
+]
+
+export const kuchaGSPastoralTeams = [
+    "GS - Daniel Yeo Zone",
+    "GS - Ps Jasmine Zone",
+    "GS - Ps Melvin Zone",
+]
+
 export const satelliteNameList =  Object.keys(satellite_pastoralTeam);
 
 

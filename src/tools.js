@@ -379,3 +379,14 @@ export function  getCoachOptions(data){
     return coachOptions
 }
 
+export function culMonth(timeDuration){
+    const endDateStr = timeDuration.split('-')[1];
+
+    const endDate = new Date(endDateStr);
+
+    const previousDay = new Date(endDate);
+    previousDay.setDate(previousDay.getDate() - 1);
+
+    return previousDay.getMonth() + 1;
+}
+
