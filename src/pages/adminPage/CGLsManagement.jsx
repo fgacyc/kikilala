@@ -398,7 +398,7 @@ export default function CGLsManagement() {
 
             </div>
             <CGLsInfoEditModal visible={CGEditModalVisible} setVisible={setCGEditModalVisible} />
-            <CGLsAddModal visible={addVisible} setVisible={setAddVisible} />
+            <CGLsAddModal  visible={addVisible} setVisible={setAddVisible} />
         </div>
     )
 }

@@ -149,8 +149,8 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                     defaultValue={coach_name}
                     onChange={setCoachName}
                 >
-                    {coachOptions.map((option) => (
-                        <Option key={option} value={option}>
+                    {coachOptions.map((option,index) => (
+                        <Option key={index} value={option}>
                             {option}
                         </Option>
                     ))}
@@ -166,8 +166,8 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                     onChange={setCategory}
                     className={"w-[80%]"}
                 >
-                    {CGCategoryList.map((option) => (
-                        <Option key={option.value} value={option.value}>
+                    {CGCategoryList.map((option,index) => (
+                        <Option key={index} value={option.value}>
                             {option.text}
                         </Option>
                     ))}

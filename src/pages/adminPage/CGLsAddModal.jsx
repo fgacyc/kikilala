@@ -25,6 +25,11 @@ export default function CGLsAddModal({ visible, setVisible }) {
 
         data.CG_status = CGStatusEnum.active;
 
+        if (data.coach_name === undefined){
+            Message.warning('Please select/enter coach name!')
+            return;
+        }
+
         // console.log(data)
         // return;
 
@@ -107,8 +112,8 @@ export default function CGLsAddModal({ visible, setVisible }) {
                         placeholder='Please select/enter coach name...'
                         allowCreate
                     >
-                        {coachOptions.map((option) => (
-                            <Option key={option} value={option}>
+                        {coachOptions.map((option, index) => (
+                            <Option key={index} value={option}>
                                 {option}
                             </Option>
                         ))}
@@ -122,8 +127,8 @@ export default function CGLsAddModal({ visible, setVisible }) {
                         placeholder='Please select group category...'
                         allowClear
                     >
-                        {CGCategoryList.map((option) => (
-                            <Option key={option.value} value={option.value}>
+                        {CGCategoryList.map((option,index) => (
+                            <Option key={index} value={option.value}>
                                 {option.text}
                             </Option>
                         ))}
