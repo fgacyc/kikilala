@@ -12,7 +12,7 @@ import {
 import { convertTableData } from "../formPage/data.js";
 import {
     IconArchive,
-    IconClose,
+    IconClose, IconDelete,
     IconDownload,
     IconEdit,
     IconPlus,
@@ -269,6 +269,22 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                         <Button icon={<IconUndo />}
                                 type="secondary"
                                 className={`${type==="active" && "hidden"}`}
+                        ></Button>
+                    </Popconfirm>
+                    <Popconfirm
+                        focusLock
+                        title='Confirm'
+                        content='Are you sure you want to delete this CG?'
+                        onOk={() => {
+                            // console.log(record);
+                            deleteCGL(record.key).then((res) => {
+                                if(res!==false)PubSub.publish('updateCGLs');
+                            });
+                        }}
+                    >
+                        <Button icon={<IconDelete />}
+                                type="secondary"
+                                className={`ml-2 ${type==="active" && "hidden"}`}
                         ></Button>
                     </Popconfirm>
                 </div>
