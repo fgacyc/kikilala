@@ -68,17 +68,17 @@ export default function DashboardAttendLineChart({data,type}) {
                 <XAxis dataKey="name" type="category"  angle={0} textAnchor="end" />
 
                 {
-                    type === "Submit Num" &&  <Line dataKey="Attendance Submit" stroke="#33CC99" strokeWidth={2} />
+                    type === "Submit Num" &&  <Line dataKey="Attendance Submit" stroke="#33CC99" strokeWidth={2}  type="monotone"  />
                 }
 
                 {
-                    type === "Attend Num" &&   <Line dataKey="CG Attendance" stroke="#3399CC" strokeWidth={2} />
+                    type === "Attend Num" &&   <Line dataKey="CG Attendance" stroke="#3399CC" strokeWidth={2}  type="monotone" />
                 }
                 {
-                    type === "Attend Num" && <Line dataKey="Service Attendance" stroke="#33CC66" strokeWidth={2} />
+                    type === "Attend Num" && <Line dataKey="Service Attendance" stroke="#33CC66" strokeWidth={2}  type="monotone" />
                 }
                 {
-                    type === "Attend Num" &&  <Line dataKey="Total Members" stroke="#9966CC" strokeWidth={2} />
+                    type === "Attend Num" &&  <Line dataKey="Total Members" stroke="#9966CC" strokeWidth={2} type="monotone"  />
                 }
                 {
                     type === "Attend Num" &&   <Line dataKey="CG Attendance Trend Line" stroke="#3399CC" strokeWidth={2}
@@ -101,10 +101,10 @@ export default function DashboardAttendLineChart({data,type}) {
 
 
                 {
-                    type === "Members Num" &&  <Line dataKey="New Friends" stroke="#CC3399" strokeWidth={2} />
+                    type === "Members Num" &&  <Line dataKey="New Friends" stroke="#CC3399" strokeWidth={2} type="monotone"  />
                 }
                 {
-                    type === "Members Num" &&  <Line dataKey="AC Num" stroke="#CC9933" strokeWidth={2} />
+                    type === "Members Num" &&  <Line dataKey="AC Num" stroke="#CC9933" strokeWidth={2} type="monotone"  />
                 }
 
                 {

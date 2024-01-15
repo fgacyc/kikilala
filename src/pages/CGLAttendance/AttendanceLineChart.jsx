@@ -15,7 +15,10 @@ export default function AttendanceLineChart({data,type}) {
             ABS : record.abs_num,
         })
     }
-    console.log(newData)
+    //console.log(newData)
+    const weekDuration =12;
+    newData = newData.slice(0,weekDuration);
+    newData.reverse();
 
     return (
         <ResponsiveContainer width="100%" height="50%">
@@ -37,12 +40,12 @@ export default function AttendanceLineChart({data,type}) {
                 <XAxis dataKey="name" type="category"  angle={0} textAnchor="end" />
                 <Tooltip />
                 <Legend />
-                <Line dataKey="OM" stroke="#33CC99" strokeWidth={2} />
-                <Line dataKey="NB" stroke="#3399CC" strokeWidth={2} />
-                <Line dataKey="NF" stroke="#33CC66" strokeWidth={2} />
-                <Line dataKey="RNF" stroke="#CC3399" strokeWidth={2} />
-                <Line dataKey="AC" stroke="#CC9933" strokeWidth={2} />
-                <Line dataKey="ABS" stroke="#9966CC" strokeWidth={2} />
+                <Line dataKey="OM" stroke="#33CC99" strokeWidth={2} type="monotone" />
+                <Line dataKey="NB" stroke="#3399CC" strokeWidth={2} type="monotone" />
+                <Line dataKey="NF" stroke="#33CC66" strokeWidth={2} type="monotone"  />
+                <Line dataKey="RNF" stroke="#CC3399" strokeWidth={2} type="monotone"  />
+                <Line dataKey="AC" stroke="#CC9933" strokeWidth={2} type="monotone"  />
+                <Line dataKey="ABS" stroke="#9966CC" strokeWidth={2} type="monotone"  />
             </LineChart>
         </ResponsiveContainer>
     );
