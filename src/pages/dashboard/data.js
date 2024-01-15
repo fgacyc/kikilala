@@ -78,3 +78,69 @@ export async function getCurrentMonthCGLsNum(CGLSData,currentMonth,location,past
         return filterCGLs.length
     }
 }
+
+function calculateTrendLine(points) {
+    const n = points.length;
+    let sumX = 0;
+    let sumY = 0;
+    let sumXY = 0;
+    let sumX2 = 0;
+
+    for (const point of points) {
+        sumX += point.x;
+        sumY += point.y;
+        sumXY += point.x * point.y;
+        sumX2 += point.x ** 2;
+    }
+
+    const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX ** 2);
+    const b = (sumY - m * sumX) / n;
+
+    return { m, b };
+}
+
+
+
+function getYCoordinatesOnTrendLine(points){
+    // 计算趋势线的斜率和截距
+    const trendLine = calculateTrendLine(points);
+
+// 计算每个点在趋势线上的Y轴坐标
+    const yCoordinatesOnTrendLine = points.map(point => {
+        const x = point.x;
+        const yOnTrendLine = trendLine.m * x + trendLine.b;
+        return Math.round(yOnTrendLine);
+    });
+
+    return yCoordinatesOnTrendLine
+}
+
+
+export function addTrendLineToPoints(data){
+    // const ACNumPoints = data.map((record,index) => {
+    //     return {
+    //         x:index+1,
+    //         y: record["AC Num"]
+    //     }
+    // })
+    // const yOnTrendLine = getYCoordinatesOnTrendLine(ACNumPoints)
+    // for (let i = 0; i < data.length; i++){
+    //     data[i]["AC Num Trend Line"] = yOnTrendLine[i]
+    // }
+
+    const keys = ["AC Num","Attendance Submit","CG Attendance","New Friends","Service Attendance","Total Members"]
+    for (let key of keys){
+        const points = data.map((record,index) => {
+            return {
+                x:index+1,
+                y: record[key]
+            }
+        })
+        const yOnTrendLine = getYCoordinatesOnTrendLine(points)
+        for (let i = 0; i < data.length; i++){
+            data[i][key+" Trend Line"] = yOnTrendLine[i]
+        }
+    }
+    // console.log(data)
+    return data
+}
