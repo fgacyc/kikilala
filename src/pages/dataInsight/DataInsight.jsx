@@ -66,6 +66,8 @@ function AttendanceRateCard({team,data,submitTimes}){
         return a.attendance.length - b.attendance.length
     })
 
+    console.log(team,data,submitTimes)
+
     return(
         <div className={"bg-white  min-w-[200px] m-3 rounded p-2"}>
             <div className={"flex flex-row w-full justify-between items-center mb-2"}>
@@ -73,8 +75,66 @@ function AttendanceRateCard({team,data,submitTimes}){
                 <Progress percent={percentFixed} width='60%'   />
             </div>
             <div>
-                {
-                    data.map((item, index) => (
+                { team === "Kuchai GS" ?
+                    <div>
+                        <div>
+                            <div className={"font-bold my-2 text-lg"}>GS - Daniel Yeo Zone</div>
+                            <div>
+                            {
+                                    data.map((item, index) => {
+                                        if (item.pastoral_team === "GS - Daniel Yeo Zone"){
+                                            return(
+                                                <div key={index} className={"flex flex-row justify-between"}>
+                                                    <div className={"truncate w-[80%]"}>{item.CG_leader}</div>
+                                                    <div>{item.attendance.length} / {submitTimes}</div>
+                                                    {/*<div>{item.CG_id}</div>*/}
+                                                </div>
+                                            )
+                                        }
+                                    })
+                                }
+
+                            </div>
+                        </div>
+                        <div>
+                            <div className={"font-bold my-2 text-lg"}>GS - Daniel Yeo Zone</div>
+                            <div>
+                                {
+                                    data.map((item, index) => {
+                                        if (item.pastoral_team === "GS - Daniel Yeo Zone"){
+                                            return(
+                                                <div key={index} className={"flex flex-row justify-between"}>
+                                                    <div className={"truncate w-[80%]"}>{item.CG_leader}</div>
+                                                    <div>{item.attendance.length} / {submitTimes}</div>
+                                                    {/*<div>{item.CG_id}</div>*/}
+                                                </div>
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                        </div>
+                        <div>
+                            <div className={"font-bold my-2 text-lg"}>GS - Ps Melvin Zone</div>
+                            <div>
+                            {
+                                    data.map((item, index) => {
+                                        if (item.pastoral_team === "GS - Ps Melvin Zone"){
+                                            return(
+                                                <div key={index} className={"flex flex-row justify-between"}>
+                                                    <div className={"truncate w-[80%]"}>{item.CG_leader}</div>
+                                                    <div>{item.attendance.length} / {submitTimes}</div>
+                                                    {/*<div>{item.CG_id}</div>*/}
+                                                </div>
+                                            )
+                                        }
+                                    })
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    : data.map((item, index) => (
                         <div key={index} className={"flex flex-row justify-between"}>
                             <div className={"truncate w-[80%]"}>{item.CG_leader}</div>
                             <div>{item.attendance.length} / {submitTimes}</div>
