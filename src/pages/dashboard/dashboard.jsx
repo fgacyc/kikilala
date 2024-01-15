@@ -24,6 +24,7 @@ export default function Dashboard() {
     pastoralTeams.unshift("All")
     const [currentMonth, setCurrentMonth] = useState(monthRanges[0])
     const [currentPastoralTeam, setCurrentPastoralTeam] = useState("All")
+    const [currentKuchaiGSPastoralTeam, setCurrentKuchaiGSPastoralTeam] = useState("")
     const [chartData, setChartData] = useState(null)
 
 
@@ -39,25 +40,35 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (!allAttendanceData) return;
+        if(currentPastoralTeam !== "Kuchai GS")  setCurrentKuchaiGSPastoralTeam("")
+
+        const records = Object.values(allAttendanceData);
         if (currentPastoralTeam === "All"){
-            const currentMonthData = Object.values(allAttendanceData).filter((item) => item.date.includes(currentMonth));
-            //console.log(currentMonthData)
-            setFilteredAttendanceData(currentMonthData)
-        }else{
-            const currentMonthData = Object.values(allAttendanceData).filter((item) => item.date.includes(currentMonth) && item.satellite === currentPastoralTeam);
+            const currentMonthData = records.filter((item) => item.date.includes(currentMonth));
             //console.log(currentMonthData)
             setFilteredAttendanceData(currentMonthData)
         }
-        //console.log(filteredAttendanceData)
-    }, [currentMonth, currentPastoralTeam]);
+        else if (currentPastoralTeam === "Kuchai GS" && currentKuchaiGSPastoralTeam !== ""){
+            const currentMonthData =records.filter((item) =>
+                item.date.includes(currentMonth) && item.pastoral_team === currentKuchaiGSPastoralTeam);
+            //console.log(currentMonthData)
+            setFilteredAttendanceData(currentMonthData)
+        }
+        else{
+            const currentMonthData = records.filter((item) => item.date.includes(currentMonth) && item.satellite === currentPastoralTeam);
+            //console.log(currentMonthData)
+            setFilteredAttendanceData(currentMonthData)
+        }
+
+    }, [currentMonth, currentPastoralTeam,currentKuchaiGSPastoralTeam]);
 
     const cardType = [
-        "Attendance Submit",
-        "CG Attendance",
-        "Service Attendance",
-        "New Friends",
-        "AC Num",
-        "Total Members",
+        "Attendance Submit Sum",
+        "CG Attendance Ave",
+        "Service Attendance Ave",
+        "NF Sum",
+        "AC Sum",
+        "Total Members Ave",
     ]
 
     const [cardData,setCardData] = useState([0,0,0,0,0,0] )
@@ -65,8 +76,9 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (!filteredAttendanceData) return;
-        const calData = calculateData(filteredAttendanceData);
-        setCardData(calData)
+        // cal card data
+        setCardData(calculateData(filteredAttendanceData))
+        // cal chart data
         setChartData(culChartData(filteredAttendanceData))
     }, [filteredAttendanceData]);
 
@@ -74,13 +86,23 @@ export default function Dashboard() {
 
     function calculateData(data){
         const attendanceSubmit = data.length;
+        let dateList = [];
+        for (let record of data){
+            if (!dateList.includes(record.date)){
+                dateList.push(record.date)
+            }
+        }
+        const dateNum = dateList.length;
+
         const cgAttendance = data.reduce((acc, cur) => {
             return acc + cur.cg_om_num + cur.cg_nb_num + cur.cg_nf_num + cur.cg_rnf_num + cur.cg_ac_num;
         } ,0)
+        const cgAttendanceAve = Math.round(cgAttendance/dateNum)
 
         const serviceAttendance = data.reduce((acc, cur) => {
             return acc + cur.service_om_num + cur.service_nb_num + cur.service_nf_num + cur.service_rnf_num+ cur.cg_ac_num;
         },0)
+        const serviceAttendanceAve = Math.round(serviceAttendance/dateNum)
 
         const newFriends = data.reduce((acc, cur) => {
             return acc + cur.cg_nf_num + cur.service_rnf_num;
@@ -93,8 +115,10 @@ export default function Dashboard() {
         const totalMembers = data.reduce((acc, cur) => {
             return acc + cur.total_members_num;
         },0)
+        const totalMembersAve = Math.round(totalMembers/dateNum)
 
-        return [attendanceSubmit,cgAttendance,serviceAttendance,newFriends,acNum,totalMembers]
+
+        return [attendanceSubmit,cgAttendanceAve,serviceAttendanceAve,newFriends,acNum,totalMembersAve]
     }
 
 
@@ -130,9 +154,9 @@ export default function Dashboard() {
                 {
                     currentPastoralTeam === "Kuchai GS" &&
                     <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
-                            value={currentPastoralTeam}
+                            value={currentKuchaiGSPastoralTeam}
                             onChange={(value) => {
-                                setCurrentPastoralTeam(value);
+                                setCurrentKuchaiGSPastoralTeam(value);
                             }}
                     >
                         {kuchaGSPastoralTeams.map((option, index) => (
@@ -144,42 +168,56 @@ export default function Dashboard() {
                 }
 
             </div>
-            <div className={"grid grid-cols-3 gap-4 bg-white"}>
-                {
-                    cardData.map((item, index) => (
-                        <Statistic key={index} type={cardType[index]} num={cardData[index]}/>
-                    ))
-                }
-            </div>
-            <div className={"bg-white text-center pb-10"}>
-                <Select placeholder='Please select month' className={"w-[200px] mr-2"}
-                        value={currentMonth}
-                        onChange={(value) => {
-                            setCurrentMonth(value);
-                        }}
-                >
-                    {monthRanges.map((option, index) => (
-                        <Option key={index} value={option}>
-                            {option}
-                        </Option>
-                    ))}
-                </Select>
-            </div>
-            <div className={"bg-white"}>
-                <div className={"h-[300px] bg-white mb-10"}>
-                    {
-                        filteredAttendanceData && <DashboardAttendLineChart data={chartData} type={"Submit Num"}/>
-                    }
+            <div className={"bg-white p-2"}>
+                <div className={"shadow-xl m-2 bg-white"}>
+                    <div className={"text-center text-2xl font-bold bg-white py-2 rounded-b"}>
+                        Overall Statistics
+                    </div>
+                    <div className={"grid grid-cols-3 gap-4 bg-white"}>
+                        {
+                            cardData.map((item, index) => (
+                                <Statistic key={index} type={cardType[index]} num={cardData[index]}/>
+                            ))
+                        }
+                    </div>
                 </div>
-                <div className={"h-[300px] bg-white mb-10"}>
-                    {
-                        filteredAttendanceData && <DashboardAttendLineChart data={chartData} type={"Attend Num"}/>
-                    }
+            </div>
+
+            {/*<div className={"bg-white text-center pb-10"}>*/}
+            {/*    <Select placeholder='Please select month' className={"w-[200px] mr-2"}*/}
+            {/*            value={currentMonth}*/}
+            {/*            onChange={(value) => {*/}
+            {/*                setCurrentMonth(value);*/}
+            {/*            }}*/}
+            {/*    >*/}
+            {/*        {monthRanges.map((option, index) => (*/}
+            {/*            <Option key={index} value={option}>*/}
+            {/*                {option}*/}
+            {/*            </Option>*/}
+            {/*        ))}*/}
+            {/*    </Select>*/}
+            {/*</div>*/}
+
+            <div className={"bg-white p-2"}>
+                <div className={"text-center text-2xl font-bold bg-white py-2 rounded-b"}>
+                    Charts
                 </div>
-                <div className={"h-[300px] bg-white mb-10"}>
-                    {
-                        filteredAttendanceData && <DashboardAttendLineChart data={chartData} type={"Members Num"}/>
-                    }
+                <div className={"bg-white m-2"}>
+                    <div className={"h-[300px] bg-white mb-10"}>
+                        {
+                            filteredAttendanceData && <DashboardAttendLineChart data={chartData} type={"Submit Num"}/>
+                        }
+                    </div>
+                    <div className={"h-[300px] bg-white mb-10"}>
+                        {
+                            filteredAttendanceData && <DashboardAttendLineChart data={chartData} type={"Attend Num"}/>
+                        }
+                    </div>
+                    <div className={"h-[300px] bg-white mb-10"}>
+                        {
+                            filteredAttendanceData && <DashboardAttendLineChart data={chartData} type={"Members Num"}/>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

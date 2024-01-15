@@ -10,7 +10,7 @@ export default function DashboardAttendLineChart({data,type}) {
             return a.name < b.name ? -1 : 1;
         })
     }
-    console.log(data)
+    // console.log(data)
 
 
     return (
