@@ -9,6 +9,9 @@ import CsvDownload from "react-csv-downloader";
 import { downloadCGLAttendanceData, getTodayDateStr } from '../../tools';
 import {readCGLNameByCGName} from "../../api/CGLs.js";
 import {useAuth0} from "@auth0/auth0-react";
+import CGAttendanceLineChart from "./AttendanceLineChart.jsx";
+import AttendanceLineChart from "./AttendanceLineChart.jsx";
+
 
 const CGLAttendance = () => {
     const params = useParams()
@@ -103,6 +106,8 @@ const CGLAttendance = () => {
     ];
     const { loginWithRedirect,user,isLoading } = useAuth0();
     const navigate = useNavigate();
+    const [CGLineChartData, setCGLineChartData] = useState(null);
+    const [ServiceLineChartData, setServiceLineChartData] = useState(null);
 
     async function getCGLAttendance() {
         const attendance_data = await readAttendByCGName(params.cg_name);
@@ -110,6 +115,13 @@ const CGLAttendance = () => {
             .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
         // console.log(transform_attendance_data)
         setAttendanceData(transform_attendance_data);
+        setCGLineChartData(
+            transform_attendance_data.filter((item) => item.type === "CG")
+        )
+        setServiceLineChartData(
+            transform_attendance_data.filter((item) => item.type === "Service")
+        )
+
         const CGLNameQ =await readCGLNameByCGName(params.cg_name);
         setCGLName(CGLNameQ.CG_leader);
     }
@@ -122,6 +134,8 @@ const CGLAttendance = () => {
         }
         loginWithRedirect();
     }, [isLoading])
+
+
 
 
 
@@ -180,6 +194,18 @@ const CGLAttendance = () => {
                    <div>Connect Group Attendance</div>
                </div>
             </div>
+            <div className={"bg-white mb-4 rounded h-[600px]"}>
+                {
+                    CGLineChartData &&
+                    <AttendanceLineChart data={CGLineChartData} type={"CG"} />
+                }
+                {
+                    ServiceLineChartData &&
+                    <AttendanceLineChart data={ServiceLineChartData} type={"Service"} />
+                }
+            </div>
+
+
             <div className={"bg-white pb-4"}>
                 {
                     attendanceData.length !== 1 && <Table
