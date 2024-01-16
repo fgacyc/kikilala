@@ -72,12 +72,12 @@ export default function DashboardAttendLineChart({data,type}) {
                 }
 
                 {
-                    type === "Attend Num" &&   <Line dataKey="CG Attendance" stroke="#3399CC" strokeWidth={2}  type="monotone" />
+                    type === "Attend Num" &&   <Line dataKey="CG Attendance" stroke="#CC9933" strokeWidth={2}  type="monotone" />
                 }
                 {
-                    type === "Attend Num" &&   <Line dataKey="CG Attendance Trend Line" stroke="#3399CC" strokeWidth={2}
+                    type === "Attend Num" &&   <Line dataKey="CG Attendance Trend Line" stroke="#CC9933" strokeWidth={2}
                                                      strokeDasharray="5 5" // 设置虚线样式
-                                                     dot={{ stroke: '#3399CC', strokeWidth: 2, r: 0 }} // 添加点
+                                                     dot={{ stroke: '#CC9933', strokeWidth: 2, r: 0 }} // 添加点
                     />
                 }
 
@@ -91,12 +91,12 @@ export default function DashboardAttendLineChart({data,type}) {
                     />
                 }
                 {
-                    type === "Attend Num" &&  <Line dataKey="Total Members" stroke="#9966CC" strokeWidth={2} type="monotone"  />
+                    type === "Attend Num" &&  <Line dataKey="Total Members" stroke="#fa5252" strokeWidth={2} type="monotone"  />
                 }
                 {
-                    type === "Attend Num" &&  <Line dataKey="Total Members Trend Line" stroke="#9966CC" strokeWidth={2}
+                    type === "Attend Num" &&  <Line dataKey="Total Members Trend Line" stroke="#fa5252" strokeWidth={2}
                                                     strokeDasharray="5 5" // 设置虚线样式
-                                                    dot={{ stroke: '#9966CC', strokeWidth: 2, r: 0 }} // 添加点
+                                                    dot={{ stroke: '#fa5252', strokeWidth: 2, r: 0 }} // 添加点
                     />
                 }
 

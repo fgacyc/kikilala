@@ -390,3 +390,19 @@ export function culMonth(timeDuration){
     return previousDay.getMonth() + 1;
 }
 
+export function calculateTwoDaysAgo(inputDateString) {
+    // 将输入的日期字符串转换为日期对象
+    const inputDate = new Date(inputDateString);
+
+    // 计算两天前的日期
+    const twoDaysAgo = new Date(inputDate);
+    twoDaysAgo.setDate(inputDate.getDate() - 2);
+
+    // 获取年、月、日的部分
+    const year = twoDaysAgo.getFullYear();
+    const month = String(twoDaysAgo.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需要加1
+    const day = String(twoDaysAgo.getDate()).padStart(2, '0');
+
+    // 构建两天前的日期字符串
+    return `${year}/${month}/${day}`;
+}

@@ -1,12 +1,23 @@
 import React, { PureComponent } from 'react';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label} from 'recharts';
 import {Title} from "chart.js";
+import {calculateTwoDaysAgo} from "../../tools.js";
+
+function culDate(date,type){
+    if (type === "Service"){
+        return date.substring(16,21);
+    }
+    else if(type==="CG"){
+        return calculateTwoDaysAgo(date.substring(11,21)).substring(5,10);
+    }
+}
 
 export default function AttendanceLineChart({data,type}) {
+    console.log(data)
     let newData = [];
     for (let record of data){
         newData.push({
-            name: record.date.substring(16,21),
+            name: culDate(record.date,type),
             OM: record.om_num,
             NB: record.nb_num,
             NF: record.nf_num,
@@ -15,7 +26,7 @@ export default function AttendanceLineChart({data,type}) {
             ABS : record.abs_num,
         })
     }
-    //console.log(newData)
+    // console.log(newData)
     const weekDuration =12;
     newData = newData.slice(0,weekDuration);
     newData.reverse();
