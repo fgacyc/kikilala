@@ -40,7 +40,7 @@ export default function AttendanceLineChart({data,type}) {
                 <XAxis dataKey="name" type="category"  angle={0} textAnchor="end" />
                 <Tooltip />
                 <Legend />
-                <Line dataKey="OM" stroke="#33CC99" strokeWidth={2} type="monotone" />
+                <Line dataKey="OM" stroke="#fa5252" strokeWidth={2} type="monotone" />
                 <Line dataKey="NB" stroke="#3399CC" strokeWidth={2} type="monotone" />
                 <Line dataKey="NF" stroke="#33CC66" strokeWidth={2} type="monotone"  />
                 <Line dataKey="RNF" stroke="#CC3399" strokeWidth={2} type="monotone"  />
