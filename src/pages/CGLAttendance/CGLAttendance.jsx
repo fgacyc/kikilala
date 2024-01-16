@@ -176,7 +176,7 @@ const CGLAttendance = () => {
     }
 
     return (
-        <div className='p-10'>
+        <div className='sm:p-10 p-4'>
             <div className='flex flex-row text-white text-3xl mb-2 justify-between flex-wrap'>
                 <div className={`w-[44px] h-[44px] bg-[#313131] rounded-[8px] mr-2
                                 hover:bg-gray-200 hover:text-[#313131] cursor-pointer
