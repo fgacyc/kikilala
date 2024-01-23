@@ -117,8 +117,10 @@ export default function HeadCountForm() {
     }, [serviceType]);
 
     useEffect(() => {
-        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + nf_num)
-    }, [kids_num, cm_num, parents_num, yw_num, gs_num, nf_num])
+        const num = Number(kids_num) + Number(cm_num) + Number(parents_num)
+            + Number(yw_num) + Number(gs_num) + Number(nf_num) + Number(ac_num)
+        setHeadCount(num)
+    }, [kids_num, cm_num, parents_num, yw_num, gs_num, nf_num,ac_num])
 
 
     function submitHandler() {

@@ -25,7 +25,7 @@ export default function WeekSelect({currentWeek,setCurrentWeek}) {
                     setCurrentWeek(value);
                 }}
         >
-            {dateArray && dateArray.slice().reverse().map((option, index) => (
+            {dateArray && dateArray.map((option, index) => (
                 <Option key={index} value={option}>
                     {option}
                 </Option>
