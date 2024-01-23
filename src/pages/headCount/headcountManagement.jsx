@@ -34,6 +34,7 @@ function HeadCountTable() {
     const [reminderModalVisible, setReminderModalVisible] = useState(false);
     const setCurrentHeadCountTableData = useHeadCountStore(state => state.setCurrentHeadCountTableData);
     const [downloadModalVisible, setDownloadModalVisible] = useState(false);
+    const setHeadCountData = useHeadCountStore(state => state.setHeadCountData);
 
     useEffect(() => {
         void setHeadcountData();
