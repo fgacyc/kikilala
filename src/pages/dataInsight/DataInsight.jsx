@@ -8,6 +8,7 @@ import {readAllActiveCGLs} from "../../api/CGLs.js";
 import {distanceBetweenPoints} from "chart.js/helpers";
 import Header from "../Header/Header.jsx";
 
+const Option = Select.Option;
 function filterAttendanceByMonth(currentMonth,attendanceData){
     if (!attendanceData) return;
     attendanceData = Object.values(attendanceData)
@@ -66,7 +67,7 @@ function AttendanceRateCard({team,data,submitTimes}){
         return a.attendance.length - b.attendance.length
     })
 
-    console.log(team,data,submitTimes)
+    // console.log(team,data,submitTimes)
 
     return(
         <div className={"bg-white  min-w-[200px] m-3 rounded p-2"}>
@@ -97,11 +98,11 @@ function AttendanceRateCard({team,data,submitTimes}){
                             </div>
                         </div>
                         <div>
-                            <div className={"font-bold my-2 text-lg"}>GS - Daniel Yeo Zone</div>
+                            <div className={"font-bold my-2 text-lg"}>GS - Ps Jasmine Zone</div>
                             <div>
                                 {
                                     data.map((item, index) => {
-                                        if (item.pastoral_team === "GS - Daniel Yeo Zone"){
+                                        if (item.pastoral_team === "GS - Ps Jasmine Zone"){
                                             return(
                                                 <div key={index} className={"flex flex-row justify-between"}>
                                                     <div className={"truncate w-[80%]"}>{item.CG_leader}</div>
@@ -161,7 +162,8 @@ export default function DataInsight(){
     const [currentMonthCGLData, setCurrentMonthCGLData] = useState([])
     const [submitTimes, setSubmitTimes] = useState(0)
     const [pastoralTeamAttendMap, setPastoralTeamAttendMap] = useState(null)
-
+    const months = generateMonthlyRanges();
+    const navigate = useNavigate();
     useEffect(() => {
         readAllAttends().then((res) => {
             // console.log(res)
@@ -225,6 +227,20 @@ export default function DataInsight(){
     return(
         <div>
             {/*<Header />*/}
+            <div className={"px-9"}>
+                <Select placeholder='Please select month' style={{ width: 250,marginBottom:8 }}
+                        value={currentMonth}
+                        onChange={(value) => {
+                            window.open(`/nb-data-insight/${value}`, "_self")
+                        }}
+                >
+                    {months.map((option, index) => (
+                        <Option key={index} value={option}>
+                            {option}
+                        </Option>
+                    ))}
+                </Select>
+            </div>
             <div className={"mx-6"}>
                 <div className={"grid lg:grid-cols-3 sm:grid-cols-2 gap-2 grid-cols-1"}>
                     {

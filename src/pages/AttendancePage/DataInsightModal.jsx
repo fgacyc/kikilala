@@ -8,7 +8,7 @@ const Option = Select.Option;
 
 export default function DataInsightModal({ visible, setVisible }) {
     const [currentMonth, setCurrentMonth] = useState('')
-    const monthes = generateMonthlyRanges();
+    const months = generateMonthlyRanges();
 
     const navigate = useNavigate();
 
@@ -21,7 +21,6 @@ export default function DataInsightModal({ visible, setVisible }) {
             title="Data Insight"
             visible={visible}
             onOk={() => {
-                setVisible(false);
                 navigate(`/nb-data-insight/${currentMonth}`)
             }}
             onCancel={() => setVisible(false)}
@@ -34,7 +33,7 @@ export default function DataInsightModal({ visible, setVisible }) {
                         setCurrentMonth(value);
                     }}
             >
-                {monthes.map((option, index) => (
+                {months.map((option, index) => (
                     <Option key={index} value={option}>
                         {option}
                     </Option>

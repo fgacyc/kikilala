@@ -1,12 +1,13 @@
 import {generateMonthlyRanges} from "../../tools.js";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {readAllAttends} from "../../api/attendance.js";
 import {Button, Select, Spin} from "@arco-design/web-react";
 import {kuchaGSPastoralTeams, kuchaYWPastoralTeams, pastoralTeams} from "../../config.js";
 import DashboardAttendLineChart from "./dashboardAttendLineChart.jsx";
 import {culChartData, getCurrentMonthCGLsNum} from "./data.js";
 import {readAllActiveCGLs} from "../../api/CGLs.js";
-import {IconClose} from "@arco-design/web-react/icon";
+import {IconClose, IconThunderbolt} from "@arco-design/web-react/icon";
+import {useNavigate} from "react-router-dom";
 const Option = Select.Option;
 
 function AttendanceSubmitSum({num, num1}){
@@ -145,7 +146,7 @@ export default function Dashboard() {
     ]
 
     const [cardData,setCardData] = useState([0,0,0,0,0,0] )
-
+    const navigate = useNavigate();
 
 
 
@@ -215,79 +216,85 @@ export default function Dashboard() {
 
     return (
         <div className={"h-full w-full sm:px-8 px-2 py-4 rounded"}>
-            <div className={"flex flex-row  bg-white py-2 rounded-t"}>
-                <Select placeholder='Please select month' className={"w-[150px] mr-2"}
-                        value={currentMonth}
-                        onChange={(value) => {
-                            setCurrentMonth(value);
+            <div className={"flex flex-row  bg-white py-2 rounded-t justify-between px-4 relative top-1"}>
+                <div>
+                    <Select placeholder='Please select month' className={"w-[150px] mr-2"}
+                            value={currentMonth}
+                            onChange={(value) => {
+                                setCurrentMonth(value);
+                            }}
+                    >
+                        {monthRanges.map((option, index) => (
+                            <Option key={index} value={option}>
+                                {option}
+                            </Option>
+                        ))}
+                    </Select>
+
+                    <Select placeholder='Please select pastoral team' className={"w-[150px] mr-2"}
+                            value={currentPastoralTeam}
+                            onChange={(value) => {
+                                setCurrentPastoralTeam(value);
+                            }}
+                    >
+                        {pastoralTeams.map((option, index) => (
+                            <Option key={index} value={option}>
+                                {option}
+                            </Option>
+                        ))}
+                    </Select>
+
+                    {
+                        currentPastoralTeam === "Kuchai GS" &&
+                        <div>
+                            <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
+                                    value={currentKuchaiGSPastoralTeam}
+                                    onChange={(value) => {
+                                        setCurrentKuchaiGSPastoralTeam(value);
+                                    }}
+                            >
+                                {kuchaGSPastoralTeams.map((option, index) => (
+                                    <Option key={index} value={option}>
+                                        {option}
+                                    </Option>
+                                ))}
+                            </Select>
+                            <Button shape='circle' type='secondary' icon={<IconClose />}
+                                    onClick={() => {
+                                        setCurrentKuchaiGSPastoralTeam("")
+                                    }}
+                            />
+                        </div>
+                    }
+
+                    {
+                        currentPastoralTeam === "Kuchai YW" &&
+                        <div>
+                            <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
+                                    value={currentKuchaiGSPastoralTeam}
+                                    onChange={(value) => {
+                                        setCurrentKuchaiGSPastoralTeam(value);
+                                    }}
+                            >
+                                {kuchaYWPastoralTeams.map((option, index) => (
+                                    <Option key={index} value={option}>
+                                        {option}
+                                    </Option>
+                                ))}
+                            </Select>
+                            <Button shape='circle' type='secondary' icon={<IconClose />}
+                                    onClick={() => {
+                                        setCurrentKuchaiGSPastoralTeam("")
+                                    }}
+                            />
+                        </div>
+                    }
+                </div>
+                <Button type='secondary' icon={<IconThunderbolt />} className={"ml-2"}
+                        onClick={() => {
+                            navigate(`/nb-data-insight/${generateMonthlyRanges()[0]}`)
                         }}
-                >
-                    {monthRanges.map((option, index) => (
-                        <Option key={index} value={option}>
-                            {option}
-                        </Option>
-                    ))}
-                </Select>
-
-                <Select placeholder='Please select pastoral team' className={"w-[150px] mr-2"}
-                        value={currentPastoralTeam}
-                        onChange={(value) => {
-                            setCurrentPastoralTeam(value);
-                        }}
-                >
-                    {pastoralTeams.map((option, index) => (
-                        <Option key={index} value={option}>
-                            {option}
-                        </Option>
-                    ))}
-                </Select>
-
-                {
-                    currentPastoralTeam === "Kuchai GS" &&
-                   <div>
-                       <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
-                               value={currentKuchaiGSPastoralTeam}
-                               onChange={(value) => {
-                                   setCurrentKuchaiGSPastoralTeam(value);
-                               }}
-                       >
-                           {kuchaGSPastoralTeams.map((option, index) => (
-                               <Option key={index} value={option}>
-                                   {option}
-                               </Option>
-                           ))}
-                       </Select>
-                       <Button shape='circle' type='secondary' icon={<IconClose />}
-                         onClick={() => {
-                             setCurrentKuchaiGSPastoralTeam("")
-                         }}
-                       />
-                   </div>
-                }
-
-                {
-                    currentPastoralTeam === "Kuchai YW" &&
-                    <div>
-                        <Select placeholder='Please select pastoral team' className={"w-[200px] mr-2"}
-                                value={currentKuchaiGSPastoralTeam}
-                                onChange={(value) => {
-                                    setCurrentKuchaiGSPastoralTeam(value);
-                                }}
-                        >
-                            {kuchaYWPastoralTeams.map((option, index) => (
-                                <Option key={index} value={option}>
-                                    {option}
-                                </Option>
-                            ))}
-                        </Select>
-                        <Button shape='circle' type='secondary' icon={<IconClose />}
-                                onClick={() => {
-                                    setCurrentKuchaiGSPastoralTeam("")
-                                }}
-                        />
-                    </div>
-                }
-
+                />
             </div>
             <div className={"bg-white p-2 rounded pb-2"}>
                 <div className={"shadow-xl sm:m-2 m-1 bg-white"}>

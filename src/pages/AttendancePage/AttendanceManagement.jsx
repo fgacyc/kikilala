@@ -12,7 +12,7 @@ import AttendanceDownloadModal from "./AttendanceDownloadModal.jsx";
 import AttendanceReminder from "./AttendanceReminder.jsx";
 import {AttendanceTable} from "./AttendanceTable.jsx";
 import {AbsentCGLsTable} from "./PendingTable.jsx";
-import {generateAllWeeklyRanges} from "../../tools.js";
+import {generateAllWeeklyRanges, generateMonthlyRanges} from "../../tools.js";
 import {useNavigate} from "react-router-dom";
 import DataInsightModal from "./DataInsightModal.jsx";
 const Option = Select.Option;
@@ -100,15 +100,9 @@ const AttendanceManagement = () => {
                                 />
                                 <Button type='secondary' icon={<IconThunderbolt />} className={"ml-2"}
                                         onClick={() => {
-                                            setDataInsightModalVisible(true);
+                                            navigate(`/nb-data-insight/${generateMonthlyRanges()[0]}`)
                                         }}
                                 />
-                                {/*<Button type='secondary' className={"ml-2"}*/}
-                                {/*        onClick={() => {*/}
-                                {/*            // setReminderModalVisible(true);*/}
-                                {/*            check();*/}
-                                {/*        }}*/}
-                                {/*>Click</Button>*/}
                             </div>
                         </div>
 
