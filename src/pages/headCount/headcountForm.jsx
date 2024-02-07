@@ -118,7 +118,9 @@ export default function HeadCountForm() {
 
     useEffect(() => {
         const num = Number(kids_num) + Number(cm_num) + Number(parents_num)
-            + Number(yw_num) + Number(gs_num) + Number(nf_num) + Number(ac_num)
+            + Number(yw_num) + Number(gs_num)
+        // + Number(nf_num) + Number(ac_num)
+        // YW total and GS total already included in the total headcount
         setHeadCount(num)
     }, [kids_num, cm_num, parents_num, yw_num, gs_num, nf_num,ac_num])
 

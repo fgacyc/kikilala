@@ -42,7 +42,8 @@ export  default  function HeadCountDrawer({visible, setVisible}){
     ]);
 
     useEffect(() => {
-        setHeadCount(kids_num + cm_num + parents_num + yw_num + gs_num + nf_num)
+        const num = Number(kids_num) + Number(cm_num) + Number(parents_num) + Number(yw_num) + Number(gs_num)
+        setHeadCount(num )
     }, [kids_num, cm_num, parents_num,yw_num, gs_num, nf_num])
 
     function submit(){
