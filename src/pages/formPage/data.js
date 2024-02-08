@@ -179,6 +179,20 @@ export function validate(data) {
     //     return true;
     // }
 
+    //CYN special service, only for CYN, need to be removed later #TODO
+    if (
+        data.cg_om_num  === 0 &&
+        data.cg_nb_num  === 0 &&
+        data.cg_nf_num  === 0 &&
+        data.cg_rnf_num  === 0 &&
+        data.cg_ac_num  === 0 &&
+        data.cg_abs_num  === 0
+    ){
+        //Message.warning("If there is no CG, please fill in the absence reason!")
+        return true;
+    }
+
+
     if (data.cg_abs_num >0 && data.cg_absence_reason === ""){
         Message.warning("Please fill in the absence reason!")
         return false;
