@@ -69,7 +69,15 @@ function HeadCountTable() {
             headData.push(res[key]);
         }
         setHeadcountTableData(headData);
-        headData = filterHeadcountByDate(headData,currentWeek);
+        let localCurrentWeek = localStorage.getItem("headcount-current-week")
+        if(!localCurrentWeek) // if no local cache
+        {
+            localCurrentWeek = currentWeek
+        }else{ // have local cache
+            setCurrentWeek(localCurrentWeek) // change selected value
+        }
+
+        headData = filterHeadcountByDate(headData,localCurrentWeek);
         setCurrentTableData(headData);
         if(headData){
             setHeadCountDataStore(headData);
@@ -277,7 +285,10 @@ function HeadCountTable() {
         <div className={"mb-2 flex flex-row "}>
             <WeekSelect
                 currentWeek={currentWeek}
-                setCurrentWeek={setCurrentWeek}
+                setCurrentWeek={(week)=>{
+                    setCurrentWeek(week)
+                    localStorage.setItem("headcount-current-week",week)
+                }}
             />
             <div className={"flex flex-row"}>
                 <Button type='secondary' icon={<IconDownload />} className={"ml-2"}

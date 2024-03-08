@@ -9,6 +9,7 @@ export default function HeadcountReminderModal({ visible, setVisible }){
     useEffect(() => {
         let satellites = Object.keys(satellite_pastoralTeam)
         // console.log(currentHeadCountTableData)
+        if(!currentHeadCountTableData) return;
         for(let item of currentHeadCountTableData){
            // if item.satellite
            const index = satellites.indexOf(item.satellite)
