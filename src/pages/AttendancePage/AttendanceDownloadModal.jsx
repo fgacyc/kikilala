@@ -165,26 +165,27 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
             focusLock={true}
         >
             <div className={"mb-4"}>
+
+                <div className={"mb-2"}>Which pastoral team's attendance data do you want to download?</div>
                 <Cascader
                     placeholder='Please select ...'
-                    style={{ width: 300, marginBottom: 20 }}
+                    // style={{ width: 300, marginBottom: 20 }}
                     options={downloadOptions}
                     onChange={(v) => {
                         setFilterCondition(v);
                     }}
                 />
-                <div className={"mb-2"}>Which pastoral team's attendance data do you want to download?</div>
-                <Select
-                    placeholder='Please select  pastoral team...'
-                    value={pastoralTeam}
-                    onChange={setPastoralTeam}
-                >
-                    {pastoralTeamListAndAll.map((option, index) => (
-                        <Option key={index} value={option.value}>
-                            {option.text}
-                        </Option>
-                    ))}
-                </Select>
+                {/*<Select*/}
+                {/*    placeholder='Please select  pastoral team...'*/}
+                {/*    value={pastoralTeam}*/}
+                {/*    onChange={setPastoralTeam}*/}
+                {/*>*/}
+                {/*    {pastoralTeamListAndAll.map((option, index) => (*/}
+                {/*        <Option key={index} value={option.value}>*/}
+                {/*            {option.text}*/}
+                {/*        </Option>*/}
+                {/*    ))}*/}
+                {/*</Select>*/}
             </div>
             <div>
                 <div>What duration of attendance data do you want to download?</div>
