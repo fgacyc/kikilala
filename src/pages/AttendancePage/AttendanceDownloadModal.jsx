@@ -1,11 +1,13 @@
-import {Modal, Select, DatePicker, Button, Message} from "@arco-design/web-react";
-import {pastoralTeamList} from "../../config.js";
+import {Modal, Select, DatePicker, Button, Message, Cascader} from "@arco-design/web-react";
+import {downloadOptions, pastoralTeamList} from "../../config.js";
 import {useEffect, useRef, useState} from "react";
 import {useFormStore} from "../../store/formStore.js";
 import {getWeekDatesArray} from "../formPage/data.js";
 import {attendObjToCSV, checkWeek, downloadCGLsData, getTodayDateStr} from "../../tools.js";
-import {filterAttendByDate, getAttendByPastoralTeam} from "../../api/attendance.js";
+import {filterAttendByDate, getAttendByPastoralTeam, readAllAttends} from "../../api/attendance.js";
 import CsvDownload from "react-csv-downloader";
+import attendanceDownloadModalStore from "../../store/attendanceDownloadModalStore.js";
+import attendanceDownloadDataFilter from "./data.js";
 const Option = Select.Option;
 
 function ButtonsGroup({setDataDuration,visible}){
@@ -101,6 +103,8 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
         {text: "Kuchai Young Warrior", value: "kuchai_young_warrior"},
         {text: "All", value: "all"},
     ]);
+    const setAllData = attendanceDownloadModalStore(state => state.setAllData);
+    const [filterCondition, setFilterCondition] = useState(null);
 
     async function generateDownloadData(){
         if (!dataDuration||!pastoralTeam )return;
@@ -113,9 +117,10 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
         setDownloadData(csvData);
     }
 
-    useEffect(() => {
-        generateDownloadData();
-    }, [dataDuration,pastoralTeam]);
+    // useEffect(() => {
+        // generateDownloadData();
+    //
+    // }, [dataDuration,pastoralTeam]);
 
     useEffect(() => {
         if(!visible) return;
@@ -124,6 +129,22 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
         setDownloadData([]);
     }, [visible]);
 
+    useEffect(() => {
+        readAllAttends().then((res) => {
+            //console.log("readAllAttends", res)
+            setAllData(res);
+        });
+        //setAllData();
+    }, []);
+
+    useEffect(() => {
+       // if(!dataDuration) return;
+        //console.log("filterCondition",filterCondition)
+        let data =  attendanceDownloadDataFilter(filterCondition,dataDuration);
+        const csvData = attendObjToCSV(data);
+        setDownloadData(csvData);
+
+    }, [filterCondition,dataDuration]);
 
     return (
         <Modal
@@ -132,6 +153,10 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
             onOk={() => {
                 //setVisible(false)
                 // console.log(downloadData)
+                if (!dataDuration){
+                    Message.error('Please select a duration of attendance data to download');
+                    return;
+                }
                 downloadBtnRef.current.click()
             }}
             okText={"Download"}
@@ -140,6 +165,14 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
             focusLock={true}
         >
             <div className={"mb-4"}>
+                <Cascader
+                    placeholder='Please select ...'
+                    style={{ width: 300, marginBottom: 20 }}
+                    options={downloadOptions}
+                    onChange={(v) => {
+                        setFilterCondition(v);
+                    }}
+                />
                 <div className={"mb-2"}>Which pastoral team's attendance data do you want to download?</div>
                 <Select
                     placeholder='Please select  pastoral team...'

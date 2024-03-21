@@ -181,3 +181,126 @@ export const CGCategoryList = [
         value: "entrepreneur",
     }
 ];
+
+export const downloadOptions = [
+    {
+        label:"Kuchai YW",
+        value:"Kuchai YW",
+        children: [
+            {
+                label: "Move",
+                value: "Move"
+            },
+            {
+                label: "Voice",
+                value: "Voice"
+            },
+            {
+                label: "Mind",
+                value: "Mind"
+            },
+            {
+                label: "Force",
+                value: "Force"
+            },
+            {
+                label: "Heart",
+                value: "Heart"
+            },
+            {
+                label:"All",
+                value:"All"
+            }
+        ]
+    },
+    {
+        label: "Kuchai GS",
+        value: "Kuchai GS",
+        children: [
+            {
+                label: "GS - Daniel Yeo Zone",
+                value: "GS - Daniel Yeo Zone"
+            },
+            {
+                label: "GS - Ps Jasmine Zone",
+                value: "GS - Ps Jasmine Zone"
+            },
+            {
+                label: "GS - Ps Melvin Zone",
+                value: "GS - Ps Melvin Zone"
+            },
+            {
+                label:"GS - Joshua Zone",
+                value:"GS - Joshua Zone"
+            },
+            {
+                label:"GS - The Blessing",
+                value:"GS - The Blessing"
+            },
+            {
+                label:"All",
+                value:"All"
+            }
+        ]
+    },
+    {
+        label: "Satellites",
+        value: "Satellites",
+        children:[
+            {
+                label: "Serdang",
+                value: "Serdang"
+            },
+            {
+                label: "Kepong",
+                value: "Kepong"
+            },
+            {
+                label: "USJ",
+                value: "USJ"
+            },
+            {
+                label: "Setapak",
+                value: "Setapak"
+            },
+            {
+                label: "SG Long",
+                value: "SG Long"
+            },
+            {
+                label: "Seremban",
+                value: "Seremban"
+            }
+        ]
+    },
+    {
+        label: "Pastoral Teams",
+        value: "Pastoral Teams",
+        children: [
+            {
+                label: "Young Professional",
+                value: "Young Professional"
+            },
+            {
+                label: "Adult",
+                value: "Adult"
+            },
+            {
+                label: "Young Warrior",
+                value: "Young Warrior"
+            },
+            {
+                label: "General Service",
+                value: "General Service"
+            },
+            {
+                label: "Young Family",
+                value: "Young Family"
+            }
+        ]
+    },
+    {
+        label: "All",
+        value: "All"
+    }
+];
