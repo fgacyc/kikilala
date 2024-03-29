@@ -141,6 +141,7 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
        // if(!dataDuration) return;
         //console.log("filterCondition",filterCondition)
         let data =  attendanceDownloadDataFilter(filterCondition,dataDuration);
+        //console.log("data",data)
         const csvData = attendObjToCSV(data);
         setDownloadData(csvData);
 

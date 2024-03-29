@@ -25,10 +25,13 @@ import InputPIN from "../components/InputPIN.jsx";
 const TextArea = Input.TextArea;
 
 
-
-
 function InputPINs({ type }) {
-    if (type !== "activity" && type !== "service") new Error("type must be activity or service")
+    if (type !== "activity"
+        && type !== "service"
+        && type !== "YW-CG"
+        && type !== "YW-SVE"
+    ) new Error("type must be activity or service")
+
 
     const [
         setCGOMNum,
@@ -93,7 +96,7 @@ function InputPINs({ type }) {
 
     return (
         <div>
-            {type === "activity" ?
+            {type === "activity" &&
                 <div className={"flex flex-row justify-between items-start "}>
                     <InputPIN name={"OM"} setter={setCGOMNum} val={cg_om_num} />
                     <InputPIN name={"NB"} setter={setCGNBNum} val={cg_nb_num}  />
@@ -102,15 +105,41 @@ function InputPINs({ type }) {
                     <InputPIN name={"AC"} setter={setCGACNum} val={cg_ac_num}  />
                     <InputPIN name={"ABS"} setter={setCGABSNum} val={cg_abs_num}  />
                 </div>
-                : <div className={"flex flex-row justify-between items-start "}>
-                    <InputPIN name={"OM"} setter={setServiceOMNum} val={service_om_num}  />
-                    <InputPIN name={"NB"} setter={setServiceNBNum} val={service_nb_num}  />
-                    <InputPIN name={"NF"} setter={setServiceNFNum} val={service_nf_num}  />
-                    <InputPIN name={"RNF"} setter={setServiceRNFNum} val={service_rnf_num}  />
-                    <InputPIN name={"AC"} setter={setServiceACNum} val={service_ac_num}  />
-                    <InputPIN name={"ABS"} setter={setServiceABSNum} val={service_abs_num}  />
+            }
+            {
+                type === "service" &&
+                <div className={"flex flex-row justify-between items-start "}>
+                    <InputPIN name={"OM"} setter={setServiceOMNum} val={service_om_num}/>
+                    <InputPIN name={"NB"} setter={setServiceNBNum} val={service_nb_num}/>
+                    <InputPIN name={"NF"} setter={setServiceNFNum} val={service_nf_num}/>
+                    <InputPIN name={"RNF"} setter={setServiceRNFNum} val={service_rnf_num}/>
+                    <InputPIN name={"AC"} setter={setServiceACNum} val={service_ac_num}/>
+                    <InputPIN name={"ABS"} setter={setServiceABSNum} val={service_abs_num}/>
                 </div>
             }
+            {/*{*/}
+            {/*    type === "YW-CG" &&*/}
+            {/*    <div className={"flex flex-row justify-between items-start "}>*/}
+            {/*        <InputPIN name={"OM"} setter={setServiceOMNum} val={service_om_num}/>*/}
+            {/*        <InputPIN name={"KID"} setter={setServiceNBNum} val={service_nb_num}/>*/}
+            {/*        <InputPIN name={"FTK"} setter={setServiceNFNum} val={service_nf_num}/>*/}
+            {/*        <InputPIN name={"RNF"} setter={setServiceRNFNum} val={service_rnf_num}/>*/}
+            {/*        <InputPIN name={"AC"} setter={setServiceACNum} val={service_ac_num}/>*/}
+            {/*        <InputPIN name={"ABS"} setter={setServiceABSNum} val={service_abs_num}/>*/}
+            {/*    </div>*/}
+            {/*}*/}
+        </div>
+    )
+}
+
+function InputArea({textAreaValue, setTextAreaValue}) {
+    return (
+        <div>
+            <InputPINs type={"activity"}/>
+            <TextArea placeholder='Please enter remarks, like absence reasons, new friends, etc...'
+                      value={textAreaValue}
+                      onChange={setTextAreaValue}
+                      className={"w-full resize-none mt-2"}/>
         </div>
     )
 }
@@ -144,6 +173,7 @@ export default function Form() {
 
     useEffect(() => {
         if(satellite){
+            console.log("satellite:",satellite)
             setCurrentSatellite(satellite)
         }
     }, [satellite])
@@ -206,20 +236,12 @@ export default function Form() {
             <div>
                 <div className={"font-bold mt-5 mb-3"}>How many members attended your CG this week?
                 </div>
-                <InputPINs type={"activity"} />
-                <TextArea placeholder='Please enter remarks, like absence reasons, new friends, etc...'
-                          value={cg_absence_reason}
-                    onChange={setCGAbsenceReason}
-                    className={"w-full resize-none mt-2"} />
+               <InputArea textAreaValue={cg_absence_reason} setTextAreaValue={setCGAbsenceReason} />
             </div>
 
             <div>
                 <div className={"font-bold mt-5 mb-3"}>How many members attended service this week?</div>
-                <InputPINs type={"service"} />
-                <TextArea placeholder='Please enter remarks, like absence reasons, new friends, etc...'
-                    onChange={setServiceAbsenceReason}
-                    value={service_absence_reason}
-                    className={"w-full resize-none mt-2"} />
+                <InputArea textAreaValue={service_absence_reason} setTextAreaValue={setServiceAbsenceReason} />
             </div>
 
             <div className={"flex flex-row justify-between items-end"}>
