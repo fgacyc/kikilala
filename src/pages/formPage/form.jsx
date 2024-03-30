@@ -28,8 +28,8 @@ const TextArea = Input.TextArea;
 function InputPINs({ type }) {
     if (type !== "activity"
         && type !== "service"
-        && type !== "YW-CG"
-        && type !== "YW-SVE"
+        && type !== "WK-CG"
+        && type !== "WK-SVE"
     ) new Error("type must be activity or service")
 
 
@@ -117,25 +117,32 @@ function InputPINs({ type }) {
                     <InputPIN name={"ABS"} setter={setServiceABSNum} val={service_abs_num}/>
                 </div>
             }
-            {/*{*/}
-            {/*    type === "YW-CG" &&*/}
-            {/*    <div className={"flex flex-row justify-between items-start "}>*/}
-            {/*        <InputPIN name={"OM"} setter={setServiceOMNum} val={service_om_num}/>*/}
-            {/*        <InputPIN name={"KID"} setter={setServiceNBNum} val={service_nb_num}/>*/}
-            {/*        <InputPIN name={"FTK"} setter={setServiceNFNum} val={service_nf_num}/>*/}
-            {/*        <InputPIN name={"RNF"} setter={setServiceRNFNum} val={service_rnf_num}/>*/}
-            {/*        <InputPIN name={"AC"} setter={setServiceACNum} val={service_ac_num}/>*/}
-            {/*        <InputPIN name={"ABS"} setter={setServiceABSNum} val={service_abs_num}/>*/}
-            {/*    </div>*/}
-            {/*}*/}
+            {
+                type === "WK-CG" &&
+                <div className={"flex flex-row justify-between items-start "}>
+                    <InputPIN name={"OM"} setter={setCGOMNum} val={cg_om_num}/>
+                    <InputPIN name={"KID"} setter={setCGNBNum} val={cg_nb_num}/>
+                    <InputPIN name={"FTK"} setter={setCGNFNum} val={cg_nf_num}/>
+                    <InputPIN name={"AC"} setter={setCGACNum} val={cg_ac_num}/>
+                </div>
+            }
+            {
+                type === "WK-SVE" &&
+                <div className={"flex flex-row justify-between items-start "}>
+                    <InputPIN name={"OM"} setter={setServiceOMNum} val={service_om_num}/>
+                    <InputPIN name={"KID"} setter={setServiceNBNum} val={service_nb_num}/>
+                    <InputPIN name={"FTK"} setter={setServiceNFNum} val={service_nf_num}/>
+                    <InputPIN name={"AC"} setter={setServiceACNum} val={service_ac_num}/>
+                </div>
+            }
         </div>
     )
 }
 
-function InputArea({textAreaValue, setTextAreaValue}) {
+function InputArea({type, textAreaValue, setTextAreaValue}) {
     return (
         <div>
-            <InputPINs type={"activity"}/>
+            <InputPINs type={type}/>
             <TextArea placeholder='Please enter remarks, like absence reasons, new friends, etc...'
                       value={textAreaValue}
                       onChange={setTextAreaValue}
@@ -228,7 +235,7 @@ export default function Form() {
             </div>
             <ButtonGroup setCurrentSatellite={setCurrentSatellite} />
             <div className={"font-bold mt-5 mb-3"}>Which Pastoral Team do you belong to?</div>
-            <Selects data={allCGLs} statellite={currentStatellite} />
+            <Selects data={allCGLs} />
             <div>
                 <div className={"font-bold mt-5 mb-1"}>How many members are there in your Connect Group?</div>
                 <UIInput type={"number"} />
@@ -236,12 +243,20 @@ export default function Form() {
             <div>
                 <div className={"font-bold mt-5 mb-3"}>How many members attended your CG this week?
                 </div>
-               <InputArea textAreaValue={cg_absence_reason} setTextAreaValue={setCGAbsenceReason} />
+                {
+                    currentStatellite === "Kuchai WK"
+                    ? <InputArea type={"WK-CG"} textAreaValue={cg_absence_reason} setTextAreaValue={setCGAbsenceReason} />
+                    : <InputArea type={"activity"} textAreaValue={cg_absence_reason} setTextAreaValue={setCGAbsenceReason} />
+                }
             </div>
 
             <div>
                 <div className={"font-bold mt-5 mb-3"}>How many members attended service this week?</div>
-                <InputArea textAreaValue={service_absence_reason} setTextAreaValue={setServiceAbsenceReason} />
+                {
+                    currentStatellite === "Kuchai WK"
+                    ? <InputArea type={"WK-SVE"} textAreaValue={service_absence_reason} setTextAreaValue={setServiceAbsenceReason} />
+                    : <InputArea type={"service"} textAreaValue={service_absence_reason} setTextAreaValue={setServiceAbsenceReason} />
+                }
             </div>
 
             <div className={"flex flex-row justify-between items-end"}>

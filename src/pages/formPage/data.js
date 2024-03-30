@@ -110,6 +110,11 @@ export function validate(data) {
         return false;
     }
 
+    if (data.satellite ==="Kuchai WK"){
+        return true;
+    }
+
+
     if (data.cg_om_num < 0 ||
         data.cg_nb_num < 0 ||
         data.cg_nf_num < 0 ||

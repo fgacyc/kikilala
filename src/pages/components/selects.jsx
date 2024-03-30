@@ -9,7 +9,7 @@ import {IconInfoCircle} from "@arco-design/web-react/icon";
 
 const Option = Select.Option;
 
-export  default  function Selects({ data, statellite }) {
+export  default  function Selects({ data }) {
     const [currentPastoralTeamNames, setCurrentPastoralTeamNames] = useState([])
     const [currentPT, setCurrentPT] = useState("")
     const [currentCGLName, setCurrentCGLName] = useState("")

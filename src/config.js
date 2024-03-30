@@ -101,6 +101,22 @@ export const pastoralTeamList = [
     {
         text: "Young Family",
         value: "Young Family",
+    },
+    {
+        text: "Cradle Land & Shining Star",
+        value: "Cradle Land & Shining Star",
+    },
+    {
+        text: "Super Trooper",
+        value: "Super Trooper",
+    },
+    {
+        text: "Wow Life",
+        value: "Wow Life",
+    },
+    {
+        text: "Warrior",
+        value: "Warrior",
     }
 ]
 
@@ -179,6 +195,10 @@ export const CGCategoryList = [
     {
         text: "Entrepreneur",
         value: "entrepreneur",
+    },
+    {
+        text:"Children",
+        value:"children"
     }
 ];
 
