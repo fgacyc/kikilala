@@ -115,8 +115,8 @@ export const pastoralTeamList = [
         value: "Wow Life",
     },
     {
-        text: "Warrior",
-        value: "Warrior",
+        text: "WK Warrior",
+        value: "WK Warrior",
     }
 ]
 
