@@ -1,5 +1,5 @@
 import {Modal, Progress, Select} from "@arco-design/web-react";
-import {generateMonthlyRanges} from "../../tools.js";
+import {calculateOneDayAgo, generateMonthlyRanges} from "../../tools.js";
 import {useEffect, useState} from "react";
 import {useDataInsightStore} from "../../store/dataInsightStore.js";
 import {useNavigate, useParams} from "react-router-dom";
@@ -10,14 +10,24 @@ import Header from "../Header/Header.jsx";
 
 const Option = Select.Option;
 function filterAttendanceByMonth(currentMonth,attendanceData){
+    //console.log("currentMonth",currentMonth)
     if (!attendanceData) return;
     attendanceData = Object.values(attendanceData)
-    return attendanceData.filter((item) => {
+    const data=  attendanceData.filter((item) => {
         let dateList = item.date.split('-')
         if (dateList[0].includes(currentMonth) || dateList[1].includes(currentMonth)) {
             return true
         }
     })
+    const month = currentMonth.split('/')[1]
+    const res = [];
+    for (let item of data){
+        let dateList = item.date.split('-')
+        if (calculateOneDayAgo(dateList[1]).split('/')[1] === month){
+            res.push(item)
+        }
+    }
+    return res;
 }
 
 function isBeforeLastDayOfMonth(month, seconds) {
@@ -192,7 +202,7 @@ export default function DataInsight(){
             if (timeDateList.includes(item.date)) continue;
             timeDateList.push(item.date)
         }
-        //console.log(timeDateList)
+        // console.log("timeDateList:",timeDateList)
         setSubmitTimes(timeDateList.length)
 
         // group by pastoral_team use map ❌

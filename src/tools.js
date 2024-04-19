@@ -406,3 +406,16 @@ export function calculateTwoDaysAgo(inputDateString) {
     // 构建两天前的日期字符串
     return `${year}/${month}/${day}`;
 }
+
+export function calculateOneDayAgo(inputDateString){
+    const inputDate = new Date(inputDateString);
+
+    const oneDayAgo = new Date(inputDate);
+    oneDayAgo.setDate(inputDate.getDate() - 1);
+
+    const year = oneDayAgo.getFullYear();
+    const month = String(oneDayAgo.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需要加1
+    const day = String(oneDayAgo.getDate()).padStart(2, '0');
+
+    return `${year}/${month}/${day}`;
+}
