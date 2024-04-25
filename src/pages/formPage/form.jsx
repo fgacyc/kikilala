@@ -265,9 +265,9 @@ export default function Form() {
                     onClick={submitHandler}
                 //onClick={printForm}
                 >
-                    {/*<SendIcon className={"scale-50"} />*/}
-                    {/*<span className={"ml-3"}*/}
-                    {/*>Submit Attendance</span>*/}
+                    <SendIcon className={"scale-50"} />
+                    <span className={"ml-3"}
+                    >Submit Attendance</span>
                 </button>
                 <div className={`w-[44px] h-[44px] bg-gray-200 rounded-[8px] 
                                 hover:bg-[#00B05C] hover:text-white cursor-pointer
