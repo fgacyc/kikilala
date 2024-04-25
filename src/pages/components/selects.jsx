@@ -67,6 +67,7 @@ export  default  function Selects({ data }) {
             console.log(res)
             setCGName(res.cg_name)
             setCGID(res.cg_id)
+            localStorage.setItem("cg_id", res.cg_id)
         });
     }
 
