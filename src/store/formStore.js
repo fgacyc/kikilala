@@ -37,7 +37,10 @@ export const useFormStore = create((set) => ({
     setCGName: (cg_name) => set({cg_name}),
     setDate: (date) => set({date}),
     setTotalMembersNum: (total_members_num) => set({total_members_num}),
-    setCGID: (cg_id) => set({cg_id}),
+    setCGID: (cg_id) => {
+        set({cg_id})
+        localStorage.setItem("cg_id", cg_id)
+    },
 
     setCGOMNum: (cg_om_num) => {
         if (cg_om_num < 0) set({cg_om_num: 0})

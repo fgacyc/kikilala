@@ -109,9 +109,12 @@ const CGLAttendance = () => {
     const navigate = useNavigate();
     const [CGLineChartData, setCGLineChartData] = useState(null);
     const [ServiceLineChartData, setServiceLineChartData] = useState(null);
-    const cg_id = useFormStore(state => state.cg_id);
+    let cg_id = useFormStore(state => state.cg_id);
 
     async function getCGLAttendance() {
+        if (!cg_id){
+            cg_id = localStorage.getItem("cg_id");
+        }
         const attendance_data = await readAttendByCGId(cg_id);
         const transform_attendance_data = transformData(attendance_data)
             .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
