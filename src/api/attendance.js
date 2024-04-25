@@ -1,20 +1,79 @@
 import {addDoc, deleteDoc, readAllDocs, readDoc, updateDoc,queryDoc} from "./firebase.js";
 
+const host_url = import.meta.env.VITE_HOST_URL;
 // create
-export async function addAttend(data) {
+export async function addAttend1(data) {
     let docID = await addDoc("attendance", data);
     if (docID === false) return false;
     return docID;
 }
 
-// read
-export async function readAttend(docID) {
-    let doc = await readDoc("attendance", docID);
+export async function addAttend(attendData){
+    const response = await fetch(`${host_url}/attendance`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(attendData)
+    });
+    const data = await response.json();
+    if (data.status === true) return data.data.uuid;
+    return false;
+}
+
+
+
+// read all
+export async function readAllAttends1() {
+    let docs = await readAllDocs("attendance");
+    if (docs === false) return false;
+    return docs;
+}
+
+export async function readAllAttends() {
+    const response = await fetch(`${host_url}/attendance`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (data.status === true) return data.data;
+    return false;
+}
+
+
+// query by date
+export  async  function queryAttends1(date){
+    if (!date) return false;
+    // console.log(date)
+    const query = ["date", "==",date]
+    const doc = await queryDoc("attendance", query);
     if (doc === false) return false;
+    console.log(doc)
     return doc;
 }
 
-export async function readAttendByCGName(cg_name) {
+export async function queryAttends(date){
+    if (!date) return false;
+    date = date.replaceAll('/','+');
+    const response = await fetch(`${host_url}/attendance/${date}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (data.status === true) {
+        //console.log(data.data);
+        return data.data;
+    }
+    return false;
+}
+
+// query by cg name
+export async function readAttendByCGName1(cg_name) {
+    console.log(cg_name)
     const query = ["cg_name", "==", cg_name];
     let doc = await queryDoc("attendance", query);
     if (doc === false) return false;
@@ -25,43 +84,78 @@ export async function readAttendByCGName(cg_name) {
     return doc;
 }
 
-// read all
-export async function readAllAttends() {
-    let docs = await readAllDocs("attendance");
-    if (docs === false) return false;
-    return docs;
+export async function readAttendByCGName(cg_name) {
+    const response = await fetch(`${host_url}/attendance/cg/${cg_name}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (data.status === true) {
+        console.log("dataaaa",data.data);
+        return data.data
+    }
+    return false;
 }
 
-export  async  function queryAttends(date){
-    if (!date) return false;
-    // console.log(date)
-    const query = ["date", "==",date]
-    const doc = await queryDoc("attendance", query);
-    if (doc === false) return false;
-    // console.log(doc)
-    return doc;
-}
 
 // update
-export async function updateAttend(docID, data) {
+export async function updateAttend1(docID, data) {
     let res = await updateDoc("attendance", data, docID);
     if (res === false) return false;
     return res;
 }
 
+export async function updateAttend(docID, data) {
+    const response = await fetch(`${host_url}/attendance/${docID}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+    const res = await response.json();
+    if (res.status === true) return res.data;
+    return false;
+}
+
 // delete
-export async function deleteAttend(docID) {
+export async function deleteAttend1(docID) {
     let res = await deleteDoc("attendance", docID);
     if (res === false) return false;
     return res;
 }
 
+export async function deleteAttend(docID) {
+    const response = await fetch(`${host_url}/attendance/${docID}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const res = await response.json();
+    return res.status === true;
+}
 
-export async function checkDuplicate(date, cg_id) {
+
+export async function checkDuplicate1(date, cg_id) {
     let queries = [["date", "==", date], ["cg_id", "==", cg_id]];
     const doc = await queryDoc("attendance", queries);
     if (doc === false) return true;
     return doc.length > 0;
+}
+
+export async function checkDuplicate(date, cg_id) {
+    date = date.replaceAll('/','+');
+    const response = await fetch(`${host_url}/attendance/check/${date}/${cg_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    return data.status === true;
 }
 
 
