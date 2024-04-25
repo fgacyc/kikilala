@@ -93,12 +93,24 @@ export async function readAttendByCGName(cg_name) {
     });
     const data = await response.json();
     if (data.status === true) {
-        console.log("dataaaa",data.data);
         return data.data
     }
     return false;
 }
 
+export async function readAttendByCGId(cg_id) {
+    const response = await fetch(`${host_url}/attendance/cg/${cg_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+    if (data.status === true) {
+        return data.data
+    }
+    return false;
+}
 
 // update
 export async function updateAttend1(docID, data) {

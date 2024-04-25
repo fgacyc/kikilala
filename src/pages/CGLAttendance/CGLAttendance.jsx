@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { readAttendByCGName } from '../../api/attendance';
+import {readAttendByCGId, readAttendByCGName} from '../../api/attendance';
 import {Button, Space, Table} from '@arco-design/web-react';
 import {IconArrowLeft, IconDownload, IconHistory} from "@arco-design/web-react/icon";
 import {useNavigate, useParams} from 'react-router-dom';
@@ -11,6 +11,7 @@ import {readCGLNameByCGName} from "../../api/CGLs.js";
 import {useAuth0} from "@auth0/auth0-react";
 import CGAttendanceLineChart from "./AttendanceLineChart.jsx";
 import AttendanceLineChart from "./AttendanceLineChart.jsx";
+import {useFormStore} from "../../store/formStore.js";
 
 
 const CGLAttendance = () => {
@@ -108,9 +109,10 @@ const CGLAttendance = () => {
     const navigate = useNavigate();
     const [CGLineChartData, setCGLineChartData] = useState(null);
     const [ServiceLineChartData, setServiceLineChartData] = useState(null);
+    const cg_id = useFormStore(state => state.cg_id);
 
     async function getCGLAttendance() {
-        const attendance_data = await readAttendByCGName(params.cg_name);
+        const attendance_data = await readAttendByCGId(cg_id);
         const transform_attendance_data = transformData(attendance_data)
             .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
         // console.log(transform_attendance_data)
@@ -122,8 +124,8 @@ const CGLAttendance = () => {
             transform_attendance_data.filter((item) => item.type === "Service")
         )
 
-        const CGLNameQ =await readCGLNameByCGName(params.cg_name);
-        setCGLName(CGLNameQ.CG_leader);
+        //  const CGLNameQ =params.cgl_name;
+        setCGLName(params.cgl_name);
     }
 
     useEffect(() => {

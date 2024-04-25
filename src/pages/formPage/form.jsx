@@ -164,6 +164,7 @@ export default function Form() {
             ,state.cg_absence_reason,state.service_absence_reason
             ,state.user_email,state.user_sub,state.setUserEmail,state.setUserSub
         ])
+    const cg_id = useFormStore(state => state.cg_id)
     const navigate = useNavigate();
     const { loginWithRedirect,logout,user } = useAuth0();
 
@@ -204,7 +205,7 @@ export default function Form() {
         // console.log("cg_name",cg_name)
         // console.log("cgl_name",cgl_name)
         if (cg_name) {
-            navigate(`/history/${cg_name}`)
+            navigate(`/history/${cgl_name}`)
         } else {
             Message.warning("Please select a CGL Name!")
         }
