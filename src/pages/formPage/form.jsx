@@ -260,24 +260,24 @@ export default function Form() {
                 }
             </div>
 
-            {/*<div className={"flex flex-row justify-between items-end"}>*/}
-            {/*    <button className={`bg-[#00B05C] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] */}
-            {/*        mt-8 flex flex-row justify-center w-[200px]`}*/}
-            {/*        onClick={submitHandler}*/}
-            {/*    //onClick={printForm}*/}
-            {/*    >*/}
-            {/*        <SendIcon className={"scale-50"} />*/}
-            {/*        <span className={"ml-3"}*/}
-            {/*        >Submit Attendance</span>*/}
-            {/*    </button>*/}
-            {/*    <div className={`w-[44px] h-[44px] bg-gray-200 rounded-[8px] */}
-            {/*                    hover:bg-[#00B05C] hover:text-white cursor-pointer*/}
-            {/*                    flex flex-row items-center justify-center mb-[10px]`}*/}
-            {/*        onClick={() => viewHistory()}*/}
-            {/*    >*/}
-            {/*        <IconHistory fontSize={24} />*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            <div className={"flex flex-row justify-between items-end"}>
+                <button className={`bg-[#00B05C] text-white rounded-[8px] p-[10px] my-[10px] mr-[10px] 
+                    mt-8 flex flex-row justify-center w-[200px]`}
+                    onClick={submitHandler}
+                //onClick={printForm}
+                >
+                    <SendIcon className={"scale-50"} />
+                    <span className={"ml-3"}
+                    >Submit Attendance</span>
+                </button>
+                <div className={`w-[44px] h-[44px] bg-gray-200 rounded-[8px] 
+                                hover:bg-[#00B05C] hover:text-white cursor-pointer
+                                flex flex-row items-center justify-center mb-[10px]`}
+                    onClick={() => viewHistory()}
+                >
+                    <IconHistory fontSize={24} />
+                </div>
+            </div>
 
             <DateModal setVisible={setVisible} visible={visible} />
         </div>
