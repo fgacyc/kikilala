@@ -141,7 +141,9 @@ export const satellite_pastoralTeam = {
     "USJ": ["Young Warrior", "General Service"],
     "Setapak": ["Young Warrior", "Young Professional", "Adult"],
     "SG Long": ["Young Warrior", "Young Professional", "Young Family"],
-    "Seremban": ["Young Warrior"]
+    "Seremban": ["Young Warrior"],
+    "Penang":[],
+    "Johor":[]
 }
 
 export const pastoralTeams =[
