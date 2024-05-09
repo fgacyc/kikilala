@@ -12,6 +12,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import CGAttendanceLineChart from "./AttendanceLineChart.jsx";
 import AttendanceLineChart from "./AttendanceLineChart.jsx";
 import {useFormStore} from "../../store/formStore.js";
+import {getCGName} from "../formPage/data.js";
 
 
 const CGLAttendance = () => {
@@ -110,9 +111,15 @@ const CGLAttendance = () => {
     const [CGLineChartData, setCGLineChartData] = useState(null);
     const [ServiceLineChartData, setServiceLineChartData] = useState(null);
     let cg_id = useFormStore(state => state.cg_id);
+    if (!cg_id) {
+        cg_id = localStorage.getItem("cg_id");
+    }
 
     async function getCGLAttendance() {
-        if (!cg_id) cg_id = localStorage.getItem("cg_id");
+        if (!cg_id) {
+            let res = await getCGName(value);
+            cg_id = res.cg_id;
+        }
         const attendance_data = await readAttendByCGId(cg_id);
         const transform_attendance_data = transformData(attendance_data)
             .sort((a, b) => new Date(b.date.split('-')[0]) - new Date(a.date.split('-')[0]))
