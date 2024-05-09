@@ -117,7 +117,7 @@ const CGLAttendance = () => {
 
     async function getCGLAttendance() {
         if (!cg_id) {
-            let res = await getCGName(value);
+            let res = await getCGName(params.cgl_name);
             cg_id = res.cg_id;
         }
         const attendance_data = await readAttendByCGId(cg_id);
