@@ -1,4 +1,5 @@
 import {addDoc, deleteDoc, readAllDocs, readDoc, updateDoc,queryDoc} from "./firebase.js";
+import {withRetry} from "../tools.js";
 
 const host_url = import.meta.env.VITE_HOST_URL;
 // create
@@ -9,16 +10,18 @@ export async function addAttend1(data) {
 }
 
 export async function addAttend(attendData){
-    const response = await fetch(`${host_url}/attendance`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(attendData)
-    });
-    const data = await response.json();
-    if (data.status === true) return data.data.uuid;
-    return false;
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/attendance`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(attendData)
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data.uuid;
+        throw new Error('Failed to add attendance');
+    },2,500);
 }
 
 

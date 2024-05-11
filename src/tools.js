@@ -419,3 +419,19 @@ export function calculateOneDayAgo(inputDateString){
 
     return `${year}/${month}/${day}`;
 }
+
+export async function withRetry(func, maxRetries = 1, delay = 500) {
+    let retries = 0;
+
+    while (retries <= maxRetries) {
+        try {
+            return await func(); // Return the result if successful
+        } catch (error) {
+            if (retries === maxRetries) {
+                throw error; // Throw error if max retries reached
+            }
+            await new Promise(resolve => setTimeout(resolve, delay)); // Delay before retrying
+            retries++;
+        }
+    }
+}
