@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {readAttendByCGId, readAttendByCGName} from '../../api/attendance';
+import {readAttendByCGId} from '../../api/attendance';
 import {Button, Space, Table} from '@arco-design/web-react';
-import {IconArrowLeft, IconDownload, IconHistory} from "@arco-design/web-react/icon";
+import {IconArrowLeft, IconDownload} from "@arco-design/web-react/icon";
 import {useNavigate, useParams} from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { attendanceTypeList } from '../../config';

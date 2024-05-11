@@ -87,32 +87,18 @@ export async function readAttendByCGName1(cg_name) {
     return doc;
 }
 
-export async function readAttendByCGName(cg_name) {
-    const response = await fetch(`${host_url}/attendance/cg/${cg_name}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const data = await response.json();
-    if (data.status === true) {
-        return data.data
-    }
-    return false;
-}
-
 export async function readAttendByCGId(cg_id) {
-    const response = await fetch(`${host_url}/attendance/cg/${cg_id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const data = await response.json();
-    if (data.status === true) {
-        return data.data
-    }
-    return false;
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/attendance/cg/${cg_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to read attendance by cg id');
+    },2,500);
 }
 
 // update
@@ -162,15 +148,16 @@ export async function checkDuplicate1(date, cg_id) {
 }
 
 export async function checkDuplicate(date, cg_id) {
-    date = date.replaceAll('/','+');
-    const response = await fetch(`${host_url}/attendance/check/${date}/${cg_id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    const data = await response.json();
-    return data.status === true;
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/attendance/check/${date}/${cg_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        return data.status === true;
+    },2,500);
 }
 
 
