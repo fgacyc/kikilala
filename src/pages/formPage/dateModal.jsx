@@ -81,10 +81,10 @@ function DateModal({visible, setVisible}) {
 
         // check it this week start #todO
         const ifStart = timeDetect(data.date, new Date());
-        // if(!ifStart){
-        //     Message.warning("You can only submit attendance for last week, this week has not started yet")
-        //     return;
-        // }
+        if(!ifStart){
+            Message.warning("You can only submit attendance for last week, this week has not started yet")
+            return;
+        }
 
         setVisible(false);
         addAttend(data).then((res) => {
