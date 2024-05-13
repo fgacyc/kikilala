@@ -148,6 +148,8 @@ export async function checkDuplicate1(date, cg_id) {
 }
 
 export async function checkDuplicate(date, cg_id) {
+    if (!date) return false;
+    date = date.replaceAll('/','+');
     return await withRetry(async () => {
         const response = await fetch(`${host_url}/attendance/check/${date}/${cg_id}`, {
             method: 'GET',
