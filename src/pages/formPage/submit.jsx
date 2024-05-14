@@ -47,7 +47,7 @@ export default function Submit() {
     const [confirmModalVisible, setConfirmModalVisible] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
-        navigate("/503")
+        // navigate("/503")
         void initData();
         const isTutorial = localStorage.getItem("isTutorial");
         if (isTutorial === null) {
