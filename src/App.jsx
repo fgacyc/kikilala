@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, useNavigate} from "react-router-dom";
 import Submit from "./pages/formPage/submit.jsx";
 import "@arco-design/web-react/dist/css/arco.css";
 import CGLsManagement from "./pages/adminPage/CGLsManagement.jsx";
@@ -15,6 +15,8 @@ import {useEffect} from "react";
 import {isAdmin} from "./tools.js";
 import DataInsight from "./pages/dataInsight/DataInsight.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
+import Error404 from "./pages/Error/503.jsx";
+import Error503 from "./pages/Error/503.jsx";
 
 
 
@@ -72,6 +74,7 @@ function App() {
                     <Route path="nb-headcount" element={<HeadCountManagement />} />
                     <Route path="nb-data-insight/:year/:month" element={<DataInsight />} />
                     <Route path="nb-dashboard" element={<Dashboard />} />
+                    <Route path={"503"} element={<Error503/>} />
                 </Routes>
             </Router>
         </>

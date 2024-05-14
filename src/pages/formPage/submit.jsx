@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import TutorialConfirm from "../AttendancePage/TutorialConfirm.jsx";
 import {Avatar} from "@arco-design/web-react";
 import {IconUser} from "@arco-design/web-react/icon";
+import {useNavigate} from "react-router-dom";
 
 function SocialMedia({position}) {
     function goToSocialMedia(type) {
@@ -44,7 +45,9 @@ function SocialMedia({position}) {
 export default function Submit() {
     const initData = useFormStore(state => state.initData);
     const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
+        navigate("/503")
         void initData();
         const isTutorial = localStorage.getItem("isTutorial");
         if (isTutorial === null) {

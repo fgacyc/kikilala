@@ -19,9 +19,10 @@ export async function addAttend(attendData){
             body: JSON.stringify(attendData)
         });
         const data = await response.json();
+        console.log(data)
         if (data.status === true) return data.data.uuid;
         throw new Error('Failed to add attendance');
-    },2,500);
+    },2,1000);
 }
 
 
@@ -98,7 +99,7 @@ export async function readAttendByCGId(cg_id) {
         const data = await response.json();
         if (data.status === true) return data.data;
         throw new Error('Failed to read attendance by cg id');
-    },2,500);
+    },2,1000);
 }
 
 // update
@@ -159,7 +160,7 @@ export async function checkDuplicate(date, cg_id) {
         });
         const data = await response.json();
         return data.status === true;
-    },2,500);
+    },2,1000);
 }
 
 
