@@ -1,6 +1,6 @@
 import {Button, Input, Popconfirm, Table} from '@arco-design/web-react';
 import {useEffect, useRef, useState} from "react";
-import {addAdmin, deleteHeadcount, readAllAdmins} from "../../api/admin.js";
+import {addAdmin, deleteAdmin, readAllAdmins} from "../../api/admin.js";
 import {convertTableData} from "../formPage/data.js";
 import {IconDelete, IconEdit, IconSearch} from "@arco-design/web-react/icon";
 import PubSub from "pubsub-js";
@@ -154,7 +154,7 @@ export default function UserManagement() {
                         onOk={() => {
                             // console.log(record);
                             // console.log(record.key);
-                            deleteHeadcount(record.key).then((res) => {
+                            deleteAdmin(record.key).then((res) => {
                                 if(res !== false) getAdmins();
                             });
                         }}

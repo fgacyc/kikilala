@@ -289,7 +289,7 @@ export async function isAdmin(user){
     // console.log(user)
     const email = user.email;
     const res =await queryAdminEmail(email);
-    return res.length > 0;
+    return res !== false;
 }
 
 export  function generateAllWeeklyRanges() {
