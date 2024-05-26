@@ -2,7 +2,6 @@ import {Message, Modal, Select} from "@arco-design/web-react";
 import { Form, Input } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
 import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
-import {useEffect, useRef} from "react";
 import {updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 const FormItem = Form.Item;

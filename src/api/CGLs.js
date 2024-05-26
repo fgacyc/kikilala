@@ -1,4 +1,4 @@
-import {addDoc, deleteDoc, queryDoc, readAllDocs, readDoc, updateDoc} from "./firebase.js";
+import {addDoc, deleteDoc, readAllDocs, updateDoc} from "./firebase.js";
 import {set} from "idb-keyval";
 import {withRetry} from "../tools.js";
 

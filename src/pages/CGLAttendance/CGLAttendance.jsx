@@ -8,7 +8,6 @@ import { attendanceTypeList } from '../../config';
 import CsvDownload from "react-csv-downloader";
 import { downloadCGLAttendanceData, getTodayDateStr } from '../../tools';
 import {useAuth0} from "@auth0/auth0-react";
-import CGAttendanceLineChart from "./AttendanceLineChart.jsx";
 import AttendanceLineChart from "./AttendanceLineChart.jsx";
 import {useFormStore} from "../../store/formStore.js";
 import {getCGName} from "../formPage/data.js";

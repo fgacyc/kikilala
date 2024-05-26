@@ -1,4 +1,4 @@
-import { Table, Input, Button, Popconfirm, Message, Space } from '@arco-design/web-react';
+import { Table, Input, Button, Popconfirm } from '@arco-design/web-react';
 import { useEffect, useRef, useState } from "react";
 import {
     closeCG,
@@ -6,7 +6,7 @@ import {
     openCG, readAllActiveCGLs,
     readAllCGLs, readAllClosedCGLs
 } from "../../api/CGLs.js";
-import { convertTableData } from "../formPage/data.js";
+//import { convertTableData } from "../formPage/data.js";
 import {
     IconArchive,
     IconClose, IconDelete,
@@ -20,7 +20,7 @@ import { useCGLStore } from "../../store/CGLStore.js";
 import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
 import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
-import {downloadCGLsData, downloadXLSX, getCoachOptions, getTodayDateStr} from "../../tools.js";
+import {downloadCGLsData, getCoachOptions, getTodayDateStr} from "../../tools.js";
 import CsvDownload from "react-csv-downloader";
 import { addRecord } from "../../api/records.js";
 import { useAuth0 } from "@auth0/auth0-react";
