@@ -138,24 +138,24 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                     ))}
                 </Select>
             </div>
-            <div  className={"flex flex-row items-center mb-4"}>
-                <div className={"w-[20%] text-right pr-3 text-[#4E5969]"}>Coach Name</div>
-                <Select
-                    // mode='multiple'
-                    placeholder='Please select/enter coach name...'
-                    className={"w-[80%]"}
-                    allowCreate
-                    value={coach_name}
-                    defaultValue={coach_name}
-                    onChange={setCoachName}
-                >
-                    {coachOptions.map((option,index) => (
-                        <Option key={index} value={option}>
-                            {option}
-                        </Option>
-                    ))}
-                </Select>
-            </div>
+            {/*<div  className={"flex flex-row items-center mb-4"}>*/}
+            {/*    <div className={"w-[20%] text-right pr-3 text-[#4E5969]"}>Coach Name</div>*/}
+            {/*    <Select*/}
+            {/*        // mode='multiple'*/}
+            {/*        placeholder='Please select/enter coach name...'*/}
+            {/*        className={"w-[80%]"}*/}
+            {/*        allowCreate*/}
+            {/*        value={coach_name}*/}
+            {/*        defaultValue={coach_name}*/}
+            {/*        onChange={setCoachName}*/}
+            {/*    >*/}
+            {/*        {coachOptions.map((option,index) => (*/}
+            {/*            <Option key={index} value={option}>*/}
+            {/*                {option}*/}
+            {/*            </Option>*/}
+            {/*        ))}*/}
+            {/*    </Select>*/}
+            {/*</div>*/}
             <div  className={"flex flex-row items-center mb-4"}>
                 <div className={"w-[20%] text-right pr-3 text-[#4E5969]"}>Category</div>
                 <Select

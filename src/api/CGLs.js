@@ -1,28 +1,43 @@
 import {addDoc, deleteDoc, queryDoc, readAllDocs, readDoc, updateDoc} from "./firebase.js";
 import {set} from "idb-keyval";
+import {withRetry} from "../tools.js";
 
 export const CGStatusEnum = {
     active: 'active',
     closed: 'closed'
 }
 
+const host_url = import.meta.env.VITE_HOST_URL;
+
 
 // create
-export async function addCGL(data) {
+export async function addCGL1(data) {
     let docID = await addDoc("CGLs", data);
     if (docID === false) return false;
     return docID;
 }
 
-// read
-export async function readCGL(docID) {
-    let doc = await readDoc("CGLs", docID);
-    if (doc === false) return false;
-    return doc;
+export async function addCGL(cgData){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cgData)
+        });
+        const data = await response.json();
+        console.log(data)
+        if (data.status === true) return data.data.uuid;
+        throw new Error('Failed to add CG');
+    },2,1000);
+
 }
 
+
+
 // read all
-export async function readAllCGLs() {
+export async function readAllCGLs1() {
     let docs = await readAllDocs("CGLs");
     if (docs === false) return false;
     set("kikilala-CGLs", docs);
@@ -33,7 +48,22 @@ export async function readAllCGLs() {
     return docs;
 }
 
-export async function readAllActiveCGLs() {
+export async function readAllCGLs(){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to read all CGs');
+    },2,1000);
+
+}
+
+export async function readAllActiveCGLs1() {
     let docs = await readAllDocs("CGLs");
     if (docs === false) return false;
     for (let key in docs) {
@@ -50,7 +80,22 @@ export async function readAllActiveCGLs() {
     return dataList.filter((item) => item.CG_status === CGStatusEnum.active);
 }
 
-export async function readAllClosedCGLs() {
+export async function readAllActiveCGLs(){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/active`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to read all active CGs');
+    });
+
+}
+
+export async function readAllClosedCGLs1() {
     let docs = await readAllDocs("CGLs");
     if (docs === false) return false;
     for (let key in docs) {
@@ -61,15 +106,50 @@ export async function readAllClosedCGLs() {
     return dataList.filter((item) => item.CG_status === CGStatusEnum.closed);
 }
 
+export async function readAllClosedCGLs(){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/closed`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to read all closed CGs');
+    });
+
+
+}
+
 // update
-export async function updateCGL(docID, data) {
+export async function updateCGL1(docID, data) {
     let res = await updateDoc("CGLs", data, docID);
     if (res === false) return false;
     return res;
 }
 
+export async function updateCGL(docID,cgData){
+    return await withRetry(async () => {
+           const response = await fetch(`${host_url}/cg/${docID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(cgData)
+            });
+            const data = await response.json();
+            if (data.status === true) {
+                // console.log(data)
+                return data.data
+            };
+            throw new Error('Failed to update CG');
+    },2,1000);
+
+}
+
 // close CG
-export async function closeCG(docID) {
+export async function closeCG1(docID) {
     const data = {
         CG_status: CGStatusEnum.closed
     }
@@ -78,7 +158,25 @@ export async function closeCG(docID) {
     return res;
 }
 
-export async function openCG(docID) {
+export async function closeCG(cg_id){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/close/${cg_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to close CG');
+    },2,1000);
+
+
+}
+
+
+// open CG
+export async function openCG1(docID) {
     const data = {
         CG_status: CGStatusEnum.active
     }
@@ -87,50 +185,70 @@ export async function openCG(docID) {
     return res;
 }
 
+export async function openCG(cg_id){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/open/${cg_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to open CG');
+    },2,1000);
+
+
+}
+
+
 // delete
-export async function deleteCGL(docID) {
+export async function deleteCGL1(docID) {
     let res = await deleteDoc("CGLs", docID);
     if (res === false) return false;
     return res;
 }
 
-export async function readCGLNameByCGName(cg_name) {
-    // console.log(cg_name)
-    const query = ["CG_name", "==", cg_name];
-    let doc = await queryDoc("CGLs", query);
-    if (doc == false) return false;
-    return doc[0]
+export async function deleteCGL(cg_id){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/${cg_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to delete CG');
+    },2,1000);
 }
 
 
-export  async  function  getCGLNum(){
+// get CG number
+export  async  function  getCGLNum1(){
     const data = await readAllActiveCGLs();
     return data.length;
 }
 
-// temp
-// 1. add CG status to all CGs
-// export async function updateCGStatus(docID, data) {
-//     const cgls = await readAllCGLs();
-//     data = {
-//         CG_status : CGStatusEnum.active
-//     }
-//
-//     for(let key in cgls){
-//         await updateDoc("CGLs", data, key)
-//         //console.log(key)
-//     }
-//     console.log("done")
-//
-//
-//     return;
-//     let res = await updateDoc("CGLs", data, docID);
-//     if (res === false) return false;
-//     return res;
-// }
+
+export async function getCGLNum() {
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/num`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to get CG number');
+    })
+}
+
+
 
 // 2. find duplicate CG name
-export async function duplicateCheck(name) {
+export async function duplicateCheck1(name) {
     const cgls = await readAllCGLs();
     let cg_name = [];
     for(let key in cgls){
@@ -141,25 +259,21 @@ export async function duplicateCheck(name) {
     return cg_name.includes(name.toLowerCase());
 }
 
-export async function findDuplicateCGName() {
-    const cgls = await readAllCGLs();
-    let cg_name = [];
-    for(let key in cgls){
-        const item  = cgls[key];
-        cg_name.push(item.CG_name.toLowerCase());
-    }
+export async function duplicateCheck(name){
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/duplicate/${name}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to check duplicate CG name');
+    },2,1000);
 
-    let duplicate = [];
-    let duplicate_name = [];
-    for(let i = 0; i < cg_name.length; i++){
-        for(let j = i + 1; j < cg_name.length; j++){
-            if(cg_name[i] === cg_name[j]){
-                duplicate.push(cg_name[i]);
-            }
-        }
-    }
-    console.log(duplicate)
 }
+
 
 export async function absentCGLs(SubmitData){
     let submitCGIDArray = SubmitData.map((item) => item.cg_id);

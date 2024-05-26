@@ -1,11 +1,8 @@
 import { Table, Input, Button, Popconfirm, Message, Space } from '@arco-design/web-react';
 import { useEffect, useRef, useState } from "react";
 import {
-    CGStatusEnum,
     closeCG,
     deleteCGL,
-    duplicateCheck,
-    findDuplicateCGName,
     openCG, readAllActiveCGLs,
     readAllCGLs, readAllClosedCGLs
 } from "../../api/CGLs.js";
@@ -119,51 +116,51 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                 }
             },
         },
-        {
-            title: 'Coach',
-            width: 180,
-            render: (_, record) => {
-                return (
-                    <div className={"truncate"}>
-                        {
-                            record.hasOwnProperty("coach_name") && record.coach_name
-                        }
-                    </div>
-                )
-            },
-            sorter: (a, b) => {
-                if (!a.coach_name) return 1;
-                return a.coach_name.localeCompare(b.coach_name);
-            },
-            filterIcon: <IconSearch />,
-            filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-                return (
-                    <div className='arco-table-custom-filter'>
-                        <Input.Search
-                            allowClear={true}
-                            ref={inputRef}
-                            searchButton
-                            placeholder='Please enter name'
-                            value={filterKeys[0] || ''}
-                            onChange={(value) => {
-                                setFilterKeys(value ? [value] : []);
-                            }}
-                            onSearch={() => {
-                                confirm();
-                            }}
-                        />
-                    </div>
-                );
-            },
-            onFilter: (value, row) => {
-                return row.coach_name?.toLowerCase().includes(value.toLowerCase());
-            },
-            onFilterDropdownVisibleChange: (visible) => {
-                if (visible) {
-                    setTimeout(() => inputRef.current.focus(), 150);
-                }
-            },
-        },
+        // {
+        //     title: 'Coach',
+        //     width: 180,
+        //     render: (_, record) => {
+        //         return (
+        //             <div className={"truncate"}>
+        //                 {
+        //                     record.hasOwnProperty("coach_name") && record.coach_name
+        //                 }
+        //             </div>
+        //         )
+        //     },
+        //     sorter: (a, b) => {
+        //         if (!a.coach_name) return 1;
+        //         return a.coach_name.localeCompare(b.coach_name);
+        //     },
+        //     filterIcon: <IconSearch />,
+        //     filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
+        //         return (
+        //             <div className='arco-table-custom-filter'>
+        //                 <Input.Search
+        //                     allowClear={true}
+        //                     ref={inputRef}
+        //                     searchButton
+        //                     placeholder='Please enter name'
+        //                     value={filterKeys[0] || ''}
+        //                     onChange={(value) => {
+        //                         setFilterKeys(value ? [value] : []);
+        //                     }}
+        //                     onSearch={() => {
+        //                         confirm();
+        //                     }}
+        //                 />
+        //             </div>
+        //         );
+        //     },
+        //     onFilter: (value, row) => {
+        //         return row.coach_name?.toLowerCase().includes(value.toLowerCase());
+        //     },
+        //     onFilterDropdownVisibleChange: (visible) => {
+        //         if (visible) {
+        //             setTimeout(() => inputRef.current.focus(), 150);
+        //         }
+        //     },
+        // },
         {
             title: 'Pastoral Team',
             width: 200,
@@ -258,7 +255,7 @@ function CGLTable({tableData ,updateData,type,setCGEditModalVisible}) {
                     <Popconfirm
                         focusLock
                         title='Confirm'
-                        content='Are you sure you want to close this CG?'
+                        content='Are you sure you want to reopen this CG?'
                         onOk={() => {
                             // console.log(record);
                             openCG(record.key).then((res) => {

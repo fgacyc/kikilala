@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { attendanceTypeList } from '../../config';
 import CsvDownload from "react-csv-downloader";
 import { downloadCGLAttendanceData, getTodayDateStr } from '../../tools';
-import {readCGLNameByCGName} from "../../api/CGLs.js";
 import {useAuth0} from "@auth0/auth0-react";
 import CGAttendanceLineChart from "./AttendanceLineChart.jsx";
 import AttendanceLineChart from "./AttendanceLineChart.jsx";

@@ -27,8 +27,9 @@ export default function CGLsAddModal({ visible, setVisible }) {
         data.CG_status = CGStatusEnum.active;
 
         if (data.coach_name === undefined){
-            Message.warning('Please select/enter coach name!')
-            return;
+            // Message.warning('Please select/enter coach name!')
+            // return;
+            data.coach_name = "";
         }
 
         // console.log(data)
@@ -105,21 +106,21 @@ export default function CGLsAddModal({ visible, setVisible }) {
                         ))}
                     </Select>
                 </FormItem>
-                <FormItem label='Coach Name'
-                          field={'coach_name'}
-                >
-                    <Select
-                        // mode='multiple'
-                        placeholder='Please select/enter coach name...'
-                        allowCreate
-                    >
-                        {coachOptions.map((option, index) => (
-                            <Option key={index} value={option}>
-                                {option}
-                            </Option>
-                        ))}
-                    </Select>
-                </FormItem>
+                {/*<FormItem label='Coach Name'*/}
+                {/*          field={'coach_name'}*/}
+                {/*>*/}
+                {/*    <Select*/}
+                {/*        // mode='multiple'*/}
+                {/*        placeholder='Please select/enter coach name...'*/}
+                {/*        allowCreate*/}
+                {/*    >*/}
+                {/*        {coachOptions.map((option, index) => (*/}
+                {/*            <Option key={index} value={option}>*/}
+                {/*                {option}*/}
+                {/*            </Option>*/}
+                {/*        ))}*/}
+                {/*    </Select>*/}
+                {/*</FormItem>*/}
                 <FormItem label='Category'
                           field={'category'}
                 >
