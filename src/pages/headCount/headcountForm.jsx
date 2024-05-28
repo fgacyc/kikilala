@@ -256,7 +256,7 @@ export default function HeadCountForm() {
                 <div className={`w-[44px] h-[44px] bg-gray-200 rounded-[8px] 
                                 hover:bg-[#00B05C] hover:text-white cursor-pointer
                                 flex flex-row items-center justify-center mb-[10px]`}
-                    //onClick={() => viewHistory()}
+                    onClick={() => navigate("/nb-headcount")}
                 >
                     <IconHistory fontSize={24}/>
                 </div>
