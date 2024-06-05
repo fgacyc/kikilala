@@ -19,7 +19,7 @@ export async function addAttend(attendData){
             body: JSON.stringify(attendData)
         });
         const data = await response.json();
-        console.log(data)
+        // console.log(data)
         if (data.status === true) return data.data.uuid;
         throw new Error('Failed to add attendance');
     },2,1000);

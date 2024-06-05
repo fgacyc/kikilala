@@ -2,6 +2,7 @@ import attendanceDownloadModalStore from "../../store/attendanceDownloadModalSto
 
 //2024/03/11-2024/03/17
 function filterAttendByDateStr(data,duration){
+    if(duration==="all") return data;
     const dates = duration.split('-');
     const startDate = new Date(dates[0]);
     const endDate = new Date(dates[1]);

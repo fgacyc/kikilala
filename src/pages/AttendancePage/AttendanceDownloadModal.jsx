@@ -141,7 +141,7 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
        // if(!dataDuration) return;
         //console.log("filterCondition",filterCondition)
         let data =  attendanceDownloadDataFilter(filterCondition,dataDuration);
-        //console.log("data",data)
+        // console.log("data",data)
         const csvData = attendObjToCSV(data);
         setDownloadData(csvData);
 
@@ -174,6 +174,7 @@ export default function AttendanceDownloadModal({visible, setVisible}) {
                     options={downloadOptions}
                     onChange={(v) => {
                         setFilterCondition(v);
+                        setPastoralTeam(v[v.length - 1])
                     }}
                 />
                 {/*<Select*/}

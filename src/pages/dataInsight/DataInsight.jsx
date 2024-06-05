@@ -53,6 +53,7 @@ function isBeforeLastDayOfMonth(month, seconds) {
 export function filterCGLByMonth(currentMonth,connectGroupData){
     // console.log(currentMonth, connectGroupData)
     if(!connectGroupData) return;
+    // console.log(connectGroupData)
     let connectGroupDataList = [];
     for (let item of connectGroupData){
         if (item.hasOwnProperty("createdAt")){
