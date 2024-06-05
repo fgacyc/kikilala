@@ -1,7 +1,13 @@
 {
-  "name": "kikilala",
+  "name": "numbers",
+  "name_zh": "民数",
+  "author": "FGA TECH TEAM",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "app_id": "a717aaf7c92543b1877b",
+  "shared": false,
+  "instagram": "https://www.instagram.com/fgacyc/",
+  "github": "https://github.com/fgacyc/",
   "type": "module",
   "scripts": {
     "dev": "vite",

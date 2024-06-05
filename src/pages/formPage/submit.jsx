@@ -6,9 +6,7 @@ import {YoutubeIcon} from "../../Icon/YoutubeIcon.jsx";
 import {FacebookIcon} from "../../Icon/FacebookIcon.jsx";
 import {useFormStore} from "../../store/formStore.js";
 import {useEffect, useState} from "react";
-import TutorialConfirm from "../AttendancePage/TutorialConfirm.jsx";
-import {Avatar} from "@arco-design/web-react";
-import {IconUser} from "@arco-design/web-react/icon";
+
 import {useNavigate} from "react-router-dom";
 
 function SocialMedia({position}) {
@@ -41,6 +39,8 @@ function SocialMedia({position}) {
         </div>
     )
 }
+
+
 
 export default function Submit() {
     const initData = useFormStore(state => state.initData);
@@ -76,9 +76,11 @@ export default function Submit() {
             <div className={`sm:w-[600px] h-[100%] bg-white rounded-[12px]  sm:p-8 p-4 w-full`}>
                 <Form/>
             </div>
+
             {/*<SocialMedia position={"bottom"}/>*/}
             {
-                confirmModalVisible && <TutorialConfirm visible={confirmModalVisible} setVisible={setConfirmModalVisible} />
+                confirmModalVisible &&
+                <TutorialConfirm visible={confirmModalVisible} setVisible={setConfirmModalVisible}/>
             }
         </div>
     )
