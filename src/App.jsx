@@ -17,7 +17,9 @@ import DataInsight from "./pages/dataInsight/DataInsight.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
 import Error404 from "./pages/Error/503.jsx";
 import Error503 from "./pages/Error/503.jsx";
-
+import ActionSheetButtons from "./components/action-sheet-buttons.jsx";
+import ActionSheetMenu from "./components/action-sheet-menu.jsx";
+import {RxDashboard} from "react-icons/rx";
 
 
 function App() {
@@ -55,27 +57,47 @@ function App() {
     // 3. if not, redirect to login page
     // 4. if yes, show admin page
 
+
     return (
         <>
             {
                 currentUrl !== "/submit" &&
-                adminUrls.includes(currentUrl) ? <Header /> : <></>
+                adminUrls.includes(currentUrl) ? <Header/> : <></>
             }
             <Router>
-                <Routes>
-                    {/*<Route path="/login" element={<Login/>}/>*/}
-                    <Route path="/" element={<Submit />} />
-                    <Route path="/submit" element={<Submit />} />
-                    <Route path="history/:cgl_name" element={<CGLAttendance />} />
-                    <Route path="headcount" element={<HeadCount />} />
-                    <Route path="nb-admin" element={<CGLsManagement />} />
-                    <Route path="nb-user" element={<UserManagement />} />
-                    <Route path="nb-attendance" element={<AttendanceManagement />} />
-                    <Route path="nb-headcount" element={<HeadCountManagement />} />
-                    <Route path="nb-data-insight/:year/:month" element={<DataInsight />} />
-                    <Route path="nb-dashboard" element={<Dashboard />} />
-                    <Route path={"503"} element={<Error503/>} />
-                </Routes>
+                {
+                    // mini program show action sheet
+                    // (window.location.href.includes("?token=") || currentUser) &&
+                    <>
+                        <ActionSheetButtons/>
+                        <ActionSheetMenu/>
+                    </>
+                }
+                <div className={"h-screen overflow-y-auto relative"}>
+                    {
+                        //(currentUrl === "/headcount" || currentUrl === "/") && user1 && isAdminUser &&
+                        <div
+                            className={"fixed bottom-4 right-[calc(50vw-24px)] bg-green-500 shadow-xl rounded-full p-3 z-10 text-center"}
+                            onClick={() => window.location.href = "/nb-dashboard"}
+                        >
+                            <RxDashboard className={"w-6 h-6 text-white"}/>
+                        </div>
+                    }
+                    <Routes>
+                        {/*<Route path="/login" element={<Login/>}/>*/}
+                        <Route path="/" element={<Submit/>}/>
+                        <Route path="/submit" element={<Submit/>}/>
+                        <Route path="history/:cgl_name" element={<CGLAttendance/>}/>
+                        <Route path="headcount" element={<HeadCount/>}/>
+                        <Route path="nb-admin" element={<CGLsManagement/>}/>
+                        <Route path="nb-user" element={<UserManagement/>}/>
+                        <Route path="nb-attendance" element={<AttendanceManagement/>}/>
+                        <Route path="nb-headcount" element={<HeadCountManagement/>}/>
+                        <Route path="nb-data-insight/:year/:month" element={<DataInsight/>}/>
+                        <Route path="nb-dashboard" element={<Dashboard/>}/>
+                        <Route path={"503"} element={<Error503/>}/>
+                    </Routes>
+                </div>
             </Router>
         </>
 
