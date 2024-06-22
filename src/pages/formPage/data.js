@@ -20,7 +20,10 @@ export  function  getAllTeamLeaderNames(satellite,teamName,data){
     for (let item in data){
         if (data[item].pastoral_team === teamName && data[item].satellite === satellite){
             if (!teamLeaderNames.includes(data[item].CG_leader)){
-                teamLeaderNames.push(data[item].CG_leader)
+                teamLeaderNames.push({
+                    name: data[item].CG_leader,
+                    id: data[item].CG_id
+                })
             }
         }
     }
@@ -272,11 +275,19 @@ export function convertTableData(data){
     return CGsList;
 }
 
-export  async  function getCGName(CGLName){
+export  async  function getCGName(cg_id){
     const  data =await readAllActiveCGLs();
     for (let key in data){
-        if (data[key].CG_leader === CGLName){
-            // console.log(data[key])
+        // if (data[key].CG_leader === CGLName){
+        //     // console.log(data[key])
+        //     if (data[key].pastoral_team === currentPT){
+        //         return {
+        //             cg_name: data[key].CG_name,
+        //             cg_id: data[key].CG_id
+        //         }
+        //     }
+        // }
+        if (data[key].CG_id === cg_id){
             return {
                 cg_name: data[key].CG_name,
                 cg_id: data[key].CG_id

@@ -61,9 +61,9 @@ export  default  function Selects({ data }) {
         setPastoralTeam(currentPT)
     }, [currentPT])
 
-    function CGLSelectHandler(value) {
-        setCGLName(value);
-        getCGName(value).then((res) => {
+    function CGLSelectHandler(cg_id) {
+        console.log(cg_id)
+        getCGName(cg_id).then((res) => {
             console.log(res)
             setCGName(res.cg_name)
             setCGID(res.cg_id)
@@ -110,8 +110,8 @@ export  default  function Selects({ data }) {
                         }}
                 >
                     {currentTeamLeaderNames && currentTeamLeaderNames.map((option, index) => (
-                        <Option key={index} value={option}>
-                            {option}
+                        <Option key={index} value={option.id}>
+                            {option.name}
                         </Option>
                     ))}
                 </Select>
