@@ -62,9 +62,10 @@ export  default  function Selects({ data }) {
     }, [currentPT])
 
     function CGLSelectHandler(cg_id) {
-        console.log(cg_id)
+        // console.log(cg_id)
         getCGName(cg_id).then((res) => {
             console.log(res)
+            setCGLName(res.cgl_name)
             setCGName(res.cg_name)
             setCGID(res.cg_id)
             localStorage.setItem("cg_id", res.cg_id)

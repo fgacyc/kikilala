@@ -290,7 +290,8 @@ export  async  function getCGName(cg_id){
         if (data[key].CG_id === cg_id){
             return {
                 cg_name: data[key].CG_name,
-                cg_id: data[key].CG_id
+                cg_id: data[key].CG_id,
+                cgl_name: data[key].CG_leader,
             }
         }
     }
