@@ -17,14 +17,17 @@ export async function downloadCGLsData(data) {
     let csv = []
     for (let key in data){
         const item = data[key];
-        csv.push({
-            "CGL Name": `"${item.CG_leader}"`,
-            "CGL Nickname": `"${item.nickname}"`,
-            "CG name": `"${item.CG_name}"`,
-            "CG Status": `"${item.CG_status}"`,
-            "Pastoral team": `"${item.pastoral_team}"`,
-            "Satellite": `"${item.satellite}"`,
-        })
+        if (item.CG_status === "active"){
+            csv.push({
+                "CGL Name": `"${item.CG_leader}"`,
+                "CGL Nickname": `"${item.nickname}"`,
+                "CG name": `"${item.CG_name}"`,
+                "CG Status": `"${item.CG_status}"`,
+                "Pastoral team": `"${item.pastoral_team}"`,
+                "Satellite": `"${item.satellite}"`,
+            })
+        }
+
     }
     return csv
 }
