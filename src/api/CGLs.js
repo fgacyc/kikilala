@@ -240,7 +240,21 @@ export  async  function  getCGLNum1(){
 
 export async function getCGLNum() {
     return await withRetry(async () => {
-        const response = await fetch(`${host_url}/cg/num`, {
+        const response = await fetch(`${host_url}/cg/number`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.status === true) return data.data;
+        throw new Error('Failed to get CG number');
+    })
+}
+
+export async function getCGLNumBeforeDate(date) {
+    return await withRetry(async () => {
+        const response = await fetch(`${host_url}/cg/number/${date}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

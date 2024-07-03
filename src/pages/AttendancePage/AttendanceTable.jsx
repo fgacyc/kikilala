@@ -9,6 +9,7 @@ import {convertTableData} from "../formPage/data.js";
 import AttendanceInfoEditModal from "./AttendanceInfoEditModal.jsx";
 import {dataCheck} from "../../tools.js";
 import {useDataCheckStore} from "../../store/dataCheckStore.js";
+import {getCGLNumBeforeDate} from "../../api/CGLs.js";
 
 export const AttendanceTable = ({ className }) => {
     const inputRef = useRef(null);
@@ -231,6 +232,10 @@ export const AttendanceTable = ({ className }) => {
         state => [state.incompleteRecordsList,state.duplicateRecordsList]
     )
 
+    const [CGLNumBeforeDate,setCGLNumBeforeDate] = useState(0);
+
+
+
 
     useEffect(() => {
         async function getAttendance() {
@@ -243,6 +248,16 @@ export const AttendanceTable = ({ className }) => {
         }
         getAttendance();
     }, [currentWeek, selectedRow])
+
+    useEffect(() => {
+        console.log("currentWeek",currentWeek)
+        const date = currentWeek.substring(11,21).replaceAll("/","-")
+        getCGLNumBeforeDate(date).then((res) => {
+            // console.log("res",res)
+            setCGLNumBeforeDate(res);
+        });
+
+    }, [currentWeek]);
 
     // useEffect(() => {
     //     dataCheck(currentSubmitData);
@@ -270,9 +285,10 @@ export const AttendanceTable = ({ className }) => {
                             }}
                         >
                             <Space>
-                                <span className={"mx-4 text-end truncate"}>Items: {currentSubmitData.length} / {currentCGNumber}</span>
+                                <span className={"mx-4 text-end truncate"}>Items: {currentSubmitData.length} / {CGLNumBeforeDate}</span>
                             </Space>
                             {paginationNode}
+
                         </div>
                     )}
                     scroll={{

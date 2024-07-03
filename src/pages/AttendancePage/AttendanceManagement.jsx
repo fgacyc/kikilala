@@ -58,6 +58,7 @@ const AttendanceManagement = () => {
         loginWithRedirect();
     }, [isLoading])
 
+
     return (
         <div className={"h-full w-full sm:px-8 px-2  py-4 "}>
             <div className={"bg-white pt-2 rounded"}>
