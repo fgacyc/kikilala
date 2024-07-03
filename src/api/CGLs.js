@@ -57,7 +57,11 @@ export async function readAllCGLs(){
             },
         });
         const data = await response.json();
-        if (data.status === true) return data.data;
+        if (data.status === true){
+            set("kikilala-CGLs", data.data);
+            set("kikilala-CGLs-updatedAt", new Date());
+            return data.data
+        }
         throw new Error('Failed to read all CGs');
     },2,1000);
 
@@ -89,10 +93,13 @@ export async function readAllActiveCGLs(){
             },
         });
         const data = await response.json();
-        if (data.status === true) return data.data;
+        if (data.status === true) {
+            // console.log("readAllCGLs active",data.data)
+            set("kikilala-CGLs-active", data.data);
+            return data.data;
+        }
         throw new Error('Failed to read all active CGs');
     });
-
 }
 
 export async function readAllClosedCGLs1() {

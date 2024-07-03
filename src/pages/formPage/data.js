@@ -276,7 +276,8 @@ export function convertTableData(data){
 }
 
 export  async  function getCGName(cg_id){
-    const  data =await readAllActiveCGLs();
+    // const  data =await readAllActiveCGLs();
+    const  data =await  get("kikilala-CGLs-active");
     for (let key in data){
         // if (data[key].CG_leader === CGLName){
         //     // console.log(data[key])

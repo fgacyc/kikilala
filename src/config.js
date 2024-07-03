@@ -326,3 +326,37 @@ export const downloadOptions = [
         value: "All"
     }
 ];
+
+const satelliteShort = {
+    "Kuchai YW":"",
+    "Kuchai YW" :"",
+    "Kuchai GS":"",
+    "Klang":"KLG",
+    "Serdang":"S",
+    "Kepong":"K",
+    "USJ":"USJ",
+    "Setapak":"STP",
+    "SG Long":"SGL",
+    "Seremban":"SRB",
+}
+
+export const getShortSatellite = (satellite) => {
+    return satelliteShort[satellite];
+}
+
+const CGCategoryListShort = {
+    "secondary_students":"S",
+    "college/university":"T",
+    "young_adults":"W",
+    "married":"A",
+    "family":"A",
+    "adult/golden_age":"A",
+    "entrepreneur":"A",
+    "children":"J"
+}
+
+export const getShortCGCategory = (category) => {
+    return CGCategoryListShort[category];
+}
+
+

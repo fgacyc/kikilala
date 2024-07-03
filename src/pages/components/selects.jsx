@@ -64,7 +64,7 @@ export  default  function Selects({ data }) {
     function CGLSelectHandler(cg_id) {
         // console.log(cg_id)
         getCGName(cg_id).then((res) => {
-            //console.log(res)
+            console.log(res)
             setCGLName(res.cgl_name)
             setCGName(res.cg_name)
             setCGID(res.cg_id)

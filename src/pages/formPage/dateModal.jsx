@@ -61,6 +61,7 @@ function DateModal({visible, setVisible}) {
 
 
     async function  submit() {
+
         const data = getFormData();
 
         // console.log(data)

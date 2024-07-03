@@ -1,10 +1,11 @@
 import {Message, Modal, Select} from "@arco-design/web-react";
 import { Form, Input } from '@arco-design/web-react';
 import {useCGLStore} from "../../store/CGLStore.js";
-import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
-import { useRef} from "react";
+import {CGCategoryList, getShortCGCategory, getShortSatellite, pastoralTeamList, satelliteList} from "../../config.js";
+import {useEffect, useRef, useState} from "react";
 import {addCGL, CGStatusEnum, duplicateCheck, updateCGL} from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
+import {get} from "idb-keyval";
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -13,6 +14,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
     const formRef = useRef(null);
     const [form] = Form.useForm();
     const coachOptions = useCGLStore(state => state.coachOptions);
+    const [activeCGs, setActiveCGs] =useState(null);
 
 
     async  function  handleSubmit() {
@@ -45,6 +47,46 @@ export default function CGLsAddModal({ visible, setVisible }) {
         })
     }
 
+    async function getCGLNumber(satellite) {
+        const data = await get("kikilala-CGLs-active");
+        if (data === undefined) return 0;
+        setActiveCGs(data);
+        let count = 0;
+        for (let key in data) {
+            if (data[key].satellite === satellite) count++;
+        }
+        return count;
+    }
+
+    function ifCGNameExists(cg_name) {
+        if (activeCGs === null) return false;
+        for (let key in activeCGs) {
+            if (activeCGs[key].cg_name === cg_name) return true;
+        }
+        return false;
+    }
+
+    function formOnValuesChange() {
+        const data = formRef.current.getFieldsValue();
+        // console.log(data)
+
+        if (!data.CG_leader || !data.category || !data.nickname || !data.pastoral_team || !data.satellite) return;
+
+        const satellite_short = getShortSatellite(data.satellite);
+        const category_short = getShortCGCategory(data.category);
+        getCGLNumber(data.satellite).then((res) => {
+            let new_cg_name = `CYC${satellite_short && " " + satellite_short } ${res+1} ${category_short}`;
+            while (ifCGNameExists(new_cg_name)) {
+                res++;
+                new_cg_name = `CYC${satellite_short && " " + satellite_short } ${res+1} ${category_short}`;
+            }
+
+            formRef.current.setFieldsValue({
+                CG_name: new_cg_name
+            })
+        })
+    }
+
 
     return (
         <Modal
@@ -61,6 +103,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
             <Form
                   ref={formRef}
                   form={form}
+                  onChange={formOnValuesChange}
                   autoComplete='off'>
                 <FormItem label='CGL name'
                           field={'CG_leader'}
@@ -78,7 +121,8 @@ export default function CGLsAddModal({ visible, setVisible }) {
                           field={'CG_name'}
                 >
                     <Input
-                            placeholder='please enter CG name...' />
+                        disabled={true}
+                            placeholder='CG name...' />
                 </FormItem>
                 <FormItem label='Satellite'
                           field={'satellite'}
