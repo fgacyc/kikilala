@@ -328,7 +328,7 @@ export const downloadOptions = [
 ];
 
 const satelliteShort = {
-    "Kuchai YW":"",
+    "Kuchai WK":"",
     "Kuchai YW" :"",
     "Kuchai GS":"",
     "Klang":"KLG",
