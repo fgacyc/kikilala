@@ -65,11 +65,12 @@ const AttendanceManagement = () => {
                 {
                     dateArray && <div className={"flex flex-row justify-between bg-white"}>
                         <div className={"flex flex-row flex-wrap"}>
-                            <Select placeholder='Please select' style={{ width: 250,marginBottom:8 }} allowClear
+                            <Select placeholder='Please select' style={{ width: 250,marginBottom:8 }}
                                     value={currentWeek}
                                     onChange={(value) => {
                                         setCurrentWeek(value);
                                     }}
+
                             >
                                 {dateArray.map((option, index) => (
                                     <Option key={index} value={option}>

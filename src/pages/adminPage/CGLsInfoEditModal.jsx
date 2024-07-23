@@ -103,6 +103,7 @@ export default function CGLsInfoEditModal({ visible, setVisible }) {
                        value={CG_name}
                        defaultValue={CG_name}
                           onChange={setCGName}
+                       disabled={true}
                        placeholder='please enter CG name...' />
             </div>
             <div className={"flex flex-row items-center mb-4"}>
