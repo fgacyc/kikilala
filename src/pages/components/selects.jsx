@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useFormStore} from "../../store/formStore.js";
-import {get} from "idb-keyval";
 import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGName} from "../formPage/data.js";
 import {Notification, Select} from "@arco-design/web-react";
-import {readAllActiveCGLs} from "../../api/CGLs.js";
 import {IconInfoCircle} from "@arco-design/web-react/icon";
+import {useAttendanceStore} from "../../store/attendanceStore.js";
 
 
 const Option = Select.Option;
 
-export  default  function Selects({ data }) {
+export  default  function Selects() {
+    const data = useAttendanceStore(state =>state.currentCGLs)
     const [currentPastoralTeamNames, setCurrentPastoralTeamNames] = useState([])
     const [currentPT, setCurrentPT] = useState("")
     const [currentCGLName, setCurrentCGLName] = useState("")
@@ -19,39 +19,35 @@ export  default  function Selects({ data }) {
         state.satellite, state.pastoral_team, state.cgl_name,state.setCGID
     ])
 
-    const [ifPTLocal, setIfPTLocal] = useState(false)
-    useEffect(() => {
-        get("CGInfo").then((res) => {
-            if (res) {
-                setIfPTLocal(true)
-            }
-        })
-    }, []);
+
+
+
 
     useEffect(() => {
-        async function getData(){
+        if(!satellite) return;
+        if (data.length === 0) return;
+        // console.log("satellite",satellite)
+        // console.log("data",data)
 
-            // let data = await readAllActiveCGLs();
-            // if (!data) return;
-            // set select 1 options
-            //console.log(satellite, data)
-            const allPastoralTeamNames = getAllPastoralTeamNames(satellite, data);
-            setCurrentPastoralTeamNames(allPastoralTeamNames);
-            //console.log(allPastoralTeamNames)
-            // set select 2 options
-            const allTeamLeaderNames = getAllTeamLeaderNames(satellite, pastoral_team, data);
-            setCurrentTeamLeaderNames(allTeamLeaderNames);
-            // console.log(allTeamLeaderNames)
+        // let data = await readAllActiveCGLs();
+        // if (!data) return;
+        // set select 1 options
+        //console.log(satellite, data)
+        const allPastoralTeamNames = getAllPastoralTeamNames(satellite, data);
+        setCurrentPastoralTeamNames(allPastoralTeamNames);
+        console.log("allPastoralTeamNames",allPastoralTeamNames)
+        // set select 2 options
+        const allTeamLeaderNames = getAllTeamLeaderNames(satellite, pastoral_team, data);
+        setCurrentTeamLeaderNames(allTeamLeaderNames);
+        // console.log(allTeamLeaderNames)
 
-            // set default pastoral team
-            setCurrentPT(pastoral_team)
+        // set default pastoral team
+        setCurrentPT(pastoral_team)
 
-            // set default CGL name
-            setCurrentCGLName(cgl_name)
+        // set default CGL name
+        setCurrentCGLName(cgl_name)
 
-        }
-        getData();
-    }, [satellite])
+    }, [satellite,data])
 
 
     useEffect(() => {

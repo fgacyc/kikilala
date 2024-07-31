@@ -7,6 +7,7 @@ export const useAttendanceStore = create((set) => ({
     currentWeek:"",
     currentCGNumber:0,
     showSubmitted:true,
+    currentCGLs : [],
 
     setCurrentSubmitData: (currentSubmitData) => set({ currentSubmitData }),
     setCurrentPendingData: (currentPendingData) => set({ currentPendingData }),
@@ -25,4 +26,5 @@ export const useAttendanceStore = create((set) => ({
         showSubmitted = showSubmitted === "true";
         set({ currentWeek,showSubmitted })
     },
+    setCurrentCGLs: (currentCGLs) => set({ currentCGLs }),
 }))

@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Select, Input, Notification, Icon, Message } from '@arco-design/web-react';
-import {readAllActiveCGLs, readAllCGLs} from "../../api/CGLs.js";
-import {
-    getAllPastoralTeamNames,
-    getAllTeamLeaderNames,
-    getCGName,
-    ifExpire
-} from "./data.js";
+import { useEffect, useState } from "react";
+import {  Input, Message } from '@arco-design/web-react';
+import {readAllActiveCGLs} from "../../api/CGLs.js";
 import { SendIcon } from "../../Icon/SendIcon.jsx";
 import DateModal from "./dateModal.jsx";
 import { useFormStore } from "../../store/formStore.js";
-import { get } from "idb-keyval";
 
 import { IconHistory } from "@arco-design/web-react/icon";
 import { useNavigate } from "react-router-dom";
-// const IconFont = Icon.addFromIconFontCn({
-//     src: '//at.alicdn.com/t/font_180975_26f1p759rvn.js',
-// });
 import { useAuth0 } from "@auth0/auth0-react";
 import ButtonGroup from "../components/buttonGroup.jsx";
 import Selects from "../components/selects.jsx";
 import UIInput from "../components/UIInput.jsx";
 import InputPIN from "../components/InputPIN.jsx";
+import {useAttendanceStore} from "../../store/attendanceStore.js";
 const TextArea = Input.TextArea;
 
 
@@ -152,7 +143,7 @@ function InputArea({type, textAreaValue, setTextAreaValue}) {
 }
 
 export default function Form() {
-    const [allCGLs, setAllCGLs] = useState([])
+    const setAllCGLs = useAttendanceStore(state => state.setCurrentCGLs)
     const [currentStatellite, setCurrentSatellite] = useState(null)
     const [visible, setVisible] = useState(false);
     //const [reset, printForm] = useFormStore(state => [state.reset, state.printForm])
@@ -164,18 +155,18 @@ export default function Form() {
             ,state.cg_absence_reason,state.service_absence_reason
             ,state.user_email,state.user_sub,state.setUserEmail,state.setUserSub
         ])
-    const cg_id = useFormStore(state => state.cg_id)
+
     const navigate = useNavigate();
     const { loginWithRedirect,logout,user } = useAuth0();
 
     useEffect(() => {
         async function getData() {
             readAllActiveCGLs().then((data) => {
-                // console.log(data);
+                console.log("allcgs",data);
                 setAllCGLs(data);
             })
         }
-        getData();
+        void getData();
 
     }, []);
 
@@ -216,7 +207,7 @@ export default function Form() {
             {
                 !user_email
                 ? <div className={"font-bold mt-0 mb-3"}>
-                    <span>You haven't logged in yet. </span>
+                    <span>You haven&apos;t logged in yet. </span>
                     <span className={"text-blue-500 cursor-pointer"}
                           onClick={() => loginWithRedirect()}
                     >Log in</span>
@@ -225,7 +216,7 @@ export default function Form() {
                         <span>{user_email}</span>
                         <span className={"text-blue-500 cursor-pointer ml-2"}
                               onClick={() =>{
-                                  logout({ returnTo: window.location.origin });
+                                  void logout({ returnTo: window.location.origin });
                               }}
                         >Switch account</span>
                     </div>
@@ -236,7 +227,7 @@ export default function Form() {
             </div>
             <ButtonGroup setCurrentSatellite={setCurrentSatellite} />
             <div className={"font-bold mt-5 mb-3"}>Which Pastoral Team do you belong to?</div>
-            <Selects data={allCGLs} />
+            <Selects  />
             <div>
                 <div className={"font-bold mt-5 mb-1"}>How many members are there in your Connect Group?</div>
                 <UIInput type={"number"} />

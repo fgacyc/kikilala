@@ -1,14 +1,12 @@
 import {Modal, Button, Message, Select} from '@arco-design/web-react';
 import {IconClose} from "@arco-design/web-react/icon";
 import {getWeekDatesArray, validate} from "./data.js";
-import React, {useEffect, useState} from "react";
+import  {useEffect, useState} from "react";
 import {useFormStore} from "../../store/formStore.js";
-import {addCGL} from "../../api/CGLs.js";
 import {addAttend, checkDuplicate} from "../../api/attendance.js";
 import {set} from "idb-keyval";
 import {checkWeek, generateAllWeeklyRanges, timeDetect} from "../../tools.js";
 import { useLocation } from 'react-router-dom';
-import {useAttendanceStore} from "../../store/attendanceStore.js";
 const Option = Select.Option;
 
 function ButtonsGroup(){
@@ -80,7 +78,7 @@ function DateModal({visible, setVisible}) {
             return;
         }
 
-        // check it this week start #todO
+        // check it this week start
         const ifStart = timeDetect(data.date, new Date());
         if(!ifStart){
             Message.warning("You can only submit attendance for last week, this week has not started yet")
