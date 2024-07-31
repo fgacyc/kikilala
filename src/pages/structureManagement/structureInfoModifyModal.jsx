@@ -33,9 +33,8 @@ function CGLCard({data, selected_CGLs, addSelectedCGLs}){
         }
     }
     return (
-        <div className={`border rounded p-2 cursor-pointer hover:bg-[#33CC99] hover:text-white3
-             ${isSelect && "bg-[#33CC99] text-white"}
-        `}
+        <div className={`border rounded p-2 cursor-pointer hover:bg-[#33CC99] hover:text-white3 
+             ${isSelect && "bg-[#33CC99] text-white"}`}
              onClick={clickHandler}
         >
             <div className={"w-[80%]"}>{data.CG_leader}</div>
@@ -82,6 +81,7 @@ export default function StructureInfoModifyModal({ visible, setVisible }){
         addPastoralLeader(name,nickname,role,cg_id_list).then((res) => {
             if(res.status === true){
                 Message.success("Successfully added");
+                resetForm();
                 PubSub.publish("updateLeaders");
             }else{
                 Message.error("Failed to add");
@@ -89,6 +89,13 @@ export default function StructureInfoModifyModal({ visible, setVisible }){
             setVisible(false);
             setIsLoading(false);
         });
+    }
+
+    function resetForm(){
+        setName("");
+        setNickname("");
+        setSelected_CGLs({});
+        window.location.reload();
     }
 
     useEffect(() => {
@@ -179,11 +186,11 @@ export default function StructureInfoModifyModal({ visible, setVisible }){
                         ))}
                     </Select>
                 </div>
-               <div className={"grid grid-cols-3 gap-4 w-[80%] ml-[20%]"}>
+               <div className={"grid sm:grid-cols-3 grid-cols-1 gap-4 w-[80%] ml-[20%] max-h-[400px] overflow-y-auto"}>
                    {
                        filterCGLs.length > 0  && filterCGLs.map((cgl, index)=> {
                            return (
-                               <CGLCard key={index}
+                               <CGLCard key={cgl.CG_id}
                                         data={cgl}
                                         selected_CGLs={selected_CGLs}
                                         addSelectedCGLs={addSelectedCGLs}

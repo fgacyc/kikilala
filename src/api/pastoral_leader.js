@@ -72,6 +72,6 @@ export async function deletePastoralLeader(user_name,nickname,role_id) {
         body: JSON.stringify(pastoral_leader_data)
     });
     const data = await response.json();
-    console.log(data)
+    // console.log(data)
     return data;
 }

@@ -1,22 +1,15 @@
 import {Button, Input, Popconfirm, Table} from '@arco-design/web-react';
 import {useEffect, useRef, useState} from "react";
-import {addAdmin, deleteAdmin, readAllAdmins} from "../../api/admin.js";
-import {convertTableData} from "../formPage/data.js";
-import {IconDelete, IconEdit, IconPlus, IconSearch} from "@arco-design/web-react/icon";
+import {IconDelete, IconPlus, IconSearch} from "@arco-design/web-react/icon";
 import PubSub from "pubsub-js";
 import StructureInfoModifyModal from "./structureInfoModifyModal.jsx";
-import {useAdminUserStore} from "../../store/adminUserStore.js";
 import {readAllActiveCGLs} from "../../api/CGLs.js";
 import {useAttendanceStore} from "../../store/attendanceStore.js";
 import {deletePastoralLeader, getPastoralLeader} from "../../api/pastoral_leader.js";
 
 export default function StructureManagement() {
-    const [tableData, setTableData] = useState([]);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [remark, setRemark] = useState("");
+
     const [structureInfoModifyModalVisible,setStructureInfoModifyModalVisible] = useState(false);
-    const setAdminUser = useAdminUserStore(state => state.setAdminUser);
     const inputRef = useRef(null);
     const setCurrentCGLs = useAttendanceStore(state => state.setCurrentCGLs);
     const [pastoralLeader, setPastoralLeader] = useState([]);
@@ -39,36 +32,20 @@ export default function StructureManagement() {
     async function getLeaders(){
         getPastoralLeader().then((res) => {
             if(res.status){
+                // console.log(res.data)
                 setPastoralLeader(res.data);
             }
         });
     }
 
-    function addUser(){
-        if(name===""||email===""){
-            return;
-        }
-        const data = {
-            name: name,
-            email: email.trim(),
-            remark: remark
-        }
 
-        addAdmin(data).then((res) => {
-            if(res !== false) getAdmins();
-        });
-
-        setName("");
-        setEmail("");
-        setRemark("");
-    }
 
     const columns = [
         {
             title: 'Name',
             dataIndex: 'user_name',
             width: 150,
-            sorter: (a, b) => a?.name.localeCompare(b?.name),
+            sorter: (a, b) => a?.user_name.localeCompare(b?.user_name),
             filterIcon: <IconSearch />,
             filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
                 return (
@@ -90,7 +67,7 @@ export default function StructureManagement() {
                 );
             },
             onFilter: (value, row) => {
-                return row.name.toLowerCase().includes(value.toLowerCase());
+                return row.user_name.toLowerCase().includes(value.toLowerCase());
             },
             onFilterDropdownVisibleChange: (visible) => {
                 if (visible) {
@@ -101,9 +78,7 @@ export default function StructureManagement() {
         },
         {
             title: 'Nickname',
-
-
-
+            dataIndex: 'nickname',
             width: 150,
             render: (_, record) => (
                 <div className={"flex flex-row"}>
@@ -144,6 +119,21 @@ export default function StructureManagement() {
             title: 'Role',
             dataIndex: 'user_role',
             width: 300,
+        },
+        {
+            title: 'CGLs',
+            width: 300,
+            render: (_, record) => (
+                <div>
+                    {
+                        record.cg_list.map((cg, index) => (
+                            <div key={index} className={"mr-2"}>
+                                <span className={"font-bold"}>{cg.CGL_name}</span>({cg.CG_name})
+                            </div>
+                        ))
+                    }
+                </div>
+            )
         },
         {
             title: "Operation",
