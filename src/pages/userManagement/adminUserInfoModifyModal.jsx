@@ -27,7 +27,7 @@ export default function AdminUserInfoModifyModal({ visible, setVisible }){
 
     return (
         <Modal
-            title="Modal Title"
+            title="Admin"
             visible={visible}
             onOk={() => {
                 submit();

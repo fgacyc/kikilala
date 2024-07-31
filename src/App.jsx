@@ -15,22 +15,16 @@ import {useEffect} from "react";
 import {isAdmin} from "./tools.js";
 import DataInsight from "./pages/dataInsight/DataInsight.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
-import Error404 from "./pages/Error/503.jsx";
 import Error503 from "./pages/Error/503.jsx";
+import StructureManagement from "./pages/structureManagement/structureManagement.jsx";
+import {admin_urls} from "./config.js";
 
 
 
 function App() {
     const { loginWithRedirect, user, isLoading } = useAuth0();
     const currentUrl = window.location.pathname;
-    const adminUrls = [
-        "/nb-admin",
-        "/nb-user",
-        "/nb-attendance",
-        "/nb-headcount",
-        "/submit",
-        "/nb-dashboard",
-    ]
+    const adminUrls = Object.values(admin_urls);
 
     useEffect(() => {
         if (isLoading) return;
@@ -38,7 +32,7 @@ function App() {
 
         // haven't login, redirect to login page
         if (!user) {
-            loginWithRedirect();
+            void loginWithRedirect();
         }
 
         // login, but not admin, redirect to first page
@@ -75,6 +69,7 @@ function App() {
                     <Route path="nb-data-insight/:year/:month" element={<DataInsight />} />
                     <Route path="nb-dashboard" element={<Dashboard />} />
                     <Route path={"503"} element={<Error503/>} />
+                    <Route path="nb-structure" element={<StructureManagement />} />
                 </Routes>
             </Router>
         </>

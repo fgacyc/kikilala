@@ -146,6 +146,14 @@ export const satellite_pastoralTeam = {
     "Johor":[]
 }
 
+export  function getLocation() {
+    return Object.keys(satellite_pastoralTeam);
+}
+
+export  function  getPastoralTeam(location) {
+    return satellite_pastoralTeam[location];
+}
+
 export const pastoralTeams =[
     "Kuchai YW",
     "Kuchai GS",
@@ -166,7 +174,7 @@ export const kuchaGSPastoralTeams = [
 export const kuchaYWPastoralTeams = satellite_pastoralTeam["Kuchai YW"];
 
 
-export const satelliteNameList =  Object.keys(satellite_pastoralTeam);
+export const satelliteNameList =  getLocation();
 
 
 export const CGCategoryList = [
@@ -360,3 +368,13 @@ export const getShortCGCategory = (category) => {
 }
 
 
+
+
+export const admin_urls = {
+    "dashboard": "/nb-dashboard",
+    "attendance": "/nb-attendance",
+    "headcount": "/nb-headcount",
+    "cgl": "/nb-admin",
+    "admin": "/nb-user",
+    "structure": "/nb-structure",
+}

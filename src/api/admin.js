@@ -47,7 +47,7 @@ export async function readAllAdmins() {
         });
         const data = await response.json();
         if (data.status === true) {
-            console.log(data.data)
+            // console.log(data.data)
             return data.data
         };
         return false;
