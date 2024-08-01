@@ -7,7 +7,15 @@ import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
 import { deleteHeadcount, readAllHeadcounts } from "../../api/headcount.js";
 import { pastoralTeamList, satelliteList } from "../../config.js";
 import { serviceTypeOptions } from "./headcountForm.jsx";
-import {IconDelete, IconDownload, IconEdit, IconHome, IconNotification, IconSearch} from "@arco-design/web-react/icon";
+import {
+    IconClockCircle,
+    IconDelete,
+    IconDownload,
+    IconEdit,
+    IconHome,
+    IconNotification,
+    IconSearch
+} from "@arco-design/web-react/icon";
 import { deleteCGL } from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 import HeadCountDrawer from "./HeadcountDrawer.jsx";
@@ -22,69 +30,119 @@ import CsvDownload from "react-csv-downloader";
 import HeadcountReminderModal from "./headcountReminderModal.jsx";
 import HeadcountDownloadModal from "./HeadcountDownloadModal.jsx";
 
+function NumCard({title, num}) {
+    return (
+        <div className={"flex flex-col items-center border p-2 rounded w-[70px]"}>
+            <div className={"text-lg font-bold"}>{num}</div>
+            <div>{title}</div>
+        </div>
+    )
+}
+
+function HeadCountCard({data}) {
+    return (
+        <div className={"border rounded p-2 relative"}>
+            <div className={"flex justify-between mb-2"}>
+                <div className={"text-lg font-bold"}>{data.satellite}</div>
+                <div className={"text-lg "}>{data.headCount}</div>
+            </div>
+
+            <div className={"grid grid-cols-5 gap-2"}>
+                {data.yw_num > 0 && <div className={"flex justify-between"}>
+                    <NumCard title={"YW"} num={data.yw_num} />
+                </div>}
+                {data.gs_num > 0 && <div className={"flex justify-between"}>
+                    <NumCard title={"GS"} num={data.gs_num} />
+                </div>}
+                {data.kids_num > 0 && <div className={"flex justify-between"}>
+                    <NumCard title={"Kids"} num={data.kids_num} />
+                </div>}
+                {data.cm_num > 0 && <div className={"flex justify-between"}>
+                    <NumCard title={"CM"} num={data.cm_num} />
+                </div>}
+                {data.parents_num > 0 && <div className={"flex justify-between"}>
+                    <NumCard title={"Parents"} num={data.parents_num} />
+                </div>}
+                {data.ac_num > 0 && <div className={"flex justify-between"}>
+                    <NumCard title={"AC"} num={data.ac_num} />
+                </div>}
+                {data.nf_num > 0 && <div className={"flex justify-between"}>
+                    <NumCard title={"NF"} num={data.nf_num} />
+                </div>}
+            </div>
+            <div className={"h-6"}></div>
+            <div className={"flex w-full justify-between absolute bottom-1 text-gray-400"}>
+                <div className={""}>{data.serviceType}</div>
+                <div className={"mr-4"}><IconClockCircle />{data.dateTime}</div>
+            </div>
+        </div>
+    )
+}
+
 function HeadCountTable() {
     const [headcountTableData, setHeadcountTableData] = useState(null);
-    const [currentTableData, setCurrentTableData] = useState(null);
-    const inputRef = useRef(null);
-    const [headCountDrawerVisible, setHeadCountDrawerVisible] = useState(false);
-    const [scrollX, setScrollX] = useState(window.innerWidth * 0.9);
-    const setHeadCountDataStore = useHeadCountStore(state => state.setHeadCountData)
-    const [currentWeek, setCurrentWeek] = useState(getWeekDatesArray(4)[3]);
-    const [allHeadcountData, setAllHeadcountData] = useState(null);
-    const [reminderModalVisible, setReminderModalVisible] = useState(false);
-    const setCurrentHeadCountTableData = useHeadCountStore(state => state.setCurrentHeadCountTableData);
-    const [downloadModalVisible, setDownloadModalVisible] = useState(false);
-    const setHeadCountData = useHeadCountStore(state => state.setHeadCountData);
+            const [currentTableData, setCurrentTableData] = useState(null);
+            const inputRef = useRef(null);
+            const [headCountDrawerVisible, setHeadCountDrawerVisible] = useState(false);
+            const [scrollX, setScrollX] = useState(window.innerWidth * 0.9);
+            const setHeadCountDataStore = useHeadCountStore(state => state.setHeadCountData)
+            const [currentWeek, setCurrentWeek] = useState(getWeekDatesArray(4)[3]);
+            const [allHeadcountData, setAllHeadcountData] = useState(null);
+            const [reminderModalVisible, setReminderModalVisible] = useState(false);
+            const setCurrentHeadCountTableData = useHeadCountStore(state => state.setCurrentHeadCountTableData);
+            const [downloadModalVisible, setDownloadModalVisible] = useState(false);
+            const setHeadCountData = useHeadCountStore(state => state.setHeadCountData);
 
-    useEffect(() => {
-        void setHeadcountData();
-        if (window.innerWidth < 768) {
+            useEffect(() => {
+            void setHeadcountData();
+            if (window.innerWidth < 768) {
             setScrollX(window.innerWidth * 3);
         }
-        const subscription = PubSub.subscribe('REFRESH_HEADCOUNT_TABLE', () => {
+            const subscription = PubSub.subscribe('REFRESH_HEADCOUNT_TABLE', () => {
             void setHeadcountData();
         });
-        return () => {
+            return () => {
             PubSub.unsubscribe(subscription);
         };
-    }, []);
+        }, []);
 
-    function formatData(data) {
-        // object to array
-        let res = Object.values(data);
-        for (let item of res) {
+            function formatData(data) {
+            // object to array
+            let res = Object.values(data);
+            for (let item of res) {
             item.createdAt = new Date(item.createdAt.seconds * 1000).toLocaleString();
             item.updatedAt = new Date(item.updatedAt.seconds * 1000).toLocaleString();
         }
-        // console.log(res)
-        return res;
-    }
+            // console.log(res)
+            return res;
+        }
 
-    async function setHeadcountData() {
-        let res = await readAllHeadcounts();
-        setAllHeadcountData(formatData(res));
-        let headData = [];
-        for (let key in res) {
+            async function setHeadcountData() {
+            let res = await readAllHeadcounts();
+            setAllHeadcountData(formatData(res));
+            let headData = [];
+            for (let key in res) {
             res[key].key = key;
             headData.push(res[key]);
         }
-        setHeadcountTableData(headData);
-        let localCurrentWeek = localStorage.getItem("headcount-current-week")
-        if(!localCurrentWeek) // if no local cache
+            setHeadcountTableData(headData);
+            let localCurrentWeek = localStorage.getItem("headcount-current-week")
+            if(!localCurrentWeek) // if no local cache
         {
             localCurrentWeek = currentWeek
         }else{ // have local cache
             setCurrentWeek(localCurrentWeek) // change selected value
         }
 
-        headData = filterHeadcountByDate(headData,localCurrentWeek);
-        setCurrentTableData(headData);
-        if(headData){
+            headData = filterHeadcountByDate(headData,localCurrentWeek);
+            console.log("filtered data",headData)
+            setCurrentTableData(headData);
+            if(headData){
             setHeadCountDataStore(headData);
         }
 
-    }
-    const columns = [
+        }
+            const columns = [
         {
             title: 'Service Location',
             width: 100,
@@ -92,8 +150,8 @@ function HeadCountTable() {
             sorter: (a, b) => a.satellite.localeCompare(b.satellite),
             filters: satelliteList,
             onFilter: (value, row) => {
-                return row.satellite === value;
-            },
+            return row.satellite === value;
+        },
             filterMultiple: false,
         },
         {
@@ -103,8 +161,8 @@ function HeadCountTable() {
             sorter: (a, b) => a.serviceType.localeCompare(b.serviceType),
             filters: serviceTypeOptions,
             onFilter: (value, row) => {
-                return row.serviceType.toLowerCase() === value.toLowerCase();
-            },
+            return row.serviceType.toLowerCase() === value.toLowerCase();
+        },
             filterMultiple: false,
         },
         {
@@ -113,25 +171,26 @@ function HeadCountTable() {
             dataIndex: 'dateTime',
             sorter: (a, b) => a.dateTime.localeCompare(b.dateTime),
             filterIcon: <IconSearch />,
-            filterDropdown: ({ filterKeys, setFilterKeys, confirm }) => {
-                return (
-                    <div className='arco-table-custom-filter'>
-                        <Input.Search
-                            allowClear={true}
-                            ref={inputRef}
-                            searchButton
-                            placeholder='Please enter datetime'
-                            value={filterKeys[0] || ''}
-                            onChange={(value) => {
-                                setFilterKeys(value ? [value] : []);
-                            }}
-                            onSearch={() => {
-                                confirm();
-                            }}
-                        />
-                    </div>
-                );
-            },
+            filterDropdown: ({filterKeys, setFilterKeys, confirm}) => {
+            return (
+            <div className='arco-table-custom-filter'>
+            <Input.Search
+            allowClear={true}
+             ref={inputRef}
+             searchButton
+             placeholder='Please enter datetime'
+             value={filterKeys[0] || ''}
+             onChange={(value) => {
+                 setFilterKeys(value ? [value] : []);
+             }}
+             onSearch={() => {
+                 confirm();
+             }}
+        />
+</div>
+)
+    ;
+},
             onFilter: (value, row) => {
                 return row.dateTime.toLowerCase().includes(value.toLowerCase());
             },
@@ -315,6 +374,13 @@ function HeadCountTable() {
                 {/*        }}*/}
                 {/*>Click</Button>*/}
             </div>
+        </div>
+        <div className={` grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10 px-2`}>
+            {
+                currentTableData && currentTableData.length > 0 && currentTableData.map((item, index) => {
+                    return <HeadCountCard data={item} key={index} />
+                })
+            }
         </div>
         {
             currentTableData && <Table columns={columns}
