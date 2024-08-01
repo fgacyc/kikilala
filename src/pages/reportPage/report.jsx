@@ -67,42 +67,59 @@ export default function Report() {
             dataIndex: "satellite_pastoral_team"
         },
         {
-            title: 'Total CG',
-            dataIndex: 'total_cg',
-            sorter: (a, b) => a.total_cg - b.total_cg,
-        },
-        {
-            title: 'Total Service',
-            dataIndex: 'total_numbering',
-            sorter: (a, b) => a.total_numbering - b.total_numbering,
-        },
-        {
             title: 'CG Avg',
             dataIndex: 'CG_Avg',
             sorter: (a, b) => a.CG_Avg - b.CG_Avg,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
         },
         {
             title: 'Service Avg',
             dataIndex: 'Service_Avg',
             sorter: (a, b) => a.Service_Avg - b.Service_Avg,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
         },
         {
             title: 'Total NF',
             dataIndex: 'total_nf',
             sorter: (a, b) => a.total_nf - b.total_nf,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
         },
         {
             title: 'Total AC',
             dataIndex: 'total_ac',
             sorter: (a, b) => a.total_ac - b.total_ac,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
+        },
+        {
+            title: 'Total CG',
+            dataIndex: 'total_cg',
+            sorter: (a, b) => a.total_cg - b.total_cg,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
+        },
+        {
+            title: 'Total Service',
+            dataIndex: 'total_numbering',
+            sorter: (a, b) => a.total_numbering - b.total_numbering,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
         },
         {
             title: 'Submission Rate',
             dataIndex: 'submission_rate',
             sorter: (a, b) => a.submission_rate - b.submission_rate,
             render: (text) => {
-                const percent = (text * 100).toFixed(2)
-                return `${percent}%`
+                return <div className={"text-center"}>{`${text * 100}%`}</div>
             }
         }
     ];
