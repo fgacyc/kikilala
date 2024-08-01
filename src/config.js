@@ -377,4 +377,5 @@ export const admin_urls = {
     "cgl": "/nb-admin",
     "admin": "/nb-user",
     "structure": "/nb-structure",
+    "report" : "/nb-report",
 }

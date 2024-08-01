@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Select, Switch } from '@arco-design/web-react';
 import {
-    IconDownload, IconHome,
+    IconDownload, IconFile, IconHome,
     IconNotification, IconPlus, IconThunderbolt,
 } from '@arco-design/web-react/icon';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,7 +18,7 @@ import DataInsightModal from "./DataInsightModal.jsx";
 const Option = Select.Option;
 const AttendanceManagement = () => {
     const [dateArray, setDateArray] = useState([])
-    const buttonsNumber = 4
+    // const buttonsNumber = 4
     const { loginWithRedirect, user, isLoading } = useAuth0();
     const [initAttendData, currentWeek, setCurrentWeek, showSubmitted, setShowSubmitted] =
         useAttendanceStore(state => [
@@ -103,6 +103,11 @@ const AttendanceManagement = () => {
                                 <Button type='secondary' icon={<IconThunderbolt />} className={"ml-2"}
                                         onClick={() => {
                                             navigate(`/nb-data-insight/${generateMonthlyRanges()[0]}`)
+                                        }}
+                                />
+                                <Button type='secondary' icon={<IconFile />} className={"ml-2"}
+                                        onClick={() => {
+                                            navigate(`/nb-report`)
                                         }}
                                 />
                             </div>

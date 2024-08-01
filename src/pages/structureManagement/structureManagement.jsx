@@ -161,7 +161,9 @@ export default function StructureManagement() {
                                 record.nickname,
                                 "rol_" + record.key.split('_')[1]
                             ).then((res) => {
-                                if(res !== false) getLeaders();
+                                if(res !== false) {
+                                    void getLeaders()
+                                }
                             });
                         }}
                     >

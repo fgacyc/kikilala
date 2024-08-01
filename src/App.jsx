@@ -18,6 +18,7 @@ import Dashboard from "./pages/dashboard/dashboard.jsx";
 import Error503 from "./pages/Error/503.jsx";
 import StructureManagement from "./pages/structureManagement/structureManagement.jsx";
 import {admin_urls} from "./config.js";
+import Report from "./pages/reportPage/report.jsx";
 
 
 
@@ -70,6 +71,7 @@ function App() {
                     <Route path="nb-dashboard" element={<Dashboard />} />
                     <Route path={"503"} element={<Error503/>} />
                     <Route path="nb-structure" element={<StructureManagement />} />
+                    <Route path="nb-report" element={<Report />} />
                 </Routes>
             </Router>
         </>
