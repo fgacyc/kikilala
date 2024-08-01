@@ -2,10 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { addRecord } from "../../api/records.js";
 import {Button, Input, Popconfirm, Select, Space, Table} from "@arco-design/web-react";
-import CGLsInfoEditModal from "../adminPage/CGLsInfoEditModal.jsx";
-import CGLsAddModal from "../adminPage/CGLsAddModal.jsx";
 import { deleteHeadcount, readAllHeadcounts } from "../../api/headcount.js";
-import { pastoralTeamList, satelliteList } from "../../config.js";
+import { satelliteList } from "../../config.js";
 import { serviceTypeOptions } from "./headcountForm.jsx";
 import {
     IconClockCircle,
@@ -16,17 +14,14 @@ import {
     IconNotification,
     IconSearch
 } from "@arco-design/web-react/icon";
-import { deleteCGL } from "../../api/CGLs.js";
 import PubSub from "pubsub-js";
 import HeadCountDrawer from "./HeadcountDrawer.jsx";
 import { useHeadCountStore } from "../../store/headcountStore.js";
 import { useFormStore } from "../../store/formStore.js";
 import WeekSelect from "../components/WeekSelect.jsx";
-import {filterAttendByDate, filterHeadcountByDate} from "../../api/attendance.js";
+import {filterHeadcountByDate} from "../../api/attendance.js";
 import {getWeekDatesArray} from "../formPage/data.js";
 import HeadCountSummary from "./HeadcountSummary.jsx";
-import {downloadCGLAttendanceData, getTodayDateStr} from "../../tools.js";
-import CsvDownload from "react-csv-downloader";
 import HeadcountReminderModal from "./headcountReminderModal.jsx";
 import HeadcountDownloadModal from "./HeadcountDownloadModal.jsx";
 
