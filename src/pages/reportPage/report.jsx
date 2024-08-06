@@ -1,4 +1,4 @@
-import {Button, Select, Space, Table} from "@arco-design/web-react";
+import {Button, Select, Table} from "@arco-design/web-react";
 import {generateMonthlyRanges} from "../../tools.js";
 import {useEffect, useState} from "react";
 import {getAnylisisData} from "../../api/anylisisData.js";
@@ -6,20 +6,6 @@ import {IconRefresh} from "@arco-design/web-react/icon";
 import {get, set} from "idb-keyval";
 const Option = Select.Option;
 
-const satellite_pastoral_team = [
-    "Kuchai_YW",
-    "Kuchai_GS",
-    "Serdang_YW",
-    "Serdang_GS",
-    "Kepong_YW",
-    "Kepong_GS",
-    "USJ_YW",
-    "USJ_GS",
-    "Setapak_YW",
-    "Setapak_GS",
-    "SGLong_YW",
-    "SGLong_GS",
-    "Seremban_YW"]
 
 
 export default function Report() {
@@ -27,6 +13,7 @@ export default function Report() {
     const [currentMonth, setCurrentMonth] = useState("");
     const [analyseData, setAnalyseData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [updateTime, setUpdateTime] = useState(0);
 
     useEffect(() => {
         const month = localStorage.getItem("analyse-currentMonth") || months[0];
@@ -37,10 +24,12 @@ export default function Report() {
         async function fetchData() {
             setIsLoading(true);
             const localData = await get(`analyseData-${currentMonth}`);
+            const updateTime = await get(`analyseData-${currentMonth}-time`);
             console.log("localData",localData)
             if (localData) {
                 setAnalyseData(localData);
                 setIsLoading(false);
+                setUpdateTime(updateTime);
                 return;
             }
 
@@ -55,7 +44,10 @@ export default function Report() {
             console.log(data)
             if (data.status === true) {
                 setAnalyseData(data.data);
+                const updateTime = new Date().getTime();
+                setUpdateTime(updateTime);
                 set(`analyseData-${currentMonth}`, data.data)
+                set(`analyseData-${currentMonth}-time`, updateTime)
             }
             setIsLoading(false);
         })
@@ -67,7 +59,23 @@ export default function Report() {
             dataIndex: "satellite_pastoral_team"
         },
         {
-            title: 'CG Avg',
+            title: 'Total CG',
+            dataIndex: 'total_cg',
+            sorter: (a, b) => a.total_cg - b.total_cg,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
+        },
+        {
+            title: 'Total Numbering',
+            dataIndex: 'total_numbering',
+            sorter: (a, b) => a.total_numbering - b.total_numbering,
+            render: (text) => {
+                return <div className={"text-center"}>{text}</div>
+            }
+        },
+        {
+            title: 'CG Avg Attn',
             dataIndex: 'CG_Avg',
             sorter: (a, b) => a.CG_Avg - b.CG_Avg,
             render: (text) => {
@@ -75,7 +83,7 @@ export default function Report() {
             }
         },
         {
-            title: 'Service Avg',
+            title: 'Service Avg Attn',
             dataIndex: 'Service_Avg',
             sorter: (a, b) => a.Service_Avg - b.Service_Avg,
             render: (text) => {
@@ -94,22 +102,6 @@ export default function Report() {
             title: 'Total AC',
             dataIndex: 'total_ac',
             sorter: (a, b) => a.total_ac - b.total_ac,
-            render: (text) => {
-                return <div className={"text-center"}>{text}</div>
-            }
-        },
-        {
-            title: 'Total CG',
-            dataIndex: 'total_cg',
-            sorter: (a, b) => a.total_cg - b.total_cg,
-            render: (text) => {
-                return <div className={"text-center"}>{text}</div>
-            }
-        },
-        {
-            title: 'Total Service',
-            dataIndex: 'total_numbering',
-            sorter: (a, b) => a.total_numbering - b.total_numbering,
             render: (text) => {
                 return <div className={"text-center"}>{text}</div>
             }
@@ -151,11 +143,16 @@ export default function Report() {
                             </Option>
                         ))}
                     </Select>
-                    <Button type='secondary'
-                            icon={<IconRefresh />}
-                            className={"mr-2"}
-                            onClick={updateData}
-                    />
+                    <div className={"flex items-center"}>
+                        <div className={"text-gray-400"}>{
+                            updateTime === 0 ? "" : `Update at: ${new Date(updateTime).toLocaleString()}`
+                        }</div>
+                        <Button type='secondary'
+                                icon={<IconRefresh />}
+                                className={"mx-2"}
+                                onClick={updateData}
+                        />
+                    </div>
                 </div>
                 <div>
                     <Table columns={columns}
