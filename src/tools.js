@@ -12,6 +12,7 @@
 
 import {useDataCheckStore} from "./store/dataCheckStore.js";
 import {queryAdminEmail} from "./api/admin.js";
+import {wonderkids_pastoral_team} from "./config.js";
 
 export async function downloadCGLsData(data) {
     let csv = []
@@ -436,5 +437,29 @@ export async function withRetry(func, maxRetries = 1, delay = 500) {
             await new Promise(resolve => setTimeout(resolve, delay)); // Delay before retrying
             retries++;
         }
+    }
+}
+
+
+export function getPastoralTeamCGNumber(tableData){
+    // console.log(tableData)
+    let wonderkids = 0;
+    let youngWarrior =0;
+    let general = 0;
+
+    for (let item of tableData){
+        if (wonderkids_pastoral_team.includes(item.pastoral_team)){
+            wonderkids += 1;
+        }else if (item.pastoral_team === "Young Warrior" ||  item.satellite === "Kuchai YW"){
+            youngWarrior += 1;
+        }else{
+            general += 1;
+        }
+    }
+
+    return {
+        wonderkids,
+        youngWarrior,
+        general
     }
 }

@@ -379,3 +379,11 @@ export const admin_urls = {
     "structure": "/nb-structure",
     "report" : "/nb-report",
 }
+
+
+export const wonderkids_pastoral_team = [
+    "Cradle Land & Shining Star",
+    "Super Trooper",
+    "Wow Life",
+    "WK Warrior",
+]

@@ -1,4 +1,4 @@
-import { Table, Input, Button, Popconfirm } from '@arco-design/web-react';
+import {Table, Input, Button, Popconfirm, Card} from '@arco-design/web-react';
 import { useEffect, useRef, useState } from "react";
 import {
     closeCG,
@@ -20,7 +20,7 @@ import { useCGLStore } from "../../store/CGLStore.js";
 import {CGCategoryList, pastoralTeamList, satelliteList} from "../../config.js";
 import CGLsAddModal from "./CGLsAddModal.jsx";
 import PubSub from "pubsub-js";
-import {downloadCGLsData, getCoachOptions, getTodayDateStr} from "../../tools.js";
+import {downloadCGLsData, getCoachOptions, getPastoralTeamCGNumber, getTodayDateStr} from "../../tools.js";
 import CsvDownload from "react-csv-downloader";
 import { addRecord } from "../../api/records.js";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -330,6 +330,7 @@ export default function CGLsManagement() {
     const [isShowActive, setIsShowActive] = useState(true);
     const [CGEditModalVisible, setCGEditModalVisible] = useState(false);
     const setCoachOptions = useCGLStore(state => state.setCoachOptions);
+    const [pastoralTeamCGNumber, setPastoralTeamCGNumber] = useState(null);
 
 
     useEffect(() => {
@@ -345,15 +346,6 @@ export default function CGLsManagement() {
     }, [isLoading])
 
     async function updateCGLs() {
-        //const data = await readAllCGLs();
-
-        // const openedList = data.filter((item) => item.CG_status === "open");
-        ///const allCGLs = convertTableData(data);
-        ///const activeCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.active);
-        ///const closedCGLs = allCGLs.filter((item) => item.CG_status === CGStatusEnum.closed);
-
-        // console.log("closedCGLs", closedCGLs)
-        // setAllCGLs(activeCGLs);
         setTableData(await readAllActiveCGLs());
         setClosedCGLs(await readAllClosedCGLs());
         setAllCGLs(await readAllCGLs());
@@ -368,6 +360,7 @@ export default function CGLsManagement() {
         let coaches = getCoachOptions(tableData);
         coaches.unshift("None");
         setCoachOptions(coaches);
+        setPastoralTeamCGNumber(getPastoralTeamCGNumber(tableData))
     }, [tableData]);
 
 
@@ -375,24 +368,24 @@ export default function CGLsManagement() {
         <div className={"h-full w-full sm:px-8 px-2 py-4 "}>
             <div className={"flex flex-row justify-between bg-white py-2 rounded-t"}>
                 <Button type='secondary' className={"mb-2"}
-                    icon={<IconPlus />}
-                    onClick={() => setAddVisible(true)}
+                        icon={<IconPlus/>}
+                        onClick={() => setAddVisible(true)}
                 >Add New CGL</Button>
-               <div className={"flex flex-row"}>
-                   <Button type='secondary' icon={<IconArchive />}
-                           className={"mb-2 mr-2"}
-                        onClick={() => setIsShowActive(!isShowActive)}
-                   />
-                   <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
-                                extension={".csv"}
-                                text={"Download"}
-                                datas={downloadCGLsData(allCGLs)} >
-                       <Button type='secondary'
-                               icon={<IconDownload  />}
-                               className={"mb-2"}>
-                       </Button>
-                   </CsvDownload>
-               </div>
+                <div className={"flex flex-row"}>
+                    <Button type='secondary' icon={<IconArchive/>}
+                            className={"mb-2 mr-2"}
+                            onClick={() => setIsShowActive(!isShowActive)}
+                    />
+                    <CsvDownload filename={`CGLs_${getTodayDateStr()}`}
+                                 extension={".csv"}
+                                 text={"Download"}
+                                 datas={downloadCGLsData(allCGLs)}>
+                        <Button type='secondary'
+                                icon={<IconDownload/>}
+                                className={"mb-2"}>
+                        </Button>
+                    </CsvDownload>
+                </div>
             </div>
             <div className={"bg-white rounded-b pb-2"}>
                 {
@@ -412,8 +405,25 @@ export default function CGLsManagement() {
                 }
 
             </div>
-            <CGLsInfoEditModal visible={CGEditModalVisible} setVisible={setCGEditModalVisible} />
-            <CGLsAddModal  visible={addVisible} setVisible={setAddVisible} />
+            <div className={`mt-4 grid grid-cols-3 gap-8 bg-white py-4 rounded `}>
+                <Card
+                    title='Wonderkides CG'
+                >
+                    {pastoralTeamCGNumber && pastoralTeamCGNumber.wonderkids}
+                </Card>
+                <Card
+                    title='Young Warrior CG'
+                >
+                    {pastoralTeamCGNumber && pastoralTeamCGNumber.youngWarrior}
+                </Card>
+                <Card
+                    title='General CG'
+                >
+                    {pastoralTeamCGNumber && pastoralTeamCGNumber.general}
+                </Card>
+            </div>
+            <CGLsInfoEditModal visible={CGEditModalVisible} setVisible={setCGEditModalVisible}/>
+            <CGLsAddModal visible={addVisible} setVisible={setAddVisible}/>
         </div>
     )
 }
