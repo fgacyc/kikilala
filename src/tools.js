@@ -463,3 +463,33 @@ export function getPastoralTeamCGNumber(tableData){
         general
     }
 }
+
+export function getReportDataTotal(data){
+    // CG_Avg
+    // Service_Avg
+    // satellite_pastoral_team
+    // submission_rate
+    // total_ac
+    // total_cg
+    // total_nf
+    // total_numbering
+
+    const total_cg = data.reduce((acc, item) => acc + item.total_cg, 0);
+    const total_numbering = data.reduce((acc, item) => acc + item.total_numbering, 0);
+    const total_nf = data.reduce((acc, item) => acc + item.total_nf, 0);
+    const total_ac = data.reduce((acc, item) => acc + item.total_ac, 0);
+
+    const CG_Avg = data.reduce((acc, item) => acc + item.CG_Avg, 0) ;
+    const Service_Avg = data.reduce((acc, item) => acc + item.Service_Avg, 0)
+    const submission_rate = data.reduce((acc, item) => acc + item.submission_rate, 0) / data.length;
+
+    return {
+        total_cg,
+        total_numbering,
+        total_nf,
+        total_ac,
+        CG_Avg,
+        Service_Avg,
+        "submission_rate": submission_rate.toFixed(2) * 100
+    }
+}

@@ -63,7 +63,8 @@ function App() {
                     <Route path="/submit" element={<Submit />} />
                     <Route path="history/:cgl_name" element={<CGLAttendance />} />
                     <Route path="headcount" element={<HeadCount />} />
-                    <Route path="nb-admin" element={<CGLsManagement />} />
+                    <Route path="nb-cgl" element={<CGLsManagement />} />
+                    <Route path="nb-admin" element={<UserManagement />} />
                     <Route path="nb-user" element={<UserManagement />} />
                     <Route path="nb-attendance" element={<AttendanceManagement />} />
                     <Route path="nb-headcount" element={<HeadCountManagement />} />
