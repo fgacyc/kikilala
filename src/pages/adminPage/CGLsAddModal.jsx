@@ -21,6 +21,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
         const data = formRef.current.getFieldsValue();
         //console.log(data)
         const isCGNameDuplicate = await duplicateCheck(data.CG_name);
+        //console.log("isCGNameDuplicate",isCGNameDuplicate)
         if(isCGNameDuplicate){
             Message.warning('CG Name already exists!')
             return;
@@ -66,7 +67,7 @@ export default function CGLsAddModal({ visible, setVisible }) {
         return false;
     }
 
-    function formOnValuesChange() {
+    async  function formOnValuesChange() {
         const data = formRef.current.getFieldsValue();
         // console.log(data)
 
@@ -74,17 +75,36 @@ export default function CGLsAddModal({ visible, setVisible }) {
 
         const satellite_short = getShortSatellite(data.satellite);
         const category_short = getShortCGCategory(data.category);
-        getCGLNumber(data.satellite).then((res) => {
-            let new_cg_name = `CYC${satellite_short && " " + satellite_short } ${res+1} ${category_short}`;
-            while (ifCGNameExists(new_cg_name)) {
-                res++;
-                new_cg_name = `CYC${satellite_short && " " + satellite_short } ${res+1} ${category_short}`;
-            }
 
-            formRef.current.setFieldsValue({
-                CG_name: new_cg_name
-            })
+        let  cglNumbers =await getCGLNumber(data.satellite);
+        let new_cg_name = `CYC${satellite_short && " " + satellite_short } ${cglNumbers+1} ${category_short}`;
+        // const isCGNameDuplicate = await duplicateCheck(new_cg_name);
+        //console.log("new_cg_name",new_cg_name)
+
+        while ( await  duplicateCheck(new_cg_name)) {
+            cglNumbers++;
+            new_cg_name = `CYC${satellite_short && " " + satellite_short } ${cglNumbers+1} ${category_short}`;
+        }
+
+        formRef.current.setFieldsValue({
+            CG_name: new_cg_name
         })
+
+
+        // getCGLNumber(data.satellite).then((res) => {
+        //     let new_cg_name = `CYC${satellite_short && " " + satellite_short } ${res+1} ${category_short}`;
+        //     const isCGNameDuplicate = await duplicateCheck(data.CG_name);
+        //     //console.log("new_cg_name",new_cg_name)
+        //     //console.log("ifCGNameExists(new_cg_name)",ifCGNameExists(new_cg_name))
+        //     while (ifCGNameExists(new_cg_name)) {
+        //         res++;
+        //         new_cg_name = `CYC${satellite_short && " " + satellite_short } ${res+1} ${category_short}`;
+        //     }
+        //
+        //     formRef.current.setFieldsValue({
+        //         CG_name: new_cg_name
+        //     })
+        // })
     }
 
 
