@@ -134,7 +134,7 @@ export const attendanceTypeList = [
 export const satellite_pastoralTeam = {
     "Kuchai YW": ["Move", "Voice", "Mind", "Force", "Heart"],
     "Kuchai WK": ["GS - Joshua Zone"],
-    "Kuchai GS": ["GS - Daniel Yeo Zone", "GS - Ps Jasmine Zone", "GS - Ps Melvin Zone"],
+    "Kuchai GS": ["GS - Daniel Yeo Zone", "GS - Joshua Zone", "GS - Ps Jasmine Zone", "GS - Ps Melvin Zone"],
     // "Klang": ["Young Professional"],
     "Serdang": ["Adult", "Young Warrior", "Young Professional"],
     "Kepong": ["Adult", "Young Warrior", "Young Professional"],
@@ -142,19 +142,20 @@ export const satellite_pastoralTeam = {
     "Setapak": ["Young Warrior", "Young Professional", "Adult"],
     "SG Long": ["Young Warrior", "Young Professional", "Young Family"],
     "Seremban": ["Young Warrior"],
-    "Penang":[],
-    "Johor":[]
+    "Penang": [],
+    "Johor": [],
+    "Blessing": ["Puchong"]
 }
 
-export  function getLocation() {
+export function getLocation() {
     return Object.keys(satellite_pastoralTeam);
 }
 
-export  function  getPastoralTeam(location) {
+export function getPastoralTeam(location) {
     return satellite_pastoralTeam[location];
 }
 
-export const pastoralTeams =[
+export const pastoralTeams = [
     "Kuchai YW",
     "Kuchai GS",
     "Serdang",
@@ -163,10 +164,12 @@ export const pastoralTeams =[
     "Setapak",
     "SG Long",
     "Seremban",
+    "Blessing"
 ]
 
 export const kuchaGSPastoralTeams = [
     "GS - Daniel Yeo Zone",
+    "GS - Joshua Zone",
     "GS - Ps Jasmine Zone",
     "GS - Ps Melvin Zone",
 ]
@@ -174,7 +177,7 @@ export const kuchaGSPastoralTeams = [
 export const kuchaYWPastoralTeams = satellite_pastoralTeam["Kuchai YW"];
 
 
-export const satelliteNameList =  getLocation();
+export const satelliteNameList = getLocation();
 
 
 export const CGCategoryList = [
@@ -207,15 +210,15 @@ export const CGCategoryList = [
         value: "entrepreneur",
     },
     {
-        text:"Children",
-        value:"children"
+        text: "Children",
+        value: "children"
     }
 ];
 
 export const downloadOptions = [
     {
-        label:"Kuchai YW",
-        value:"Kuchai YW",
+        label: "Kuchai YW",
+        value: "Kuchai YW",
         children: [
             {
                 label: "Move",
@@ -238,8 +241,8 @@ export const downloadOptions = [
                 value: "Heart"
             },
             {
-                label:"All",
-                value:"All"
+                label: "All",
+                value: "All"
             }
         ]
     },
@@ -260,23 +263,23 @@ export const downloadOptions = [
                 value: "GS - Ps Melvin Zone"
             },
             {
-                label:"GS - Joshua Zone",
-                value:"GS - Joshua Zone"
+                label: "GS - Joshua Zone",
+                value: "GS - Joshua Zone"
             },
             {
-                label:"GS - The Blessing",
-                value:"GS - The Blessing"
+                label: "GS - The Blessing",
+                value: "GS - The Blessing"
             },
             {
-                label:"All",
-                value:"All"
+                label: "All",
+                value: "All"
             }
         ]
     },
     {
         label: "Satellites",
         value: "Satellites",
-        children:[
+        children: [
             {
                 label: "Serdang",
                 value: "Serdang"
@@ -330,22 +333,32 @@ export const downloadOptions = [
         ]
     },
     {
+        label: "Blessing",
+        value: "Blessing",
+        children: [
+            {
+                label: "Puchong",
+                value: "Puchong"
+            },
+        ]
+    },
+    {
         label: "All",
         value: "All"
     }
 ];
 
 const satelliteShort = {
-    "Kuchai WK":"",
-    "Kuchai YW" :"",
-    "Kuchai GS":"",
-    "Klang":"KLG",
-    "Serdang":"S",
-    "Kepong":"K",
-    "USJ":"USJ",
-    "Setapak":"STP",
-    "SG Long":"SGL",
-    "Seremban":"SRB",
+    "Kuchai WK": "",
+    "Kuchai YW": "",
+    "Kuchai GS": "",
+    "Klang": "KLG",
+    "Serdang": "S",
+    "Kepong": "K",
+    "USJ": "USJ",
+    "Setapak": "STP",
+    "SG Long": "SGL",
+    "Seremban": "SRB",
 }
 
 export const getShortSatellite = (satellite) => {
@@ -353,14 +366,14 @@ export const getShortSatellite = (satellite) => {
 }
 
 const CGCategoryListShort = {
-    "secondary_students":"S",
-    "college/university":"T",
-    "young_adults":"W",
-    "married":"A",
-    "family":"A",
-    "adult/golden_age":"A",
-    "entrepreneur":"A",
-    "children":"J"
+    "secondary_students": "S",
+    "college/university": "T",
+    "young_adults": "W",
+    "married": "A",
+    "family": "A",
+    "adult/golden_age": "A",
+    "entrepreneur": "A",
+    "children": "J"
 }
 
 export const getShortCGCategory = (category) => {
@@ -377,7 +390,7 @@ export const admin_urls = {
     "cgl": "/nb-cgl",
     "admin": "/nb-admin",
     "structure": "/nb-structure",
-    "report" : "/nb-report",
+    "report": "/nb-report",
 }
 
 
