@@ -87,6 +87,10 @@ export const pastoralTeamList = [
         value: "GS - The Blessing",
     },
     {
+        text: "Puchong",
+        value: "Puchong",
+    },
+    {
         text: "Young Professional",
         value: "Young Professional",
     },
