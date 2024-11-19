@@ -38,6 +38,10 @@ export const satelliteList = [
     {
         text: "Seremban",
         value: "Seremban",
+    },
+    {
+        text: "Blessing",
+        value: "Blessing",
     }
 ];
 
@@ -359,6 +363,7 @@ const satelliteShort = {
     "Setapak": "STP",
     "SG Long": "SGL",
     "Seremban": "SRB",
+    "Blessing": "BLS",
 }
 
 export const getShortSatellite = (satellite) => {
