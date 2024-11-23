@@ -1,23 +1,23 @@
-import {Button, Select, Statistic, Table} from "@arco-design/web-react";
-import {generateMonthlyRanges, getReportDataTotal} from "../../tools.js";
-import {useEffect, useState} from "react";
-import {getAnylisisData} from "../../api/anylisisData.js";
-import {IconRefresh} from "@arco-design/web-react/icon";
-import {get, set} from "idb-keyval";
+import { Button, Select, Statistic, Table } from "@arco-design/web-react";
+import { generateMonthlyRanges, getReportDataTotal } from "../../tools.js";
+import { useEffect, useState } from "react";
+import { getAnylisisData } from "../../api/anylisisData.js";
+import { IconRefresh } from "@arco-design/web-react/icon";
+import { get, set } from "idb-keyval";
 const Option = Select.Option;
 
-function StatisticArea({data}){
-    return(
+function StatisticArea({ data }) {
+    return (
         <>
-            { data &&
+            {data &&
                 <div className={"grid sm:grid-cols-4 grid-cols-2 gap-4 px-4"}>
-                    <Statistic title='Total CG' value={data.total_cg} groupSeparator/>
-                    <Statistic title='Total Numbering' value={data.total_numbering} groupSeparator/>
-                    <Statistic title='CG Avg Attn' value={data.CG_Avg} groupSeparator/>
-                    <Statistic title='Service Avg Attn' value={data.Service_Avg} groupSeparator/>
-                    <Statistic title='Total NF' value={data.total_nf} groupSeparator/>
-                    <Statistic title='Total AC' value={data.total_ac} groupSeparator/>
-                    <Statistic title='Submission Rate' value={data.submission_rate + "%"} groupSeparator/>
+                    <Statistic title='Total CG' value={data.total_cg} groupSeparator />
+                    <Statistic title='Total Numbering' value={data.total_numbering} groupSeparator />
+                    <Statistic title='CG Avg Attn' value={data.CG_Avg} groupSeparator />
+                    <Statistic title='Service Avg Attn' value={data.Service_Avg} groupSeparator />
+                    <Statistic title='Total NF' value={data.total_nf} groupSeparator />
+                    <Statistic title='Total AC' value={data.total_ac} groupSeparator />
+                    <Statistic title='Submission Rate' value={data.submission_rate + "%"} groupSeparator />
                 </div>
             }
         </>
@@ -27,34 +27,37 @@ function StatisticArea({data}){
 
 export default function Report() {
     const months = generateMonthlyRanges();
-    const [currentMonth, setCurrentMonth] = useState("");
+    const [currentMonth, setCurrentMonth] = useState(() => {
+        // Initialize `currentMonth` with localStorage value or first month
+        return localStorage.getItem("analyse-currentMonth") || months[0];
+    });
     const [analyseData, setAnalyseData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [updateTime, setUpdateTime] = useState(0);
     const [statisticData, setStatisticData] = useState(null);
 
     useEffect(() => {
-        const month = localStorage.getItem("analyse-currentMonth") || months[0];
-        setCurrentMonth(month);
-    }, []);
-
-    useEffect(() => {
-        async function fetchData() {
-            setIsLoading(true);
-            const localData = await get(`analyseData-${currentMonth}`);
-            const updateTime = await get(`analyseData-${currentMonth}-time`);
-            console.log("localData",localData)
-            if (localData) {
-                setAnalyseData(localData);
+        const fetchData = async (month) => {
+            try {
+                setIsLoading(true);
+                const localData = await get(`analyseData-${month}`);
+                const fetchedUpdateTime = await get(`analyseData-${month}-time`);
+                console.log("localData", localData);
+                if (localData) {
+                    setAnalyseData(localData);
+                    setIsLoading(false);
+                    setUpdateTime(fetchedUpdateTime);
+                    setStatisticData(getReportDataTotal(localData));
+                } else {
+                    updateData();
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
                 setIsLoading(false);
-                setUpdateTime(updateTime);
-                setStatisticData(getReportDataTotal(localData));
-                return;
             }
+        };
 
-            updateData();
-        }
-        void fetchData();
+        fetchData(currentMonth);
     }, [currentMonth]);
 
     function updateData() {
@@ -149,13 +152,13 @@ export default function Report() {
         <div className={"h-full w-full sm:px-8 px-2 py-4 "}>
             <div className={"justify-between bg-white py-2 rounded-t flex flex-col"}>
                 <div className={"flex justify-between"}>
-                    <Select placeholder='Please select month' style={{width: 250, marginBottom: 8}}
-                            value={currentMonth}
-                            onChange={(value) => {
-                                // window.open(`/nb-data-insight/${value}`, "_self")
-                                setCurrentMonth(value);
-                                localStorage.setItem("analyse-currentMonth", value);
-                            }}
+                    <Select placeholder='Please select month' style={{ width: 250, marginBottom: 8 }}
+                        value={currentMonth}
+                        onChange={(value) => {
+                            // window.open(`/nb-data-insight/${value}`, "_self")
+                            setCurrentMonth(value);
+                            localStorage.setItem("analyse-currentMonth", value);
+                        }}
                     >
                         {months.map((option, index) => (
                             <Option key={index} value={option}>
@@ -168,29 +171,29 @@ export default function Report() {
                             updateTime === 0 ? "" : `Update at: ${new Date(updateTime).toLocaleString()}`
                         }</div>
                         <Button type='secondary'
-                                icon={<IconRefresh />}
-                                className={"mx-2"}
-                                onClick={updateData}
+                            icon={<IconRefresh />}
+                            className={"mx-2"}
+                            onClick={updateData}
                         />
                     </div>
                 </div>
                 <div>
                     <Table columns={columns}
-                           data={analyseData}
-                           loading={isLoading}
-                           className={"w-full"}
-                           pagination={pagination}
-                           renderPagination={() => (
-                               <div
-                                   style={{
-                                       display: 'flex',
-                                       justifyContent: 'space-between',
-                                       marginTop: 10,
-                                   }}
-                               >
-                                   {/*{paginationNode}*/}
-                               </div>
-                           )}
+                        data={analyseData}
+                        loading={isLoading}
+                        className={"w-full"}
+                        pagination={pagination}
+                        renderPagination={() => (
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    marginTop: 10,
+                                }}
+                            >
+                                {/*{paginationNode}*/}
+                            </div>
+                        )}
                     />
                 </div>
                 <StatisticArea data={statisticData} />
