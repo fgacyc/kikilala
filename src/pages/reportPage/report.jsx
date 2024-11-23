@@ -180,6 +180,7 @@ export default function Report() {
                 <div>
                     <Table columns={columns}
                         data={analyseData}
+                        rowKey="satellite_pastoral_team"
                         loading={isLoading}
                         className={"w-full"}
                         pagination={pagination}
