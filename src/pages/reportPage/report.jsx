@@ -7,6 +7,11 @@ import { get, set } from "idb-keyval";
 const Option = Select.Option;
 
 function StatisticArea({ data }) {
+    let  submission_rate_number = 0;
+    if (data && data.submission_rate) {
+        submission_rate_number = data.submission_rate * 100;
+    }
+
     return (
         <>
             {data &&
@@ -17,7 +22,7 @@ function StatisticArea({ data }) {
                     <Statistic title='Service Avg Attn' value={data.Service_Avg} groupSeparator />
                     <Statistic title='Total NF' value={data.total_nf} groupSeparator />
                     <Statistic title='Total AC' value={data.total_ac} groupSeparator />
-                    <Statistic title='Submission Rate' value={data.submission_rate + "%"} groupSeparator />
+                    <Statistic title='Submission Rate' value={submission_rate_number+ "%"} groupSeparator />
                 </div>
             }
         </>
@@ -134,7 +139,9 @@ export default function Report() {
             dataIndex: 'submission_rate',
             sorter: (a, b) => a.submission_rate - b.submission_rate,
             render: (text) => {
-                return <div className={"text-center"}>{`${text * 100}%`}</div>
+                const number = text * 100;
+                const rounded  = number % 1 === 0 ? number : parseFloat(number.toFixed(2));
+                return <div className={"text-center"}>{`${rounded}%`}</div>
             }
         }
     ];
