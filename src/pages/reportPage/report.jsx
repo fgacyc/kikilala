@@ -9,7 +9,7 @@ const Option = Select.Option;
 function StatisticArea({ data }) {
     let  submission_rate_number = 0;
     if (data && data.submission_rate) {
-        submission_rate_number = data.submission_rate * 100;
+        submission_rate_number = data.submission_rate.toFixed(2)
     }
 
     return (
