@@ -47,6 +47,34 @@ export const satelliteList = [
 
 export const pastoralTeamList = [
     {
+        text:"YW Central (XK)",
+        value:"YW Central (XK)"
+    },
+    {
+        text:"YW Central (CS)",
+        value:"YW Central (CS)"
+    },
+    {
+        text:"YW North",
+        value:"YW North"
+    },
+    {
+        text:"YW South",
+        value:"YW South"
+    },
+    {
+        text:"YW East",
+        value:"YW East"
+    },
+    {
+        text:"YW West",
+        value:"YW West"
+    },
+    {
+        text:"YW Youth",
+        value:"YW Youth"
+    },
+    {
         text: "Move",
         value: "Move",
     },
@@ -66,6 +94,7 @@ export const pastoralTeamList = [
         text: "Heart",
         value: "Heart",
     },
+
     {
         text: "GS - Joshua Zone",
         value: "GS - Joshua Zone",
@@ -155,12 +184,32 @@ export const satellite_pastoralTeam = {
     "Blessing": ["Puchong"]
 }
 
+export const satellite_pastoralTeam_v2 = {
+    "Kuchai YW": ["YW Central (XK)", "YW Central (CS)", "YW North", "YW South", "YW East","YW West","YW Youth"],
+    "Kuchai WK": ["GS - Joshua Zone"],
+    "Kuchai GS": ["GS - Daniel Yeo Zone", "GS - Joshua Zone", "GS - Ps Jasmine Zone", "GS - Ps Melvin Zone"],
+    // "Klang": ["Young Professional"],
+    "Serdang": ["Adult", "Young Warrior", "Young Professional"],
+    "Kepong": ["Adult", "Young Warrior", "Young Professional"],
+    "USJ": ["Young Warrior", "General Service"],
+    "Setapak": ["Young Warrior", "Young Professional", "Adult"],
+    "SG Long": ["Young Warrior", "Young Professional", "Young Family"],
+    "Seremban": ["Young Warrior"],
+    "Penang": [],
+    "Johor": [],
+    "Blessing": ["Puchong"]
+}
+
 export function getLocation() {
     return Object.keys(satellite_pastoralTeam);
 }
 
 export function getPastoralTeam(location) {
     return satellite_pastoralTeam[location];
+}
+
+export function getPastoralTeamsV2(location) {
+    return satellite_pastoralTeam_v2[location];
 }
 
 export const pastoralTeams = [

@@ -4,6 +4,7 @@ import {getAllPastoralTeamNames, getAllTeamLeaderNames, getCGName} from "../form
 import {Notification, Select} from "@arco-design/web-react";
 import {IconInfoCircle} from "@arco-design/web-react/icon";
 import {useAttendanceStore} from "../../store/attendanceStore.js";
+import {getPastoralTeamsV2} from "../../config.js";
 
 
 const Option = Select.Option;
@@ -26,16 +27,20 @@ export  default  function Selects() {
     useEffect(() => {
         if(!satellite) return;
         if (data.length === 0) return;
-        // console.log("satellite",satellite)
+        console.log("satellite",satellite)
         // console.log("data",data)
 
         // let data = await readAllActiveCGLs();
         // if (!data) return;
         // set select 1 options
         //console.log(satellite, data)
-        const allPastoralTeamNames = getAllPastoralTeamNames(satellite, data);
-        setCurrentPastoralTeamNames(allPastoralTeamNames);
+
+        // const allPastoralTeamNames = getAllPastoralTeamNames(satellite, data);
+        const allPastoralTeamNames = getPastoralTeamsV2(satellite);
         console.log("allPastoralTeamNames",allPastoralTeamNames)
+
+        setCurrentPastoralTeamNames(allPastoralTeamNames);
+
         // set select 2 options
         const allTeamLeaderNames = getAllTeamLeaderNames(satellite, pastoral_team, data);
         setCurrentTeamLeaderNames(allTeamLeaderNames);

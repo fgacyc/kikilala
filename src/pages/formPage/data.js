@@ -1,6 +1,6 @@
 import {Message} from "@arco-design/web-react";
 import {get} from "idb-keyval";
-import {readAllActiveCGLs} from "../../api/CGLs.js";
+// import {readAllActiveCGLs} from "../../api/CGLs.js";
 
 export function  getAllPastoralTeamNames(satellite,data){
     let teamNames = [];

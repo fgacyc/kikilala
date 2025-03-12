@@ -172,7 +172,7 @@ export default function Form() {
 
     useEffect(() => {
         if(satellite){
-            console.log("satellite:",satellite)
+            // console.log("satellite:",satellite)
             setCurrentSatellite(satellite)
         }
     }, [satellite])
